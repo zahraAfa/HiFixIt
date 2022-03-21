@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/pages/welcome.dart';
+import 'package:hifixit/widgets/colorPallete.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,15 +9,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'HiFixIt',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: MaterialColor(0xFFBF84B1, primaryPurple),
+        primarySwatch: MaterialColor(0xFF682C76, primaryPurple),
       ),
-      home: const MyHomePage(title: 'HiFixIt'),
+      home: const WelcomingPage(title: 'HiFixIt'),
     );
   }
 }
