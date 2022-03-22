@@ -17,13 +17,14 @@ class HeaderLoginRegist extends StatelessWidget {
 
     return Container(
       width: _fullWidht,
-      height: _fullHeigh * 0.5,
+      height: _fullHeigh * 0.7,
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
             Color(0xFFEF8A56),
+            Color(0xFF682C76),
             Color(0xFF682C76),
             Color(0xFF682C76),
           ],

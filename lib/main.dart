@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: MaterialColor(0xFF682C76, primaryPurple),
       ),
       // home: const WelcomingPage(title: 'HiFixIt'),
-      home: const CustLogin(title: 'HiFixIt'),
+      home: CustLogin(title: 'HiFixIt'),
     );
   }
 }
