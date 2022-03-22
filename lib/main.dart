@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/pages/cust/login.dart';
 import 'package:hifixit/pages/welcome.dart';
 import 'package:hifixit/widgets/colorPallete.dart';
 
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         primaryColor: MaterialColor(0xFFBF84B1, primaryPurple),
         primarySwatch: MaterialColor(0xFF682C76, primaryPurple),
       ),
-      home: const WelcomingPage(title: 'HiFixIt'),
+      // home: const WelcomingPage(title: 'HiFixIt'),
+      home: const CustLogin(title: 'HiFixIt'),
     );
   }
 }
