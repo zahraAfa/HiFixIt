@@ -6,7 +6,12 @@ import 'userInputLogReg.dart';
 class LoginRegistFormBody extends StatelessWidget {
   const LoginRegistFormBody({
     Key? key,
+    required this.pageType,
+    required this.message,
   }) : super(key: key);
+
+  final String pageType;
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +44,16 @@ class LoginRegistFormBody extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const SizedBox(height: 45),
+                      Text(
+                        pageType,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          color: Color(0xFF7B4067),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(height: 25),
                       UserInputLogReg(
                         hintTitle: 'Email',
                         keyboardType: TextInputType.emailAddress,
@@ -59,7 +73,7 @@ class LoginRegistFormBody extends StatelessWidget {
                       SizedBox(
                         height: 55,
                         child: LogRegSubmitBtn(
-                          label: 'Sign in',
+                          label: pageType == 'Sign in' ? 'Sign in' : 'Sign up',
                           press: () {
                             print(_emailInput);
                             print(_passwordInput);
@@ -72,9 +86,9 @@ class LoginRegistFormBody extends StatelessWidget {
                       // ),
                       const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
-                      const LogRegSwitchBtn(
-                        btnTitle: 'Sign up',
-                        message: 'Don\'t have an account yet ? ',
+                      LogRegSwitchBtn(
+                        btnTitle: pageType == 'Sign in' ? 'Sign up' : 'Sign in',
+                        message: message,
                       ),
                     ],
                   ),
