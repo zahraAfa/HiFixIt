@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class UserInputLogReg extends StatelessWidget {
+class UserInputLogReg extends StatefulWidget {
   UserInputLogReg({
     Key? key,
     this.hintTitle,
@@ -12,8 +12,14 @@ class UserInputLogReg extends StatelessWidget {
   final String? hintTitle;
   final TextInputType? keyboardType;
   final bool? obscureText;
-  final userInput = TextEditingController();
   final ValueChanged<String> onChanged;
+
+  @override
+  State<UserInputLogReg> createState() => _UserInputLogRegState();
+}
+
+class _UserInputLogRegState extends State<UserInputLogReg> {
+  final TextEditingController userInput = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +35,13 @@ class UserInputLogReg extends StatelessWidget {
           right: 25.0,
         ),
         child: TextField(
-          onChanged: onChanged,
-          keyboardType: keyboardType,
-          obscureText: obscureText ?? false,
+          onChanged: widget.onChanged,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.obscureText ?? false,
           controller: userInput,
           decoration: InputDecoration(
             border: InputBorder.none,
-            hintText: hintTitle,
+            hintText: widget.hintTitle,
             hintStyle: const TextStyle(
               fontSize: 18,
               color: Colors.grey,

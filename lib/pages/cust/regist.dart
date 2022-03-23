@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/widgets/auth/headerLoginRegist.dart';
+import 'package:hifixit/widgets/auth/logRegFormBody.dart';
 
-import '../../widgets/auth/logRegFormBody.dart';
+class RegistPage extends StatelessWidget {
+  const RegistPage({Key? key, required this.title}) : super(key: key);
 
-class CustLogin extends StatelessWidget {
-  static const routeName = '/authentification-screen';
-
-  CustLogin({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -23,11 +21,11 @@ class CustLogin extends StatelessWidget {
           ),
           HeaderLoginRegist(
             title: title,
-            thirdMessage: 'please Sign in',
+            thirdMessage: 'Join us!',
           ),
           const LoginRegistFormBody(
-            pageType: 'Sign in',
-            message: 'Don\'t have an account yet ? ',
+            pageType: 'Sign up',
+            message: 'Already have an account ? ',
           ),
         ],
       ),
