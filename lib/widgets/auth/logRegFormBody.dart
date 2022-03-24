@@ -87,9 +87,20 @@ class LoginRegistFormBody extends StatelessWidget {
                       const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
-                        btnTitle: pageType == 'Sign in' ? 'Sign up' : 'Sign in',
-                        message: message,
-                      ),
+                          btnTitle:
+                              pageType == 'Sign in' ? 'Sign up' : 'Sign in',
+                          message: message,
+                          nav: () {
+                            if (pageType == 'Sign in') {
+                              Navigator.of(context).pushReplacementNamed(
+                                  '/regist',
+                                  arguments: 'HiFixIt');
+                            } else if (pageType == 'Sign up') {
+                              Navigator.of(context).pushReplacementNamed(
+                                  '/login',
+                                  arguments: 'HiFixIt');
+                            }
+                          }),
                     ],
                   ),
                 ),

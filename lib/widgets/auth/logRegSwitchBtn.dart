@@ -4,11 +4,13 @@ class LogRegSwitchBtn extends StatelessWidget {
   const LogRegSwitchBtn({
     required this.btnTitle,
     required this.message,
+    required this.nav,
     Key? key,
   }) : super(key: key);
 
   final String message;
   final String btnTitle;
+  final VoidCallback nav;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class LogRegSwitchBtn extends StatelessWidget {
           style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
         ),
         TextButton(
-          onPressed: () {},
+          onPressed: nav,
           child: Text(
             btnTitle,
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
