@@ -1,16 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class UserOptionBtn extends StatefulWidget {
-  const UserOptionBtn(
-      {Key? key,
-      required this.userType,
-      required this.userIcon,
-      required this.color})
-      : super(key: key);
+  const UserOptionBtn({
+    Key? key,
+    required this.userType,
+    required this.userIcon,
+    required this.color,
+    required this.nav,
+  }) : super(key: key);
 
   final String userType;
   final IconData userIcon;
   final Color color;
+  final String nav;
 
   @override
   State<UserOptionBtn> createState() => _UserOptionBtnState();
@@ -19,14 +23,24 @@ class UserOptionBtn extends StatefulWidget {
 class _UserOptionBtnState extends State<UserOptionBtn> {
   Color _onTapColor = Colors.white;
 
+  void _changeColor() {
+    setState(() {
+      // _onTapColor =
+      //     _onTapColor == Colors.white ? Colors.grey.shade300 : Colors.white;
+      // Timer timer = new Timer(new Duration(milliseconds: 5), () {
+      //   _onTapColor =
+      //       _onTapColor == Colors.white ? Colors.grey.shade300 : Colors.white;
+      // });
+      // print('button tapped');
+      Navigator.of(context).pushNamed('/${widget.nav}', arguments: 'HiFixIt');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setState(() {
-        _onTapColor =
-            _onTapColor == Colors.white ? Colors.grey.shade300 : Colors.white;
-        print('button tapped');
-      }),
+      // onTap: widget.press,
+      onTap: _changeColor,
       child: Container(
         padding: const EdgeInsets.all(10.0),
         height: 130,
