@@ -12,11 +12,32 @@ class RouteGenerator {
       case '/':
         return MaterialPageRoute(
             builder: (_) => const WelcomingPage(title: 'HiFixIt'));
+
+      // *************************
+      //  Auth Customer Routes
+      // *************************
       case '/login':
-        return MaterialPageRoute(builder: (_) => CustLogin(title: 'title'));
+        if (args is String) {
+          return MaterialPageRoute(builder: (_) => CustLogin(title: args));
+        }
+        return _errorRoute();
       case '/regist':
-        return MaterialPageRoute(
-            builder: (_) => const RegistPage(title: 'title'));
+        if (args is String) {
+          return MaterialPageRoute(builder: (_) => RegistPage(title: args));
+        }
+        return _errorRoute();
+
+      // *************************
+      //  Auth Technician Routes
+      // *************************
+
+      // *************************
+      //  Customer Routes
+      // *************************
+
+      // *************************
+      //  Technician Routes
+      // *************************
       default:
         return _errorRoute();
     }
