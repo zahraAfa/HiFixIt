@@ -3,7 +3,7 @@ import 'package:hifixit/pages/cust/login.dart';
 import 'package:hifixit/pages/cust/regist.dart';
 import 'package:hifixit/pages/welcome.dart';
 import 'package:hifixit/route_generator.dart';
-import 'package:hifixit/widgets/colorPallete.dart';
+import 'package:hifixit/widgets/color_pallete.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       theme: ThemeData(
         primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
-        primarySwatch: const MaterialColor(0xFF682C76, primaryPurple),
+        primarySwatch: const MaterialColor(0xFF3d1b3c, primaryPurple),
       ),
       home: WelcomingPage(title: appTitle),
       // home: CustLogin(title: appTitle),

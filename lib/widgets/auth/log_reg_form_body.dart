@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/auth/logRegSubmitBtn.dart';
-import 'package:hifixit/widgets/auth/logRegSwitchBtn.dart';
-import 'userInputLogReg.dart';
+import 'package:hifixit/widgets/auth/log_reg_submit_btn.dart';
+import 'package:hifixit/widgets/auth/log_reg_switch_btn.dart';
+import 'user_input_log_reg.dart';
 
 class LoginRegistFormBody extends StatelessWidget {
   const LoginRegistFormBody({
@@ -77,6 +77,8 @@ class LoginRegistFormBody extends StatelessWidget {
                           press: () {
                             print(_emailInput);
                             print(_passwordInput);
+                            Navigator.of(context).pushNamed('/cust-account',
+                                arguments: 'Account');
                           },
                         ),
                       ),
