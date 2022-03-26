@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/userOptionBtn.dart';
+import 'package:hifixit/widgets/user_option_btn.dart';
 
 class WelcomingPage extends StatelessWidget {
   const WelcomingPage({Key? key, required this.title}) : super(key: key);

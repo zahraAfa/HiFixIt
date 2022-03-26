@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/auth/headerLoginRegist.dart';
-import 'package:hifixit/widgets/auth/logRegFormBody.dart';
+import 'package:hifixit/widgets/auth/header_login_regist.dart';
+import 'package:hifixit/widgets/auth/log_reg_form_body.dart';
 
 class RegistPage extends StatelessWidget {
   const RegistPage({Key? key, required this.title}) : super(key: key);

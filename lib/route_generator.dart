@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/main.dart';
 import 'package:hifixit/pages/cust/login.dart';
 import 'package:hifixit/pages/cust/regist.dart';
 import 'package:hifixit/pages/welcome.dart';
