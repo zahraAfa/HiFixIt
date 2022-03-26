@@ -7,7 +7,7 @@ const Map<int, Color> primaryPurple = {
   300: Color(0xFF7B4067),
   400: Color(0xFFEF8A56),
   500: Color(0xFFBF84B1),
-  600: Color(0xFF000000),
+  600: Color(0xFF3d1b3c),
   700: Color(0xFF000000),
   800: Color(0xFF000000),
   900: Color(0xFF000000),

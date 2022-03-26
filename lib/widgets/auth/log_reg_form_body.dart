@@ -77,6 +77,8 @@ class LoginRegistFormBody extends StatelessWidget {
                           press: () {
                             print(_emailInput);
                             print(_passwordInput);
+                            Navigator.of(context).pushNamed('/cust-account',
+                                arguments: 'Account');
                           },
                         ),
                       ),

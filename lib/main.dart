@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       title: appTitle,
       theme: ThemeData(
         primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
-        primarySwatch: const MaterialColor(0xFF682C76, primaryPurple),
+        primarySwatch: const MaterialColor(0xFF3d1b3c, primaryPurple),
       ),
       home: WelcomingPage(title: appTitle),
       // home: CustLogin(title: appTitle),
