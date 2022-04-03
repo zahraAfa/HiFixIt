@@ -1,82 +1,49 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:hifixit/pages/cust/login.dart';
-import 'package:hifixit/pages/cust/regist.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:hifixit/app/controllers/auth_controller.dart';
+import 'package:hifixit/app/routes/app_pages.dart';
+import 'package:hifixit/app/utils/loading_page.dart';
+import 'firebase_options.dart';
 import 'package:hifixit/pages/welcome.dart';
 import 'package:hifixit/route_generator.dart';
-import 'package:hifixit/widgets/color_pallete.dart';
+import 'package:hifixit/app/widgets/color_pallete.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   final String appTitle = 'HiFixIt';
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: appTitle,
-      theme: ThemeData(
-        primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
-        primarySwatch: const MaterialColor(0xFF3d1b3c, primaryPurple),
-      ),
-      home: WelcomingPage(title: appTitle),
-      // home: CustLogin(title: appTitle),
-      // home: RegistPage(title: appTitle),
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final authCont = Get.put(AuthController(), permanent: true);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+    return StreamBuilder<User?>(
+      stream: authCont.streamAuthStatus,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          return GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: appTitle,
+            theme: ThemeData(
+              primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
+              primarySwatch: const MaterialColor(0xFF3d1b3c, primaryPurple),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            initialRoute: snapshot.data != null ? Routes.HOME : Routes.WELCOME,
+            getPages: AppPages.routes,
+          );
+        }
+        return const LoadingPage();
+      },
     );
   }
 }

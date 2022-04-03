@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/menu_drawer.dart';
+import 'package:hifixit/app/widgets/menu_drawer.dart';
 
 class CustAccount extends StatelessWidget {
   const CustAccount({Key? key, required this.pageTitle}) : super(key: key);
@@ -18,7 +18,7 @@ class CustAccount extends StatelessWidget {
         centerTitle: true,
         actions: [],
       ),
-      drawer: const MenuDrawer(),
+      drawer: MenuDrawer(),
       body: Container(),
     );
   }

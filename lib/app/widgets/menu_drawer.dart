@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/menu_list_with_icon.dart';
+import 'package:get/get.dart';
+import 'package:hifixit/app/controllers/auth_controller.dart';
+import 'package:hifixit/app/widgets/menu_list_with_icon.dart';
 
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({
-    Key? key,
-  }) : super(key: key);
-
+  final authCont = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -41,24 +40,48 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                const MenuListWithIcon(icon: Icons.home_filled, title: 'Home'),
-                const MenuListWithIcon(
-                    icon: Icons.calendar_month, title: 'Calendar'),
-                const MenuListWithIcon(
-                    icon: Icons.chat_bubble_rounded, title: 'Chats'),
-                const MenuListWithIcon(
-                    icon: Icons.history, title: 'Book History'),
-                const MenuListWithIcon(icon: Icons.settings, title: 'Settings'),
+                MenuListWithIcon(
+                    icon: Icons.home_filled,
+                    title: 'Home',
+                    onTap: () {
+                      print('Home');
+                    }),
+                MenuListWithIcon(
+                  icon: Icons.calendar_month,
+                  title: 'Calendar',
+                  onTap: () {},
+                ),
+                MenuListWithIcon(
+                  icon: Icons.chat_bubble_rounded,
+                  title: 'Chats',
+                  onTap: () {},
+                ),
+                MenuListWithIcon(
+                  icon: Icons.history,
+                  title: 'Book History',
+                  onTap: () {},
+                ),
+                MenuListWithIcon(
+                  icon: Icons.settings,
+                  title: 'Settings',
+                  onTap: () {},
+                ),
               ],
             ),
           ),
           Align(
             alignment: FractionalOffset.bottomCenter,
             child: Column(
-              children: const [
-                Divider(),
-                MenuListWithIcon(icon: Icons.logout, title: 'Sign out'),
-                SizedBox(
+              children: [
+                const Divider(),
+                MenuListWithIcon(
+                  icon: Icons.logout,
+                  title: 'Sign out',
+                  onTap: () {
+                    authCont.logout();
+                  },
+                ),
+                const SizedBox(
                   height: 40.0,
                 )
               ],

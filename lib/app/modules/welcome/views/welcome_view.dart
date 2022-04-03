@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/modules/welcome/views/widgets/user_option_btn.dart';
 
-class WelcomingPage extends StatelessWidget {
-  const WelcomingPage({Key? key, required this.title}) : super(key: key);
+import 'package:get/get.dart';
 
-  final String title;
+import '../controllers/welcome_controller.dart';
+import 'widgets/user_option_btn.dart';
+
+class WelcomeView extends GetView<WelcomeController> {
+  const WelcomeView({Key? key}) : super(key: key);
+
+  String get title => 'HiFixIt';
 
   @override
   Widget build(BuildContext context) {

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/auth/log_reg_submit_btn.dart';
-import 'package:hifixit/widgets/auth/log_reg_switch_btn.dart';
-import 'user_input_log_reg.dart';
+import 'package:get/get.dart';
+import 'package:hifixit/app/controllers/auth_controller.dart';
+import 'package:hifixit/app/widgets/auth/log_reg_submit_btn.dart';
+import 'package:hifixit/app/widgets/auth/log_reg_switch_btn.dart';
+import 'package:hifixit/app/widgets/auth/user_input_log_reg.dart';
 
-class LoginRegistFormBody extends StatelessWidget {
-  const LoginRegistFormBody({
+class LoginBody extends StatelessWidget {
+  LoginBody({
     Key? key,
     required this.pageType,
     required this.message,
@@ -12,6 +14,7 @@ class LoginRegistFormBody extends StatelessWidget {
 
   final String pageType;
   final String message;
+  final authCont = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +80,7 @@ class LoginRegistFormBody extends StatelessWidget {
                           press: () {
                             print(_emailInput);
                             print(_passwordInput);
-                            Navigator.of(context).pushNamed('/cust-account',
-                                arguments: 'Account');
+                            authCont.login(_emailInput, _passwordInput);
                           },
                         ),
                       ),

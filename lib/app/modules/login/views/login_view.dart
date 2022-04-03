@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/widgets/auth/header_login_regist.dart';
+
+import 'package:get/get.dart';
+import 'package:hifixit/app/modules/login/views/widgets/login_body.dart';
 import 'package:hifixit/app/widgets/auth/log_reg_form_body.dart';
 
-class CustLogin extends StatelessWidget {
-  static const routeName = '/authentification-screen';
+import '../controllers/login_controller.dart';
+import 'package:hifixit/app/widgets/auth/header_login_regist.dart';
 
-  const CustLogin({Key? key, required this.title}) : super(key: key);
-  final String title;
+class LoginView extends GetView<LoginController> {
+  const LoginView({Key? key}) : super(key: key);
+
+  get title => 'HiFixIt';
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class CustLogin extends StatelessWidget {
             title: title,
             thirdMessage: 'please Sign in',
           ),
-          const LoginRegistFormBody(
+          LoginBody(
             pageType: 'Sign in',
             message: 'Don\'t have an account yet ? ',
           ),
