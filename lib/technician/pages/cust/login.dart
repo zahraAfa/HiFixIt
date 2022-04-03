@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/widgets/auth/header_login_regist.dart';
-
-import '../../widgets/auth/log_reg_form_body.dart';
+import 'package:hifixit/widgets/auth/log_reg_form_body.dart';
 
 class CustLogin extends StatelessWidget {
   static const routeName = '/authentification-screen';
