@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "547830533596",
+    "firebase_url": "https://hifixit-66d2b-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "hifixit-66d2b",
+    "storage_bucket": "hifixit-66d2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:547830533596:android:ffc1340dccc7303ed6d319",
+        "android_client_info": {
+          "package_name": "com.anisa.hifixit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "547830533596-a7b505ohqu7paotp9tsqntth0b33mjf8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anisa.hifixit",
+            "certificate_hash": "15ae74c4c9a1144cda686244bc77f04a2892f1ff"
+          }
+        },
+        {
+          "client_id": "547830533596-c5uerpsulngv520vb49clqmm1n6kjubd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6hDo-r2R7bdq_e3yf8ogwsdlHvxcEUcU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "547830533596-c5uerpsulngv520vb49clqmm1n6kjubd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "547830533596-ke7j2mvufien87eq5b09o2q675i1f8pa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anisa.hifixit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
