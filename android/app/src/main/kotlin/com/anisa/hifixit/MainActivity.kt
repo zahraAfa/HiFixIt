@@ -1,4 +1,4 @@
-package com.example.hifixit
+package com.anisa.hifixit
 
 import io.flutter.embedding.android.FlutterActivity
 
