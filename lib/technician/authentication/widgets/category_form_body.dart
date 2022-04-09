@@ -1,6 +1,10 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/technician/authentication/widgets/log_reg_submit_btn.dart';
+import 'package:hifixit/technician/global/global.dart';
 import 'package:hifixit/technician/mainScreens/main_screens_tech.dart';
+import 'package:hifixit/technician/splashScreen/splash_screen.dart';
 
 class CategoryFormBody extends StatefulWidget {
   const CategoryFormBody({Key? key}) : super(key: key);
@@ -12,6 +16,22 @@ class CategoryFormBody extends StatefulWidget {
 class _CategoryFormBodyState extends State<CategoryFormBody> {
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
+
+  saveCategoryInfo() {
+    Map techCategoryMap = {
+      "category": selectedCategoryType,
+    };
+    DatabaseReference techRef =
+        FirebaseDatabase.instance.ref().child("Technician");
+    techRef
+        .child(currentFirebaseUser!.uid)
+        .child("TechCategory")
+        .set(techCategoryMap);
+
+    Fluttertoast.showToast(msg: "Welcome to HiFixIt");
+    Navigator.push(
+        context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +61,10 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
+                      const Text(
                         'Select Category',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 20.0,
                           color: Color(0xFF7B4067),
                           fontWeight: FontWeight.w600,
@@ -63,9 +83,9 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                           });
                         },
                         value: selectedCategoryType,
-                        hint: Text(
+                        hint: const Text(
                           "Please Choose Category",
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 20.0,
                             color: Colors.grey,
                           ),
@@ -77,10 +97,12 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                         child: LogRegSubmitBtn(
                           label: 'Sign up',
                           press: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (c) => const MainScreenTech()));
+                            if (selectedCategoryType != null) {
+                              saveCategoryInfo();
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: "Please choose your category.");
+                            }
                           },
                         ),
                       ),

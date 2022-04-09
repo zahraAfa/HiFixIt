@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hifixit/technician/authentication/login_screen.dart';
 import 'package:hifixit/technician/authentication/signup_screen.dart';
+import 'package:hifixit/technician/global/global.dart';
 import 'package:hifixit/technician/mainScreens/main_screens_tech.dart';
 import 'package:hifixit/widgets/user_option_btn.dart';
 
@@ -15,13 +16,15 @@ class MySplashScreen extends StatefulWidget {
 
 class _MySplashScreenState extends State<MySplashScreen> {
   startTimer() {
-    Timer(const Duration(seconds: 3), () async {
+    Timer(const Duration(seconds: 1), () async {
+      if (await fAuth.currentUser != null) {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => MainScreenTech()));
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (c) => const LoginScreenTech()));
+      }
       // send user to home screen
-      Navigator.push(
-          // context, MaterialPageRoute(builder: (c) => MainScreenTech()));
-          context,
-          // MaterialPageRoute(builder: (c) => const SignUpScreenTech()));
-          MaterialPageRoute(builder: (c) => const LoginScreenTech()));
     });
   }
 

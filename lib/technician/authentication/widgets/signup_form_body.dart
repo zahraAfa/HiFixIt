@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/technician/authentication/category_info_screen.dart';
 import 'package:hifixit/technician/authentication/login_screen.dart';
 import 'package:hifixit/technician/authentication/signup_screen.dart';
+import 'package:hifixit/technician/global/global.dart';
 import 'package:hifixit/technician/widgets/progress_dialog.dart';
 import 'package:hifixit/widgets/auth/log_reg_submit_btn.dart';
 import 'package:hifixit/widgets/auth/log_reg_switch_btn.dart';
@@ -22,20 +25,58 @@ class SignupFormBody extends StatelessWidget {
   Widget build(BuildContext context) {
     String _emailInput = "";
     String _passwordInput = "";
+    String _fNameInput = "";
+    String _lNameInput = "";
+    String _phoneInput = "";
 
-    validateForm(hint) {
-      if (hint != null) {
-        if (!_emailInput.contains("@")) {
-          Fluttertoast.showToast(msg: "Email address is not valid.");
-        }
+    saveDriverInfoNow() async {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext c) {
+            return ProgressDialog(
+              message: "Processing, Please wait...",
+            );
+          });
+      final User? firebaseUser = (await fAuth
+              .createUserWithEmailAndPassword(
+        email: _emailInput.trim(),
+        password: _passwordInput.trim(),
+      )
+              .catchError((msg) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Error: " + msg.toString());
+      }))
+          .user;
 
-        if (_passwordInput.length < 6) {
-          Fluttertoast.showToast(
-              msg: "Password must be at least 6 characters.");
-        }
+      if (firebaseUser != null) {
+        Map techMap = {
+          "techId": firebaseUser.uid,
+          "techFName": _fNameInput.trim(),
+          "techLName": _lNameInput.trim(),
+          "techEmail": _emailInput.trim(),
+          "techPhone": _phoneInput.trim(),
+        };
+
+        DatabaseReference techRef =
+            FirebaseDatabase.instance.ref().child("Technician");
+        techRef.child(firebaseUser.uid).set(techMap);
       } else {
-        Fluttertoast.showToast(msg: "Cannot be blank.");
+        Fluttertoast.showToast(msg: "Account has not been created.");
       }
+
+      currentFirebaseUser = firebaseUser;
+      Fluttertoast.showToast(msg: "Account has been created.");
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (c) => const CategoryInfoRegistScreen(),
+        ),
+      );
+    }
+
+    validateForm() {
+      Fluttertoast.showToast(msg: "All field must be filled.");
     }
 
     return DraggableScrollableSheet(
@@ -83,11 +124,19 @@ class SignupFormBody extends StatelessWidget {
                         },
                       ),
                       UserInputLogReg(
-                        hintTitle: 'Name',
+                        hintTitle: 'First Name',
                         keyboardType: TextInputType.text,
                         obscureText: false,
                         onChanged: (value) {
-                          _emailInput = value;
+                          _fNameInput = value;
+                        },
+                      ),
+                      UserInputLogReg(
+                        hintTitle: 'Last Name',
+                        keyboardType: TextInputType.text,
+                        obscureText: false,
+                        onChanged: (value) {
+                          _lNameInput = value;
                         },
                       ),
                       UserInputLogReg(
@@ -95,7 +144,7 @@ class SignupFormBody extends StatelessWidget {
                         keyboardType: TextInputType.phone,
                         obscureText: false,
                         onChanged: (value) {
-                          _emailInput = value;
+                          _phoneInput = value;
                         },
                       ),
                       UserInputLogReg(
@@ -111,21 +160,16 @@ class SignupFormBody extends StatelessWidget {
                         child: LogRegSubmitBtn(
                           label: pageType == 'Sign up' ? 'Next' : 'Sign up',
                           press: () {
-                            print(_emailInput);
-                            print(_passwordInput);
-                            showDialog(
-                                context: context,
-                                barrierDismissible: false,
-                                builder: (BuildContext c) {
-                                  return ProgressDialog(
-                                    message: "Processing, please wait...",
-                                  );
-                                });
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (c) =>
-                            //             const CategoryInfoRegistScreen()));
+                            if ((_emailInput.isNotEmpty) &&
+                                (_passwordInput.isNotEmpty) &&
+                                (_fNameInput.isNotEmpty) &&
+                                (_lNameInput.isNotEmpty) &&
+                                (_phoneInput.isNotEmpty) &&
+                                (_passwordInput.isNotEmpty)) {
+                              saveDriverInfoNow();
+                            } else {
+                              validateForm();
+                            }
                           },
                         ),
                       ),

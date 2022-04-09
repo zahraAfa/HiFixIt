@@ -3,6 +3,7 @@ import 'package:hifixit/technician/pages/tabPages/history_tab.dart';
 import 'package:hifixit/technician/pages/tabPages/home_tab.dart';
 import 'package:hifixit/technician/pages/tabPages/profile_tab.dart';
 import 'package:hifixit/technician/pages/tabPages/schedule_tab.dart';
+import 'package:hifixit/technician/widgets/menu_drawer.dart';
 
 class MainScreenTech extends StatefulWidget {
   const MainScreenTech({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class MainScreenTech extends StatefulWidget {
 
 class _MainScreenTechState extends State<MainScreenTech>
     with SingleTickerProviderStateMixin {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TabController? tabController;
   int selectedIndex = 0;
 
@@ -33,6 +35,19 @@ class _MainScreenTechState extends State<MainScreenTech>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const MenuDrawer(),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        shadowColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          icon: const Icon(
+            Icons.menu,
+            color: Color(0xFFEF8A56),
+          ),
+        ),
+      ),
       body: TabBarView(
         controller: tabController,
         physics: const NeverScrollableScrollPhysics(),

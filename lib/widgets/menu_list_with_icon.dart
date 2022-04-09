@@ -5,10 +5,12 @@ class MenuListWithIcon extends StatelessWidget {
     Key? key,
     required this.title,
     required this.icon,
+    required this.onTap,
   }) : super(key: key);
 
   final IconData icon;
   final String title;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class MenuListWithIcon extends StatelessWidget {
           color: Colors.white,
         ),
       ),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }
