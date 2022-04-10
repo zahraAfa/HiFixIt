@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 // import 'package:hifixit/pages/cust/regist.dart';
 // import 'package:hifixit/pages/welcome.dart';
 // import 'package:hifixit/route_generator.dart';
-import 'package:hifixit/technician/splashScreen/splash_screen.dart';
+import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
 import 'package:hifixit/widgets/color_pallete.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';

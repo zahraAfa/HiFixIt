@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/pages/cust/account.dart';
-import 'package:hifixit/pages/cust/login.dart';
-import 'package:hifixit/pages/cust/regist.dart';
-import 'package:hifixit/pages/welcome.dart';
+// import 'package:hifixit/pages/cust/account.dart';
+// import 'package:hifixit/pages/cust/login.dart';
+// import 'package:hifixit/pages/cust/regist.dart';
+import 'package:hifixit/app/modules/pages/welcome.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -13,26 +13,26 @@ class RouteGenerator {
         return MaterialPageRoute(
             builder: (_) => const WelcomingPage(title: 'HiFixIt'));
 
-      // *************************
-      //  Auth Customer Routes
-      // *************************
-      case '/login':
-        if (args is String) {
-          return MaterialPageRoute(builder: (_) => CustLogin(title: args));
-        }
-        return _errorRoute();
-      case '/regist':
-        if (args is String) {
-          return MaterialPageRoute(builder: (_) => RegistPage(title: args));
-        }
-        return _errorRoute();
-      case '/cust-account':
-        if (args is String) {
-          return MaterialPageRoute(
-              builder: (_) => CustAccount(
-                    pageTitle: args,
-                  ));
-        }
+        // *************************
+        //  Auth Customer Routes
+        // *************************
+        // case '/login':
+        //   if (args is String) {
+        //     return MaterialPageRoute(builder: (_) => CustLogin(title: args));
+        //   }
+        //   return _errorRoute();
+        // case '/regist':
+        //   if (args is String) {
+        //     return MaterialPageRoute(builder: (_) => RegistPage(title: args));
+        //   }
+        //   return _errorRoute();
+        // case '/cust-account':
+        //   if (args is String) {
+        //     return MaterialPageRoute(
+        //         builder: (_) => CustAccount(
+        //               pageTitle: args,
+        //             ));
+        //   }
         return _errorRoute();
 
       // *************************
