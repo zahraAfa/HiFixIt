@@ -74,6 +74,9 @@ PODS:
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
   - Flutter (1.0.0)
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - GoogleAppMeasurement (8.14.0):
     - GoogleAppMeasurement/AdIdSupport (= 8.14.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.7)
@@ -126,6 +129,7 @@ PODS:
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
   - PromisesObjC (2.0.0)
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - Firebase/Analytics
@@ -136,6 +140,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_database (from `.symlinks/plugins/firebase_database/ios`)
   - Flutter (from `Flutter`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - GoogleUtilities/AppDelegateSwizzler
   - GoogleUtilities/Environment
   - GoogleUtilities/ISASwizzler
@@ -163,6 +168,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - Toast
 
 EXTERNAL SOURCES:
   firebase_auth:
@@ -173,6 +179,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_database/ios"
   Flutter:
     :path: Flutter
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
 
 SPEC CHECKSUMS:
   Firebase: 7e8fe528c161b9271d365217a74c16aaf834578e
@@ -187,6 +195,7 @@ SPEC CHECKSUMS:
   FirebaseDatabase: 8bfbe7bb8d355f9727507bcf4a2116cb3aabdc5e
   FirebaseInstallations: 7d1d967a307c12f1aadd76844fc321cef699b1ce
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  fluttertoast: 16fbe6039d06a763f3533670197d01fc73459037
   GoogleAppMeasurement: 71156240babd3cc6ced03e0d54816f01a880c730
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
   GoogleUtilities: e0913149f6b0625b553d70dae12b49fc62914fd1
@@ -194,6 +203,7 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: c4fff37b8f5e3c19f3e706994fb7652c674d1b45
 

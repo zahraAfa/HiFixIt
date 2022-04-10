@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/technician/global/global.dart';
+import 'package:hifixit/technician/splashScreen/splash_screen.dart';
 import 'package:hifixit/technician/widgets/menu_list_with_icon.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -41,24 +43,26 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                // const MenuListWithIcon(icon: Icons.home_filled, title: 'Home'),
-                // const MenuListWithIcon(
-                //     icon: Icons.calendar_month, title: 'Calendar'),
-                // const MenuListWithIcon(
-                //     icon: Icons.chat_bubble_rounded, title: 'Chats'),
-                // const MenuListWithIcon(
-                //     icon: Icons.history, title: 'Book History'),
-                // const MenuListWithIcon(icon: Icons.settings, title: 'Settings'),
               ],
             ),
           ),
           Align(
             alignment: FractionalOffset.bottomCenter,
             child: Column(
-              children: const [
-                Divider(),
-                // MenuListWithIcon(icon: Icons.logout, title: 'Sign out'),
-                SizedBox(
+              children: [
+                const Divider(),
+                MenuListWithIcon(
+                  icon: Icons.logout,
+                  title: 'Sign out',
+                  onTap: () {
+                    fAuth.signOut();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const MySplashScreen()));
+                  },
+                ),
+                const SizedBox(
                   height: 40.0,
                 )
               ],
