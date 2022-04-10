@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/customer/modules/authentication/views/login_screen.dart';
 import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
-import 'package:hifixit/app/controllers/global.dart';
+import 'package:hifixit/services/global.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/views/login_screen.dart';
 import 'package:hifixit/app/modules/technician/modules/mainScreens/main_screens_tech.dart';
 import 'package:hifixit/widgets/user_option_btn.dart';

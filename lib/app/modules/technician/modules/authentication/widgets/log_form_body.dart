@@ -4,7 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/views/signup_screen.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_switch_btn.dart';
-import 'package:hifixit/app/controllers/global.dart';
+import 'package:hifixit/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
 import 'package:hifixit/widgets/progress_dialog.dart';
 import 'user_input_log_reg.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/controllers/global.dart';
+import 'package:hifixit/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_list_with_icon.dart';
 

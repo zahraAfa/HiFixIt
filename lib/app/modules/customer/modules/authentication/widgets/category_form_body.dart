@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_reg_submit_btn.dart';
-import 'package:hifixit/app/controllers/global.dart';
+import 'package:hifixit/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
 
 class CategoryFormBody extends StatefulWidget {

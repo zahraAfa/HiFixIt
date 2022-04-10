@@ -6,7 +6,7 @@ import 'package:hifixit/app/modules/technician/modules/authentication/views/cate
 import 'package:hifixit/app/modules/technician/modules/authentication/views/login_screen.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_switch_btn.dart';
-import 'package:hifixit/app/controllers/global.dart';
+import 'package:hifixit/services/global.dart';
 import 'package:hifixit/widgets/progress_dialog.dart';
 import 'user_input_log_reg.dart';
 
