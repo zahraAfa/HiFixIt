@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 class UserOptionBtn extends StatefulWidget {
@@ -23,15 +21,8 @@ class UserOptionBtn extends StatefulWidget {
 class _UserOptionBtnState extends State<UserOptionBtn> {
   Color _onTapColor = Colors.white;
 
-  void _changeColor() {
+  void _toLogin() {
     setState(() {
-      // _onTapColor =
-      //     _onTapColor == Colors.white ? Colors.grey.shade300 : Colors.white;
-      // Timer timer = new Timer(new Duration(milliseconds: 5), () {
-      //   _onTapColor =
-      //       _onTapColor == Colors.white ? Colors.grey.shade300 : Colors.white;
-      // });
-      // print('button tapped');
       Navigator.of(context).pushNamed('/${widget.nav}', arguments: 'HiFixIt');
     });
   }
@@ -40,7 +31,7 @@ class _UserOptionBtnState extends State<UserOptionBtn> {
   Widget build(BuildContext context) {
     return GestureDetector(
       // onTap: widget.press,
-      onTap: _changeColor,
+      onTap: _toLogin,
       child: Container(
         padding: const EdgeInsets.all(10.0),
         height: 130,

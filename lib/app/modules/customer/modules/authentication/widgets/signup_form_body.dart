@@ -1,13 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/controllers/cust_signup_controller.dart';
 import 'package:hifixit/app/modules/customer/modules/authentication/views/login_screen.dart';
 import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_reg_switch_btn.dart';
-import 'package:hifixit/services/global.dart';
-import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
-import 'package:hifixit/widgets/progress_dialog.dart';
 import 'user_input_log_reg.dart';
 
 class SignupFormBody extends StatelessWidget {
@@ -27,52 +23,6 @@ class SignupFormBody extends StatelessWidget {
     String _fNameInput = "";
     String _lNameInput = "";
     String _phoneInput = "";
-
-    saveCustInfoNow() async {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext c) {
-            return ProgressDialog(
-              message: "Processing, Please wait...",
-            );
-          });
-      final User? firebaseUser = (await fAuth
-              .createUserWithEmailAndPassword(
-        email: _emailInput.trim(),
-        password: _passwordInput.trim(),
-      )
-              .catchError((msg) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Error: " + msg.toString());
-      }))
-          .user;
-
-      if (firebaseUser != null) {
-        Map custMap = {
-          "custId": firebaseUser.uid,
-          "custFName": _fNameInput.trim(),
-          "custLName": _lNameInput.trim(),
-          "custEmail": _emailInput.trim(),
-          "custPhone": _phoneInput.trim(),
-        };
-
-        DatabaseReference custRef =
-            FirebaseDatabase.instance.ref().child("Customer");
-        custRef.child(firebaseUser.uid).set(custMap);
-      } else {
-        Fluttertoast.showToast(msg: "Account has not been created.");
-      }
-
-      currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(msg: "Account has been created.");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (c) => const MySplashScreen(),
-        ),
-      );
-    }
 
     validateForm() {
       Fluttertoast.showToast(msg: "All field must be filled.");
@@ -164,7 +114,13 @@ class SignupFormBody extends StatelessWidget {
                                 (_lNameInput.isNotEmpty) &&
                                 (_phoneInput.isNotEmpty) &&
                                 (_passwordInput.isNotEmpty)) {
-                              saveCustInfoNow();
+                              saveCustInfoNow(
+                                  context: context,
+                                  emailInput: _emailInput,
+                                  passwordInput: _passwordInput,
+                                  fNameInput: _fNameInput,
+                                  lNameInput: _lNameInput,
+                                  phoneInput: _phoneInput);
                             } else {
                               validateForm();
                             }
@@ -175,7 +131,7 @@ class SignupFormBody extends StatelessWidget {
                       // const Center(
                       //   child: Text('Forgot password ?'),
                       // ),
-                      const SizedBox(height: 50),
+                      // const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
                           btnTitle:

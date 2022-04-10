@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/user_option_btn.dart';
+import 'package:hifixit/app/modules/splashScreen/controllers/splash_controller.dart';
 
-class WelcomingPage extends StatelessWidget {
-  const WelcomingPage({Key? key, required this.title}) : super(key: key);
+class MySplashScreen extends StatefulWidget {
+  const MySplashScreen({Key? key}) : super(key: key);
 
-  final String title;
+  @override
+  State<MySplashScreen> createState() => _MySplashScreenState();
+}
+
+class _MySplashScreenState extends State<MySplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    startTimer(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return Material(
+      child: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -27,39 +36,21 @@ class WelcomingPage extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+            children: const [
               Text(
-                title,
-                style: const TextStyle(
+                "HiFixIt",
+                style: TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              const Text(
+              Text(
                 'Technician Repair Services Finder',
                 style: TextStyle(
                   color: Colors.white70,
                   fontSize: 15,
                 ),
-              ),
-              const SizedBox(
-                height: 130.0,
-              ),
-              const UserOptionBtn(
-                color: Color(0xFF682C76),
-                userIcon: Icons.account_circle_sharp,
-                userType: 'Customer',
-                nav: 'login',
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              const UserOptionBtn(
-                color: Color(0xFF7B4067),
-                userIcon: Icons.build_circle_rounded,
-                userType: 'Technician',
-                nav: 'regist',
               ),
             ],
           ),

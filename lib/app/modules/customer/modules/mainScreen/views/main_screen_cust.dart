@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/controllers/assistant_method.dart';
 import 'package:hifixit/app/modules/customer/modules/history/views/history_tab.dart';
 import 'package:hifixit/app/modules/customer/modules/home/views/home_tab.dart';
 import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
@@ -29,21 +30,29 @@ class _MainScreenCustState extends State<MainScreenCust>
     super.initState();
 
     tabController = TabController(length: 3, vsync: this);
+    AssistantMethod.readCurrentOnlineCustInfo();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       key: _scaffoldKey,
       drawer: const MenuDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          icon: const Icon(
-            Icons.menu,
-            color: Color(0xFFEF8A56),
+        leading: CircleAvatar(
+          radius: 10,
+          backgroundColor: Colors.white70,
+          child: IconButton(
+            visualDensity: VisualDensity.comfortable,
+            padding: const EdgeInsets.all(2.0),
+            onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+            icon: const Icon(
+              Icons.menu,
+              color: Color(0xFFEF8A56),
+            ),
           ),
         ),
       ),
