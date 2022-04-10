@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/menu_list_with_icon.dart';
+import 'package:hifixit/technician/widgets/menu_list_with_icon.dart';
 
 class MenuDrawer extends StatelessWidget {
   const MenuDrawer({
@@ -41,14 +41,14 @@ class MenuDrawer extends StatelessWidget {
                     ),
                   ),
                 ),
-                const MenuListWithIcon(icon: Icons.home_filled, title: 'Home'),
-                const MenuListWithIcon(
-                    icon: Icons.calendar_month, title: 'Calendar'),
-                const MenuListWithIcon(
-                    icon: Icons.chat_bubble_rounded, title: 'Chats'),
-                const MenuListWithIcon(
-                    icon: Icons.history, title: 'Book History'),
-                const MenuListWithIcon(icon: Icons.settings, title: 'Settings'),
+                // const MenuListWithIcon(icon: Icons.home_filled, title: 'Home'),
+                // const MenuListWithIcon(
+                //     icon: Icons.calendar_month, title: 'Calendar'),
+                // const MenuListWithIcon(
+                //     icon: Icons.chat_bubble_rounded, title: 'Chats'),
+                // const MenuListWithIcon(
+                //     icon: Icons.history, title: 'Book History'),
+                // const MenuListWithIcon(icon: Icons.settings, title: 'Settings'),
               ],
             ),
           ),
@@ -57,7 +57,7 @@ class MenuDrawer extends StatelessWidget {
             child: Column(
               children: const [
                 Divider(),
-                MenuListWithIcon(icon: Icons.logout, title: 'Sign out'),
+                // MenuListWithIcon(icon: Icons.logout, title: 'Sign out'),
                 SizedBox(
                   height: 40.0,
                 )

@@ -29,7 +29,7 @@ class SignupFormBody extends StatelessWidget {
     String _lNameInput = "";
     String _phoneInput = "";
 
-    saveDriverInfoNow() async {
+    saveTechInfoNow() async {
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -161,12 +161,11 @@ class SignupFormBody extends StatelessWidget {
                           label: pageType == 'Sign up' ? 'Next' : 'Sign up',
                           press: () {
                             if ((_emailInput.isNotEmpty) &&
-                                (_passwordInput.isNotEmpty) &&
                                 (_fNameInput.isNotEmpty) &&
                                 (_lNameInput.isNotEmpty) &&
                                 (_phoneInput.isNotEmpty) &&
                                 (_passwordInput.isNotEmpty)) {
-                              saveDriverInfoNow();
+                              saveTechInfoNow();
                             } else {
                               validateForm();
                             }

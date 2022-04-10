@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/technician/authentication/login_screen.dart';
 import 'package:hifixit/technician/authentication/signup_screen.dart';
+import 'package:hifixit/technician/global/global.dart';
+import 'package:hifixit/technician/splashScreen/splash_screen.dart';
+import 'package:hifixit/technician/widgets/progress_dialog.dart';
 import 'package:hifixit/widgets/auth/log_reg_submit_btn.dart';
 import 'package:hifixit/widgets/auth/log_reg_switch_btn.dart';
 import 'user_input_log_reg.dart';
@@ -19,6 +24,45 @@ class LoginFormBody extends StatelessWidget {
   Widget build(BuildContext context) {
     String _emailInput = "";
     String _passwordInput = "";
+
+    loginTechNow() async {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext c) {
+            return ProgressDialog(
+              message: "Processing, Please wait...",
+            );
+          });
+      final User? firebaseUser = (await fAuth
+              .signInWithEmailAndPassword(
+        email: _emailInput.trim(),
+        password: _passwordInput.trim(),
+      )
+              .catchError((msg) {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Error: " + msg.toString());
+      }))
+          .user;
+
+      if (firebaseUser != null) {
+        currentFirebaseUser = firebaseUser;
+        Fluttertoast.showToast(msg: "Login Successful.");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (c) => const MySplashScreen(),
+          ),
+        );
+      } else {
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "Invalid data.");
+      }
+    }
+
+    validateForm() {
+      Fluttertoast.showToast(msg: "All field must be filled.");
+    }
 
     return DraggableScrollableSheet(
       minChildSize: 0.7,
@@ -77,10 +121,12 @@ class LoginFormBody extends StatelessWidget {
                         child: LogRegSubmitBtn(
                           label: pageType == 'Sign in' ? 'Sign in' : 'Sign up',
                           press: () {
-                            print(_emailInput);
-                            print(_passwordInput);
-                            Navigator.of(context).pushNamed('/cust-account',
-                                arguments: 'Account');
+                            if ((_emailInput.isNotEmpty) &&
+                                (_passwordInput.isNotEmpty)) {
+                              loginTechNow();
+                            } else {
+                              validateForm();
+                            }
                           },
                         ),
                       ),
