@@ -1,13 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hifixit/app/modules/technician/modules/authentication/views/category_info_screen.dart';
+import 'package:hifixit/app/modules/technician/modules/authentication/controllers/tech_signup_controller.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/views/login_screen.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_switch_btn.dart';
-import 'package:hifixit/app/controllers/global.dart';
-import 'package:hifixit/widgets/progress_dialog.dart';
 import 'user_input_log_reg.dart';
 
 class SignupFormBody extends StatelessWidget {
@@ -27,52 +23,6 @@ class SignupFormBody extends StatelessWidget {
     String _fNameInput = "";
     String _lNameInput = "";
     String _phoneInput = "";
-
-    saveTechInfoNow() async {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext c) {
-            return ProgressDialog(
-              message: "Processing, Please wait...",
-            );
-          });
-      final User? firebaseUser = (await fAuth
-              .createUserWithEmailAndPassword(
-        email: _emailInput.trim(),
-        password: _passwordInput.trim(),
-      )
-              .catchError((msg) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Error: " + msg.toString());
-      }))
-          .user;
-
-      if (firebaseUser != null) {
-        Map techMap = {
-          "techId": firebaseUser.uid,
-          "techFName": _fNameInput.trim(),
-          "techLName": _lNameInput.trim(),
-          "techEmail": _emailInput.trim(),
-          "techPhone": _phoneInput.trim(),
-        };
-
-        DatabaseReference techRef =
-            FirebaseDatabase.instance.ref().child("Technician");
-        techRef.child(firebaseUser.uid).set(techMap);
-      } else {
-        Fluttertoast.showToast(msg: "Account has not been created.");
-      }
-
-      currentFirebaseUser = firebaseUser;
-      Fluttertoast.showToast(msg: "Account has been created.");
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (c) => const CategoryInfoRegistScreen(),
-        ),
-      );
-    }
 
     validateForm() {
       Fluttertoast.showToast(msg: "All field must be filled.");
@@ -164,7 +114,13 @@ class SignupFormBody extends StatelessWidget {
                                 (_lNameInput.isNotEmpty) &&
                                 (_phoneInput.isNotEmpty) &&
                                 (_passwordInput.isNotEmpty)) {
-                              saveTechInfoNow();
+                              saveTechInfoNow(
+                                  context: context,
+                                  emailInput: _emailInput,
+                                  passwordInput: _passwordInput,
+                                  fNameInput: _fNameInput,
+                                  lNameInput: _lNameInput,
+                                  phoneInput: _phoneInput);
                             } else {
                               validateForm();
                             }
@@ -175,7 +131,7 @@ class SignupFormBody extends StatelessWidget {
                       // const Center(
                       //   child: Text('Forgot password ?'),
                       // ),
-                      const SizedBox(height: 50),
+                      // const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
                           btnTitle:
@@ -197,6 +153,4 @@ class SignupFormBody extends StatelessWidget {
       },
     );
   }
-
-  inputTextValue(value) {}
 }

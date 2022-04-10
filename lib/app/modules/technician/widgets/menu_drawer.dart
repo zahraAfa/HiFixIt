@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/controllers/global.dart';
-import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
+import 'package:hifixit/app/services/global.dart';
+import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/technician/widgets/menu_list_with_icon.dart';
 
 class MenuDrawer extends StatelessWidget {

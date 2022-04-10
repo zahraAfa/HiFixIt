@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-// import 'package:hifixit/pages/cust/login.dart';
-// import 'package:hifixit/pages/cust/regist.dart';
-// import 'package:hifixit/pages/welcome.dart';
-// import 'package:hifixit/route_generator.dart';
-import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
-import 'package:hifixit/widgets/color_pallete.dart';
+import 'package:hifixit/route_generator.dart';
+import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
+import 'package:hifixit/app/widgets/color_pallete.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -26,7 +23,7 @@ void main() async {
         home: const MySplashScreen(),
         // home: WelcomingPage(title: appTitle),
         // initialRoute: '/',
-        // onGenerateRoute: RouteGenerator.generateRoute,
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     ),
   );

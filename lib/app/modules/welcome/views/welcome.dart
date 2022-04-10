@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/widgets/user_option_btn.dart';
+import 'package:hifixit/app/widgets/user_option_btn.dart';
 
 class WelcomingPage extends StatelessWidget {
   const WelcomingPage({Key? key, required this.title}) : super(key: key);
@@ -50,7 +50,7 @@ class WelcomingPage extends StatelessWidget {
                 color: Color(0xFF682C76),
                 userIcon: Icons.account_circle_sharp,
                 userType: 'Customer',
-                nav: 'login',
+                nav: 'loginCust',
               ),
               const SizedBox(
                 height: 30.0,
@@ -59,7 +59,7 @@ class WelcomingPage extends StatelessWidget {
                 color: Color(0xFF7B4067),
                 userIcon: Icons.build_circle_rounded,
                 userType: 'Technician',
-                nav: 'regist',
+                nav: 'loginTech',
               ),
             ],
           ),

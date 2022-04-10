@@ -1,12 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hifixit/app/modules/technician/modules/authentication/controllers/tech_login_controller.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/views/signup_screen.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_switch_btn.dart';
-import 'package:hifixit/app/controllers/global.dart';
-import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
-import 'package:hifixit/widgets/progress_dialog.dart';
 import 'user_input_log_reg.dart';
 
 class LoginFormBody extends StatelessWidget {
@@ -23,41 +20,6 @@ class LoginFormBody extends StatelessWidget {
   Widget build(BuildContext context) {
     String _emailInput = "";
     String _passwordInput = "";
-
-    loginTechNow() async {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext c) {
-            return ProgressDialog(
-              message: "Processing, Please wait...",
-            );
-          });
-      final User? firebaseUser = (await fAuth
-              .signInWithEmailAndPassword(
-        email: _emailInput.trim(),
-        password: _passwordInput.trim(),
-      )
-              .catchError((msg) {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Error: " + msg.toString());
-      }))
-          .user;
-
-      if (firebaseUser != null) {
-        currentFirebaseUser = firebaseUser;
-        Fluttertoast.showToast(msg: "Login Successful.");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (c) => const MySplashScreen(),
-          ),
-        );
-      } else {
-        Navigator.pop(context);
-        Fluttertoast.showToast(msg: "Invalid data.");
-      }
-    }
 
     validateForm() {
       Fluttertoast.showToast(msg: "All field must be filled.");
@@ -122,7 +84,10 @@ class LoginFormBody extends StatelessWidget {
                           press: () {
                             if ((_emailInput.isNotEmpty) &&
                                 (_passwordInput.isNotEmpty)) {
-                              loginTechNow();
+                              loginTechNow(
+                                  passwordInput: _passwordInput,
+                                  emailInput: _emailInput,
+                                  context: context);
                             } else {
                               validateForm();
                             }

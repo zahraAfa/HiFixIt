@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/controllers/global.dart';
-import 'package:hifixit/app/modules/splashScreen/splash_screen.dart';
+import 'package:hifixit/app/services/global.dart';
+import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_list_with_icon.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -20,8 +20,10 @@ class MenuDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 UserAccountsDrawerHeader(
-                  accountEmail: const Text('email@gmail.com'),
-                  accountName: const Text('Name'),
+                  accountEmail: Text(
+                      custModelCurrentInfo!.custEmail ?? "default@mail.com"),
+                  accountName:
+                      Text(custModelCurrentInfo!.custFName ?? "Default Name"),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
@@ -42,6 +44,36 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                MenuListWithIcon(
+                  icon: Icons.home,
+                  title: 'Home',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const MySplashScreen()));
+                  },
+                ),
+                MenuListWithIcon(
+                  icon: Icons.calendar_month,
+                  title: 'Schedule',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const MySplashScreen()));
+                  },
+                ),
+                MenuListWithIcon(
+                  icon: Icons.history,
+                  title: 'History',
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const MySplashScreen()));
+                  },
                 ),
               ],
             ),
