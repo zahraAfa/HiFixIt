@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/controllers/assistant_method.dart';
-import 'package:hifixit/app/modules/customer/modules/history/views/history_tab.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hifixit/app/modules/customer/modules/home/views/home_tab.dart';
-import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
 
 class MainScreenCust extends StatefulWidget {
@@ -15,23 +13,23 @@ class MainScreenCust extends StatefulWidget {
 class _MainScreenCustState extends State<MainScreenCust>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  TabController? tabController;
-  int selectedIndex = 0;
+  // TabController? tabController;
+  // int selectedIndex = 0;
 
-  onItemClicked(int index) {
-    setState(() {
-      selectedIndex = index;
-      tabController!.index = selectedIndex;
-    });
-  }
+  // onItemClicked(int index) {
+  //   setState(() {
+  //     selectedIndex = index;
+  //     // tabController!.index = selectedIndex;
+  //   });
+  // }
 
-  @override
-  void initState() {
-    super.initState();
+  // @override
+  // void initState() {
+  //   super.initState();
 
-    tabController = TabController(length: 3, vsync: this);
-    AssistantMethod.readCurrentOnlineCustInfo();
-  }
+  //   tabController = TabController(length: 3, vsync: this);
+  //   AssistantMethod.readCurrentOnlineCustInfo();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -55,40 +53,26 @@ class _MainScreenCustState extends State<MainScreenCust>
             ),
           ),
         ),
+        title: Row(
+          children: const [
+            Icon(
+              Icons.add_location_alt,
+              color: Color(0xFFEF8A56),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            Text(
+              "Current Location",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 12,
+              ),
+            )
+          ],
+        ),
       ),
-      body: TabBarView(
-        controller: tabController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: const [
-          HomeTabPage(),
-          HistoryTabPage(),
-          ScheduleTabPage(),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: "History",
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month),
-            label: "Schedule",
-          ),
-        ],
-        unselectedItemColor: const Color(0xFFBF84B1),
-        selectedItemColor: const Color(0xFF7B4067),
-        backgroundColor: Colors.white,
-        type: BottomNavigationBarType.fixed,
-        selectedLabelStyle: const TextStyle(fontSize: 14),
-        showSelectedLabels: true,
-        currentIndex: selectedIndex,
-        onTap: onItemClicked,
-      ),
+      body: const HomeTabPage(),
     );
   }
 }
