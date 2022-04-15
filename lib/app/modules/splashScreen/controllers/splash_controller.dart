@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/controllers/assistant_method.dart';
 import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
@@ -16,32 +18,33 @@ startTimer(context) {
   Timer(const Duration(seconds: 1), () async {
     if (await fAuth.currentUser != null) {
       currentFirebaseUser = fAuth.currentUser;
-      DatabaseReference custRef =
-          FirebaseDatabase.instance.ref().child("Customer");
 
-      custRef.child(currentFirebaseUser!.uid).once().then((custKey) {
-        final snap = custKey.snapshot;
-
-        if (snap.value != null) {
-          //if customer
-          print("This is customer");
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => MainScreenCust()));
-        } else {
-          //if tech
-          print("This is technician");
-          Navigator.push(
-              context, MaterialPageRoute(builder: (c) => MainScreenTech()));
-        }
-      });
+      if (sharedPreferences!.getString("type") != "tech") {
+        // print(sharedPreferences!.getString("type"));
+        // print(sharedPreferences!.getString("name"));
+        // print(sharedPreferences!.getString("email"));
+        //if customer
+        print("This is customer");
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (c) => MainScreenCust()),
+            (Route<dynamic> route) => false);
+      } else {
+        //if tech
+        print("This is technician");
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (c) => MainScreenTech()),
+            (Route<dynamic> route) => false);
+      }
     } else {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
           context,
-          // MaterialPageRoute(builder: (c) => const LoginScreenTech()));
           MaterialPageRoute(
               builder: (c) => const WelcomingPage(
                     title: 'HiFixIt',
-                  )));
+                  )),
+          (Route<dynamic> route) => false);
     }
   });
 }

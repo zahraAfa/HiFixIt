@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/views/category_info_screen.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 saveTechInfoNow(
     {context,
@@ -21,29 +22,42 @@ saveTechInfoNow(
           message: "Processing, Please wait...",
         );
       });
-  final User? firebaseUser = (await fAuth
-          .createUserWithEmailAndPassword(
+
+  User? firebaseUser;
+  await fAuth
+      .createUserWithEmailAndPassword(
     email: emailInput.trim(),
     password: passwordInput.trim(),
   )
-          .catchError((msg) {
+      .then((auth) {
+    firebaseUser = auth.user;
+  }).catchError((msg) {
     Navigator.pop(context);
     Fluttertoast.showToast(msg: "Error: " + msg.toString());
-  }))
-      .user;
+  });
 
   if (firebaseUser != null) {
-    Map techMap = {
-      "techId": firebaseUser.uid,
+    FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(firebaseUser!.uid)
+        .set({
+      "techId": firebaseUser!.uid,
       "techFName": fNameInput.trim(),
       "techLName": lNameInput.trim(),
       "techEmail": emailInput.trim(),
       "techPhone": phoneInput.trim(),
-    };
+    });
 
-    DatabaseReference techRef =
-        FirebaseDatabase.instance.ref().child("Technician");
-    techRef.child(firebaseUser.uid).set(techMap);
+    // Save locally
+    sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences!.setString("uid", firebaseUser!.uid);
+    await sharedPreferences!
+        .setString("name", fNameInput.trim() + " " + lNameInput.trim());
+    await sharedPreferences!.setString("fname", fNameInput.trim());
+    await sharedPreferences!.setString("lname", lNameInput.trim());
+    await sharedPreferences!.setString("phone", phoneInput.trim());
+    await sharedPreferences!.setString("email", firebaseUser!.email.toString());
+    await sharedPreferences!.setString("type", "tech");
   } else {
     Fluttertoast.showToast(msg: "Account has not been created.");
   }

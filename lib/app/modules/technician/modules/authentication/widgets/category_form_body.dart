@@ -1,9 +1,12 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CategoryFormBody extends StatefulWidget {
   const CategoryFormBody({Key? key}) : super(key: key);
@@ -16,16 +19,31 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
 
+  // XFile? imageXFile;
+  // final ImagePicker _picker = ImagePicker();
+
+  // Future<void> _getImage() async {
+  //   imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (imageXFile != null) {
+  //     print(imageXFile!.name);
+  //   } else {
+  //     print(imageXFile);
+  //   }
+
+  //   // setState(() {
+  //   //   imageXFile;
+  //   // });
+  // }
+
   saveCategoryInfo() {
-    Map techCategoryMap = {
+    Map<String, dynamic> techCategoryMap = {
       "category": selectedCategoryType,
     };
-    DatabaseReference techRef =
-        FirebaseDatabase.instance.ref().child("Technician");
-    techRef
-        .child(currentFirebaseUser!.uid)
-        .child("TechCategory")
-        .set(techCategoryMap);
+
+    FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(currentFirebaseUser!.uid)
+        .update(techCategoryMap);
 
     Fluttertoast.showToast(msg: "Welcome to HiFixIt");
     Navigator.push(
@@ -60,19 +78,50 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Select Category',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          color: Color(0xFF7B4067),
-                          fontWeight: FontWeight.w600,
-                        ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     _getImage();
+                      //   },
+                      //   child: CircleAvatar(
+                      //     radius: MediaQuery.of(context).size.width * 0.20,
+                      //     backgroundColor: Colors.white,
+                      //     backgroundImage: imageXFile == null
+                      //         ? null
+                      //         : FileImage(File(imageXFile!.path)),
+                      //     child: imageXFile == null
+                      //         ? Icon(
+                      //             Icons.add_photo_alternate_outlined,
+                      //             size:
+                      //                 MediaQuery.of(context).size.width * 0.20,
+                      //             color: Color(0xFFBF84B1),
+                      //           )
+                      //         : null,
+                      //   ),
+                      // ),
+                      // const Text(
+                      //   'Select Category',
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     fontSize: 20.0,
+                      //     color: Color(0xFF7B4067),
+                      //     fontWeight: FontWeight.w600,
+                      //   ),
+                      // ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       DropdownButton(
+                        alignment: AlignmentDirectional.center,
+                        icon: const Icon(Icons.arrow_drop_down),
+                        iconSize: 42,
+                        underline: SizedBox(),
                         items: categoryType.map((category) {
                           return DropdownMenuItem(
-                            child: Text(category),
+                            child: Text(
+                              category,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 15),
+                            ),
                             value: category,
                           );
                         }).toList(),
@@ -100,7 +149,7 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                               saveCategoryInfo();
                             } else {
                               Fluttertoast.showToast(
-                                  msg: "Please choose your category.");
+                                  msg: "Please choose your category");
                             }
                           },
                         ),

@@ -105,7 +105,7 @@ class SignupFormBody extends StatelessWidget {
                         },
                       ),
                       SizedBox(
-                        height: 35,
+                        height: 55,
                         child: LogRegSubmitBtn(
                           label: pageType == 'Sign up' ? 'Next' : 'Sign up',
                           press: () {

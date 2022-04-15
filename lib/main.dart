@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/route_generator.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/widgets/color_pallete.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
   const String appTitle = 'HiFixIt';
   WidgetsFlutterBinding.ensureInitialized();
+
+  sharedPreferences = await SharedPreferences.getInstance();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

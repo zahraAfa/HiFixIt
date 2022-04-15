@@ -58,13 +58,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
-            onMapCreated: (GoogleMapController controller) {
+            onMapCreated: (GoogleMapController controller) async {
               _gMapController.complete(controller);
               gmapController(controller);
+              _currLoc = await locateCustPosition();
 
-              setState(() async {
+              setState(() {
                 _bottomPaddingOfMap = 200;
-                _currLoc = await locateCustPosition();
               });
             },
           ),
