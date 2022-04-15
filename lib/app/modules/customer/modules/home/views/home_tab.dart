@@ -20,6 +20,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+  String _currLoc = '';
 
   double searchLocationContainerHeight = 220;
 
@@ -61,11 +62,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
               _gMapController.complete(controller);
               gmapController(controller);
 
-              setState(() {
+              setState(() async {
                 _bottomPaddingOfMap = 200;
+                _currLoc = await locateCustPosition();
               });
-
-              locateCustPosition();
             },
           ),
           Positioned(

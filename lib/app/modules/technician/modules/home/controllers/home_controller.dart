@@ -2,10 +2,12 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-Position? custCurrentPosition;
+class TechHomeController {}
+
+Position? techCurrentPosition;
 var geoLocator = Geolocator();
 List<Placemark>? placeMarks;
-String custCompleteAddress = '';
+String techCompleteAddress = '';
 
 GoogleMapController? newGoogleMapController;
 
@@ -40,18 +42,19 @@ Future<Position> _determinePosition() async {
       desiredAccuracy: LocationAccuracy.high);
 }
 
-locateCustPosition() async {
+locateTechPosition() async {
   Position currPosition = await _determinePosition();
-  custCurrentPosition = currPosition;
+  techCurrentPosition = currPosition;
 
   LatLng latLngPosition =
-      LatLng(custCurrentPosition!.latitude, custCurrentPosition!.longitude);
+      LatLng(techCurrentPosition!.latitude, techCurrentPosition!.longitude);
 
 // To get the address
-  placeMarks = await placemarkFromCoordinates(
-      custCurrentPosition!.latitude, custCurrentPosition!.longitude);
 
-  String custCompleteAddress =
+  placeMarks = await placemarkFromCoordinates(
+      techCurrentPosition!.latitude, techCurrentPosition!.longitude);
+
+  String techCompleteAddress =
       '${placeMarks![0].street}, ${placeMarks![0].subLocality} ${placeMarks![0].locality}, ${placeMarks![0].administrativeArea} ${placeMarks![0].postalCode}, ${placeMarks![0].country}';
 
   CameraPosition cameraPosition =
@@ -60,5 +63,5 @@ locateCustPosition() async {
   newGoogleMapController!
       .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-  return custCompleteAddress;
+  return techCompleteAddress;
 }

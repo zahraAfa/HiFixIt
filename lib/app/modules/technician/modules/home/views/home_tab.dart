@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hifixit/app/modules/technician/modules/home/controllers/home_controller.dart';
+import 'package:hifixit/app/widgets/color_pallete.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
@@ -18,6 +20,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+  String _currLoc = '';
 
   List<String> techStatus = ["Available", "Offline"];
   String? selectedTechStatus;
@@ -38,23 +41,33 @@ class _HomeTabPageState extends State<HomeTabPage> {
               initialCameraPosition: _kGooglePlex,
               mapType: MapType.normal,
               myLocationButtonEnabled: true,
+              myLocationEnabled: true,
+              zoomGesturesEnabled: true,
+              zoomControlsEnabled: true,
               onMapCreated: (GoogleMapController controller) {
                 _gMapController.complete(controller);
-                newGoogleMapController = controller;
+                gmapController(controller);
+                setState(() async {
+                  _currLoc = await locateTechPosition();
+                });
               },
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          const Text(
-            'Jl. Duku No. 43, Bogor Timur Bogor, West Java 16143, Indonesia?',
+          Text(
+            _currLoc,
             textAlign: TextAlign.center,
           ),
           const SizedBox(
             height: 10,
           ),
           ElevatedButton.icon(
+            style: ButtonStyle(
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Color(0xFFBF84B1)),
+            ),
             onPressed: () {},
             icon: const Icon(Icons.location_on),
             label: const Text('Change current location'),
