@@ -20,8 +20,12 @@ class MenuDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 UserAccountsDrawerHeader(
-                  accountEmail: const Text('email@gmail.com'),
-                  accountName: const Text('Name'),
+                  accountEmail: sharedPreferences!.getString("email")!.isEmpty
+                      ? Text("NoEmail")
+                      : Text(sharedPreferences!.getString("email")!),
+                  accountName: sharedPreferences!.getString("name")!.isEmpty
+                      ? Text("NoName")
+                      : Text(sharedPreferences!.getString("name")!),
                   decoration: const BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,

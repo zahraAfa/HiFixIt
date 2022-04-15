@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
@@ -19,27 +19,31 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
 
-  XFile? imageXFile;
-  final ImagePicker _picker = ImagePicker();
+  // XFile? imageXFile;
+  // final ImagePicker _picker = ImagePicker();
 
-  Future<void> _getImage() async {
-    imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _getImage() async {
+  //   imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+  //   if (imageXFile != null) {
+  //     print(imageXFile!.name);
+  //   } else {
+  //     print(imageXFile);
+  //   }
 
-    setState(() {
-      imageXFile;
-    });
-  }
+  //   // setState(() {
+  //   //   imageXFile;
+  //   // });
+  // }
 
   saveCategoryInfo() {
-    Map techCategoryMap = {
+    Map<String, dynamic> techCategoryMap = {
       "category": selectedCategoryType,
     };
-    DatabaseReference techRef =
-        FirebaseDatabase.instance.ref().child("Technician");
-    techRef
-        .child(currentFirebaseUser!.uid)
-        .child("TechCategory")
-        .set(techCategoryMap);
+
+    FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(currentFirebaseUser!.uid)
+        .update(techCategoryMap);
 
     Fluttertoast.showToast(msg: "Welcome to HiFixIt");
     Navigator.push(
@@ -74,26 +78,26 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      InkWell(
-                        onTap: () {
-                          _getImage();
-                        },
-                        child: CircleAvatar(
-                          radius: MediaQuery.of(context).size.width * 0.20,
-                          backgroundColor: Colors.white,
-                          backgroundImage: imageXFile == null
-                              ? null
-                              : FileImage(File(imageXFile!.path)),
-                          child: imageXFile == null
-                              ? Icon(
-                                  Icons.add_photo_alternate_outlined,
-                                  size:
-                                      MediaQuery.of(context).size.width * 0.20,
-                                  color: Color(0xFFBF84B1),
-                                )
-                              : null,
-                        ),
-                      ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     _getImage();
+                      //   },
+                      //   child: CircleAvatar(
+                      //     radius: MediaQuery.of(context).size.width * 0.20,
+                      //     backgroundColor: Colors.white,
+                      //     backgroundImage: imageXFile == null
+                      //         ? null
+                      //         : FileImage(File(imageXFile!.path)),
+                      //     child: imageXFile == null
+                      //         ? Icon(
+                      //             Icons.add_photo_alternate_outlined,
+                      //             size:
+                      //                 MediaQuery.of(context).size.width * 0.20,
+                      //             color: Color(0xFFBF84B1),
+                      //           )
+                      //         : null,
+                      //   ),
+                      // ),
                       // const Text(
                       //   'Select Category',
                       //   textAlign: TextAlign.center,
@@ -141,13 +145,11 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                         child: LogRegSubmitBtn(
                           label: 'Sign up',
                           press: () {
-                            if (selectedCategoryType != null &&
-                                (imageXFile == null)) {
+                            if (selectedCategoryType != null) {
                               saveCategoryInfo();
                             } else {
                               Fluttertoast.showToast(
-                                  msg:
-                                      "Please choose your category and add your photo.");
+                                  msg: "Please choose your category");
                             }
                           },
                         ),
