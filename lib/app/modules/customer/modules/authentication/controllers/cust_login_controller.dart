@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -27,19 +28,22 @@ loginCustNow({emailInput, passwordInput, context}) async {
       .user;
 
   if (firebaseUser != null) {
-    DatabaseReference custRef =
-        FirebaseDatabase.instance.ref().child("Customer");
-    custRef.child(firebaseUser.uid).once().then((custKey) {
-      final snap = custKey.snapshot;
-      if (snap.value != null) {
-        currentFirebaseUser = firebaseUser;
-        Fluttertoast.showToast(msg: "Login Successful.");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (c) => const MySplashScreen(),
-          ),
-        );
+    FirebaseFirestore.instance
+        .collection("Customer")
+        .doc(firebaseUser.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        readDataAndSetLocally(firebaseUser).then((value) {
+          currentFirebaseUser = firebaseUser;
+          Fluttertoast.showToast(msg: "Login Successful.");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) => const MySplashScreen(),
+            ),
+          );
+        });
       } else {
         Fluttertoast.showToast(msg: "No record exist with this email");
         fAuth.signOut();
@@ -55,4 +59,21 @@ loginCustNow({emailInput, passwordInput, context}) async {
     Navigator.pop(context);
     Fluttertoast.showToast(msg: "Invalid data.");
   }
+}
+
+Future readDataAndSetLocally(User currentUser) async {
+  await FirebaseFirestore.instance
+      .collection("Customer")
+      .doc(currentUser.uid)
+      .get()
+      .then((snapshot) async {
+    await sharedPreferences!.setString("uid", currentUser.uid);
+    await sharedPreferences!.setString("email", snapshot.data()!["custEmail"]);
+    await sharedPreferences!.setString("name",
+        snapshot.data()!["custFName"] + " " + snapshot.data()!["custLName"]);
+    await sharedPreferences!.setString("fname", snapshot.data()!["custFName"]);
+    await sharedPreferences!.setString("lname", snapshot.data()!["custLName"]);
+    await sharedPreferences!.setString("phone", snapshot.data()!["custPhone"]);
+    await sharedPreferences!.setString("type", "cust");
+  });
 }

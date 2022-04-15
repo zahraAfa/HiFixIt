@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -27,20 +28,22 @@ loginTechNow({emailInput, passwordInput, context}) async {
       .user;
 
   if (firebaseUser != null) {
-    DatabaseReference techRef =
-        FirebaseDatabase.instance.ref().child("Technician");
-    techRef.child(firebaseUser.uid).once().then((techKey) {
-      final snap = techKey.snapshot;
-
-      if (snap.value != null) {
-        currentFirebaseUser = firebaseUser;
-        Fluttertoast.showToast(msg: "Login Successful.");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (c) => const MySplashScreen(),
-          ),
-        );
+    FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(firebaseUser.uid)
+        .get()
+        .then((snapshot) async {
+      if (snapshot.exists) {
+        readDataAndSetLocally(firebaseUser).then((value) {
+          currentFirebaseUser = firebaseUser;
+          Fluttertoast.showToast(msg: "Login Successful.");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) => const MySplashScreen(),
+            ),
+          );
+        });
       } else {
         Fluttertoast.showToast(msg: "No record exist with this email");
         fAuth.signOut();
@@ -56,4 +59,21 @@ loginTechNow({emailInput, passwordInput, context}) async {
     Navigator.pop(context);
     Fluttertoast.showToast(msg: "Invalid data.");
   }
+}
+
+Future readDataAndSetLocally(User currentUser) async {
+  await FirebaseFirestore.instance
+      .collection("Technician")
+      .doc(currentUser.uid)
+      .get()
+      .then((snapshot) async {
+    await sharedPreferences!.setString("uid", currentUser.uid);
+    await sharedPreferences!.setString("email", snapshot.data()!["techEmail"]);
+    await sharedPreferences!.setString("name",
+        snapshot.data()!["techFName"] + " " + snapshot.data()!["techLName"]);
+    await sharedPreferences!.setString("fname", snapshot.data()!["techFName"]);
+    await sharedPreferences!.setString("lname", snapshot.data()!["techLName"]);
+    await sharedPreferences!.setString("phone", snapshot.data()!["techPhone"]);
+    await sharedPreferences!.setString("type", "tech");
+  });
 }

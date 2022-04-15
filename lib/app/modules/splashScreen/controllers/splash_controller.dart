@@ -19,36 +19,32 @@ startTimer(context) {
     if (await fAuth.currentUser != null) {
       currentFirebaseUser = fAuth.currentUser;
 
-      // final snap = FirebaseFirestore.instance
-      //     .collection("Customer")
-      //     .doc(currentFirebaseUser!.uid)
-      //     .get();
-      // // .then((snapshot) {
-      // // final snap = snapshot;
-      // print(snap.toString());
-
       if (sharedPreferences!.getString("type") != "tech") {
-        print(sharedPreferences!.getString("type"));
-        print(sharedPreferences!.getString("name"));
-        print(sharedPreferences!.getString("email"));
+        // print(sharedPreferences!.getString("type"));
+        // print(sharedPreferences!.getString("name"));
+        // print(sharedPreferences!.getString("email"));
         //if customer
         print("This is customer");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => MainScreenCust()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (c) => MainScreenCust()),
+            (Route<dynamic> route) => false);
       } else {
         //if tech
         print("This is technician");
-        Navigator.push(
-            context, MaterialPageRoute(builder: (c) => MainScreenTech()));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (c) => MainScreenTech()),
+            (Route<dynamic> route) => false);
       }
     } else {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
           context,
-          // MaterialPageRoute(builder: (c) => const LoginScreenTech()));
           MaterialPageRoute(
               builder: (c) => const WelcomingPage(
                     title: 'HiFixIt',
-                  )));
+                  )),
+          (Route<dynamic> route) => false);
     }
   });
 }
