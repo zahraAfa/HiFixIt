@@ -44,12 +44,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
               myLocationEnabled: true,
               zoomGesturesEnabled: true,
               zoomControlsEnabled: true,
-              onMapCreated: (GoogleMapController controller) {
+              onMapCreated: (GoogleMapController controller) async {
                 _gMapController.complete(controller);
                 gmapController(controller);
-                setState(() async {
-                  _currLoc = await locateTechPosition();
-                });
+                _currLoc = await locateTechPosition();
+                setState(() {});
               },
             ),
           ),
@@ -68,7 +67,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
               backgroundColor:
                   MaterialStateProperty.all<Color>(Color(0xFFBF84B1)),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              _currLoc = await locateTechPosition();
+            },
             icon: const Icon(Icons.location_on),
             label: const Text('Change current location'),
           ),
