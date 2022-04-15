@@ -53,6 +53,9 @@ saveTechInfoNow(
     await sharedPreferences!.setString("uid", firebaseUser!.uid);
     await sharedPreferences!
         .setString("name", fNameInput.trim() + " " + lNameInput.trim());
+    await sharedPreferences!.setString("fname", fNameInput.trim());
+    await sharedPreferences!.setString("lname", lNameInput.trim());
+    await sharedPreferences!.setString("phone", phoneInput.trim());
     await sharedPreferences!.setString("email", firebaseUser!.email.toString());
     await sharedPreferences!.setString("type", "tech");
   } else {

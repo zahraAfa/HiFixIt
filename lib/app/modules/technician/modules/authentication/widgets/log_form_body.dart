@@ -98,7 +98,7 @@ class LoginFormBody extends StatelessWidget {
                       // const Center(
                       //   child: Text('Forgot password ?'),
                       // ),
-                      const SizedBox(height: 50),
+                      // const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
                           btnTitle:
