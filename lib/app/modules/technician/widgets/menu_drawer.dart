@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/technician/modules/account/views/tech_account.dart';
+import 'package:hifixit/app/modules/technician/modules/mainScreens/main_screens_tech.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/technician/widgets/menu_list_with_icon.dart';
@@ -27,10 +28,10 @@ class MenuDrawer extends StatelessWidget {
                   },
                   child: UserAccountsDrawerHeader(
                     accountEmail: sharedPreferences!.getString("email")!.isEmpty
-                        ? Text("NoEmail")
+                        ? const Text("NoEmail")
                         : Text(sharedPreferences!.getString("email")!),
                     accountName: sharedPreferences!.getString("name")!.isEmpty
-                        ? Text("NoName")
+                        ? const Text("NoName")
                         : Text(sharedPreferences!.getString("name")!),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -53,6 +54,17 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                MenuListWithIcon(
+                  icon: Icons.home,
+                  title: 'Home',
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const MainScreenTech()),
+                        (Route<dynamic> route) => false);
+                  },
                 ),
               ],
             ),

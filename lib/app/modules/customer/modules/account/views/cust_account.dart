@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_edit_btn.dart';
 import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_input.dart';
+import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
 
 class CustAccount extends StatefulWidget {
   const CustAccount({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class CustAccount extends StatefulWidget {
 
 class _CustAccountState extends State<CustAccount> {
   final TextEditingController firstNameC = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _validate = false;
   @override
@@ -22,6 +24,8 @@ class _CustAccountState extends State<CustAccount> {
     final TextEditingController _categoryController = TextEditingController();
 
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const MenuDrawer(),
       backgroundColor: const Color.fromARGB(255, 229, 229, 229),
       appBar: AppBar(
         title: const Text("Account"),

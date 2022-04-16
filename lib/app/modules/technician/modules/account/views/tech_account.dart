@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/technician/modules/account/widgets/account_edit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/account/widgets/account_input.dart';
+import 'package:hifixit/app/modules/technician/widgets/menu_drawer.dart';
 
 class TechAccount extends StatefulWidget {
   const TechAccount({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class TechAccount extends StatefulWidget {
 }
 
 class _TechAccountState extends State<TechAccount> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController firstNameC = TextEditingController();
 
   bool _validate = false;
@@ -22,15 +24,23 @@ class _TechAccountState extends State<TechAccount> {
     final TextEditingController _categoryController = TextEditingController();
 
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const MenuDrawer(),
       backgroundColor: const Color.fromARGB(255, 229, 229, 229),
       appBar: AppBar(
         title: const Text("Account"),
+        leading: IconButton(
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           width: MediaQuery.of(context).size.width,
-          // color: Color.fromARGB(255, 218, 218, 218),
           child: Column(
             children: [
               InkWell(
