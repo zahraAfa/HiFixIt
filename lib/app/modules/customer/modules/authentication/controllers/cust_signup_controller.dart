@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/views/profilepic_screen.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/widgets/profilepic_form_body.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
@@ -66,7 +68,7 @@ saveCustInfoNow(
   Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (c) => const MySplashScreen(),
+      builder: (c) => const ProfilePicScreen(),
     ),
   );
 }
