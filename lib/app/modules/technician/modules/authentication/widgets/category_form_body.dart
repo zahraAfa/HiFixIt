@@ -27,8 +27,10 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
 
   Future<void> _getImage() async {
     print("pickup an image");
+    print("before adding image");
     imageXFile = await _picker.pickImage(source: ImageSource.gallery);
     if (imageXFile != null) {
+      print("Image selected");
       setState(() {
         imageXFile;
       });
