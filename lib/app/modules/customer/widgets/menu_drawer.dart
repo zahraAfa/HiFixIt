@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/account/views/cust_account.dart';
+import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_list_with_icon.dart';
@@ -19,31 +21,41 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                UserAccountsDrawerHeader(
-                  accountEmail: sharedPreferences!.getString("email")!.isEmpty
-                      ? Text("NoEmail")
-                      : Text(sharedPreferences!.getString("email")!),
-                  accountName: sharedPreferences!.getString("name")!.isEmpty
-                      ? Text("NoName")
-                      : Text(sharedPreferences!.getString("name")!),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF3D1B23),
-                        Color(0xFF682C76),
-                      ],
-                    ),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1523730205978-59fd1b2965e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGVmYXVsdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                        fit: BoxFit.cover,
-                        width: 90,
-                        height: 90,
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => const CustAccount()));
+                  },
+                  child: UserAccountsDrawerHeader(
+                    accountEmail: sharedPreferences!.getString("email")!.isEmpty
+                        ? Text("NoEmail")
+                        : Text(sharedPreferences!.getString("email")!),
+                    accountName: sharedPreferences!.getString("name")!.isEmpty
+                        ? Text("NoName")
+                        : Text(sharedPreferences!.getString("name")!),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF3D1B23),
+                          Color(0xFF682C76),
+                        ],
                       ),
+                    ),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundColor: Colors.white,
+                      backgroundImage: sharedPreferences!.getString("pic") ==
+                              null
+                          ? null
+                          : NetworkImage(sharedPreferences!.getString("pic")!),
+                      child: sharedPreferences!.getString("pic") != null
+                          ? null
+                          : Icon(
+                              Icons.person,
+                              size: MediaQuery.of(context).size.width * 0.10,
+                              color: const Color(0xFFBF84B1),
+                            ),
                     ),
                   ),
                 ),
@@ -51,10 +63,11 @@ class MenuDrawer extends StatelessWidget {
                   icon: Icons.home,
                   title: 'Home',
                   onTap: () {
-                    Navigator.push(
+                    Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (c) => const MySplashScreen()));
+                            builder: (c) => const MainScreenCust()),
+                        (Route<dynamic> route) => false);
                   },
                 ),
                 MenuListWithIcon(

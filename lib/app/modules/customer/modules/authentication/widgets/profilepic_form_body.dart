@@ -36,7 +36,8 @@ class _ProfPicFormBodyState extends State<ProfPicFormBody> {
   saveNewInfo() async {
     if (imageXFile != null) {
       // print(imageXFile!.name);
-      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      // String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      String fileName = currentFirebaseUser!.uid;
       fStorage.Reference reference = fStorage.FirebaseStorage.instance
           .ref()
           .child("Customer")
