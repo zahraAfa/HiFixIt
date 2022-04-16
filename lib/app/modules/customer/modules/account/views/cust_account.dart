@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:hifixit/app/modules/technician/modules/account/widgets/account_edit_btn.dart';
-import 'package:hifixit/app/modules/technician/modules/account/widgets/account_input.dart';
+import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_edit_btn.dart';
+import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_input.dart';
 
-class TechAccount extends StatefulWidget {
-  const TechAccount({Key? key}) : super(key: key);
+class CustAccount extends StatefulWidget {
+  const CustAccount({Key? key}) : super(key: key);
 
   @override
-  State<TechAccount> createState() => _TechAccountState();
+  State<CustAccount> createState() => _CustAccountState();
 }
 
-class _TechAccountState extends State<TechAccount> {
+class _CustAccountState extends State<CustAccount> {
   final TextEditingController firstNameC = TextEditingController();
 
   bool _validate = false;
@@ -60,7 +60,7 @@ class _TechAccountState extends State<TechAccount> {
                         style: TextStyle(color: Colors.grey.shade600),
                       ),
                     ),
-                    AccountInputTech(
+                    AccountInputCust(
                       onChanged: (value) {},
                       hintTitle: 'First Name',
                       keyboardType: TextInputType.text,
@@ -73,7 +73,7 @@ class _TechAccountState extends State<TechAccount> {
                         style: TextStyle(color: Colors.grey.shade600),
                       ),
                     ),
-                    AccountInputTech(
+                    AccountInputCust(
                       onChanged: (value) {},
                       hintTitle: 'Last Name',
                       keyboardType: TextInputType.text,
@@ -86,7 +86,7 @@ class _TechAccountState extends State<TechAccount> {
                         style: TextStyle(color: Colors.grey.shade600),
                       ),
                     ),
-                    AccountInputTech(
+                    AccountInputCust(
                       onChanged: (value) {},
                       hintTitle: 'Email',
                       keyboardType: TextInputType.text,
@@ -100,24 +100,10 @@ class _TechAccountState extends State<TechAccount> {
                         style: TextStyle(color: Colors.grey.shade600),
                       ),
                     ),
-                    AccountInputTech(
+                    AccountInputCust(
                       onChanged: (value) {},
                       hintTitle: 'Phone No.',
                       keyboardType: TextInputType.text,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "Category",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: 'Category',
-                      keyboardType: TextInputType.text,
-                      enabled: false,
                     ),
                   ],
                 ),
@@ -135,7 +121,7 @@ class _TechAccountState extends State<TechAccount> {
                     //     (_lNameInput.isNotEmpty) &&
                     //     (_phoneInput.isNotEmpty) &&
                     //     (_passwordInput.isNotEmpty)) {
-                    //   saveTechInfoNow(
+                    //   saveCustInfoNow(
                     //       context: context,
                     //       emailInput: _emailInput,
                     //       passwordInput: _passwordInput,
