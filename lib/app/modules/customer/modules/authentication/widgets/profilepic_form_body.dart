@@ -3,27 +3,24 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_submit_btn.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_reg_submit_btn.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as fStorage;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CategoryFormBody extends StatefulWidget {
-  const CategoryFormBody({Key? key}) : super(key: key);
+class ProfPicFormBody extends StatefulWidget {
+  const ProfPicFormBody({Key? key}) : super(key: key);
 
   @override
-  State<CategoryFormBody> createState() => _CategoryFormBodyState();
+  State<ProfPicFormBody> createState() => _ProfPicFormBodyState();
 }
 
-class _CategoryFormBodyState extends State<CategoryFormBody> {
-  List<String> categoryType = ["Washing Machine", "Air Conditioner"];
-  String? selectedCategoryType;
-
+class _ProfPicFormBodyState extends State<ProfPicFormBody> {
   XFile? imageXFile;
   final ImagePicker _picker = ImagePicker();
-  String techImageUrl = '';
+  String custImageUrl = '';
 
   Future<void> _getImage() async {
     imageXFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -36,13 +33,13 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
     }
   }
 
-  saveCategoryInfo() async {
+  saveNewInfo() async {
     if (imageXFile != null) {
       // print(imageXFile!.name);
       String fileName = DateTime.now().millisecondsSinceEpoch.toString();
       fStorage.Reference reference = fStorage.FirebaseStorage.instance
           .ref()
-          .child("Technician")
+          .child("Customer")
           .child("profilePics")
           .child(fileName);
 
@@ -51,28 +48,23 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
 
       fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
       await taskSnapshot.ref.getDownloadURL().then((url) {
-        techImageUrl = url;
+        custImageUrl = url;
       });
     } else {
       print("No image selected");
     }
 
-    Map<String, dynamic> techCategoryMap = {
-      "techCategory": selectedCategoryType,
-      "techPicture": techImageUrl,
-      "rating": 0.0,
+    Map<String, dynamic> custNewMap = {
+      "custPicture": custImageUrl,
     };
 
     FirebaseFirestore.instance
-        .collection("Technician")
+        .collection("Customer")
         .doc(currentFirebaseUser!.uid)
-        .update(techCategoryMap);
+        .update(custNewMap);
 
     sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences!
-        .setString("category", selectedCategoryType.toString());
-    await sharedPreferences!.setString("pic", techImageUrl);
-    await sharedPreferences!.setDouble("rating", 0.0);
+    await sharedPreferences!.setString("pic", custImageUrl);
 
     Fluttertoast.showToast(msg: "Welcome to HiFixIt");
     Navigator.push(
@@ -127,59 +119,13 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                               : null,
                         ),
                       ),
-                      // const Text(
-                      //   'Select Category',
-                      //   textAlign: TextAlign.center,
-                      //   style: TextStyle(
-                      //     fontSize: 20.0,
-                      //     color: Color(0xFF7B4067),
-                      //     fontWeight: FontWeight.w600,
-                      //   ),
-                      // ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      DropdownButton(
-                        alignment: AlignmentDirectional.center,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 42,
-                        underline: SizedBox(),
-                        items: categoryType.map((category) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              category,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            value: category,
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedCategoryType = newValue.toString();
-                          });
-                        },
-                        value: selectedCategoryType,
-                        hint: const Text(
-                          "Please Choose Category",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.grey,
-                          ),
-                        ),
-                      ),
                       const SizedBox(height: 25),
                       SizedBox(
                         height: 55,
                         child: LogRegSubmitBtn(
                           label: 'Sign up',
                           press: () {
-                            if (selectedCategoryType != null) {
-                              saveCategoryInfo();
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: "Please choose your category.");
-                            }
+                            saveNewInfo();
                           },
                         ),
                       ),
