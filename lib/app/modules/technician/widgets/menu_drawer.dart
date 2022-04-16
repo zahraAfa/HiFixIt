@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/technician/modules/account/views/tech_account.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/technician/widgets/menu_list_with_icon.dart';
@@ -19,30 +20,36 @@ class MenuDrawer extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                UserAccountsDrawerHeader(
-                  accountEmail: sharedPreferences!.getString("email")!.isEmpty
-                      ? Text("NoEmail")
-                      : Text(sharedPreferences!.getString("email")!),
-                  accountName: sharedPreferences!.getString("name")!.isEmpty
-                      ? Text("NoName")
-                      : Text(sharedPreferences!.getString("name")!),
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color(0xFF3D1B23),
-                        Color(0xFF682C76),
-                      ],
+                InkWell(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (c) => const TechAccount()));
+                  },
+                  child: UserAccountsDrawerHeader(
+                    accountEmail: sharedPreferences!.getString("email")!.isEmpty
+                        ? Text("NoEmail")
+                        : Text(sharedPreferences!.getString("email")!),
+                    accountName: sharedPreferences!.getString("name")!.isEmpty
+                        ? Text("NoName")
+                        : Text(sharedPreferences!.getString("name")!),
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF3D1B23),
+                          Color(0xFF682C76),
+                        ],
+                      ),
                     ),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    child: ClipOval(
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1523730205978-59fd1b2965e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGVmYXVsdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                        fit: BoxFit.cover,
-                        width: 90,
-                        height: 90,
+                    currentAccountPicture: CircleAvatar(
+                      child: ClipOval(
+                        child: Image.network(
+                          'https://images.unsplash.com/photo-1523730205978-59fd1b2965e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGVmYXVsdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
+                          fit: BoxFit.cover,
+                          width: 90,
+                          height: 90,
+                        ),
                       ),
                     ),
                   ),
