@@ -7,6 +7,8 @@ import 'package:hifixit/app/modules/technician/modules/authentication/widgets/lo
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as fStorage;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryFormBody extends StatefulWidget {
   const CategoryFormBody({Key? key}) : super(key: key);
@@ -19,31 +21,58 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
 
-  // XFile? imageXFile;
-  // final ImagePicker _picker = ImagePicker();
+  XFile? imageXFile;
+  final ImagePicker _picker = ImagePicker();
+  String techImageUrl = '';
 
-  // Future<void> _getImage() async {
-  //   imageXFile = await _picker.pickImage(source: ImageSource.gallery);
-  //   if (imageXFile != null) {
-  //     print(imageXFile!.name);
-  //   } else {
-  //     print(imageXFile);
-  //   }
+  Future<void> _getImage() async {
+    print("pickup an image");
+    imageXFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (imageXFile != null) {
+      setState(() {
+        imageXFile;
+      });
+    } else {
+      print("No image selected");
+    }
+  }
 
-  //   // setState(() {
-  //   //   imageXFile;
-  //   // });
-  // }
+  saveCategoryInfo() async {
+    if (imageXFile != null) {
+      print(imageXFile!.name);
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      fStorage.Reference reference = fStorage.FirebaseStorage.instance
+          .ref()
+          .child("Technician")
+          .child(fileName);
 
-  saveCategoryInfo() {
+      fStorage.UploadTask uploadTask =
+          reference.putFile(File(imageXFile!.path));
+
+      fStorage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() {});
+      await taskSnapshot.ref.getDownloadURL().then((url) {
+        techImageUrl = url;
+      });
+    } else {
+      print("No image selected");
+    }
+
     Map<String, dynamic> techCategoryMap = {
-      "category": selectedCategoryType,
+      "techCategory": selectedCategoryType,
+      "techPicture": techImageUrl,
+      "rating": 0.0,
     };
 
     FirebaseFirestore.instance
         .collection("Technician")
         .doc(currentFirebaseUser!.uid)
         .update(techCategoryMap);
+
+    sharedPreferences = await SharedPreferences.getInstance();
+    await sharedPreferences!
+        .setString("category", selectedCategoryType.toString());
+    await sharedPreferences!.setString("pic", techImageUrl);
+    await sharedPreferences!.setDouble("rating", 0.0);
 
     Fluttertoast.showToast(msg: "Welcome to HiFixIt");
     Navigator.push(
@@ -78,26 +107,26 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      // InkWell(
-                      //   onTap: () {
-                      //     _getImage();
-                      //   },
-                      //   child: CircleAvatar(
-                      //     radius: MediaQuery.of(context).size.width * 0.20,
-                      //     backgroundColor: Colors.white,
-                      //     backgroundImage: imageXFile == null
-                      //         ? null
-                      //         : FileImage(File(imageXFile!.path)),
-                      //     child: imageXFile == null
-                      //         ? Icon(
-                      //             Icons.add_photo_alternate_outlined,
-                      //             size:
-                      //                 MediaQuery.of(context).size.width * 0.20,
-                      //             color: Color(0xFFBF84B1),
-                      //           )
-                      //         : null,
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {
+                          _getImage();
+                        },
+                        child: CircleAvatar(
+                          radius: MediaQuery.of(context).size.width * 0.20,
+                          backgroundColor: Colors.white,
+                          backgroundImage: imageXFile == null
+                              ? null
+                              : FileImage(File(imageXFile!.path)),
+                          child: imageXFile == null
+                              ? Icon(
+                                  Icons.add_photo_alternate_outlined,
+                                  size:
+                                      MediaQuery.of(context).size.width * 0.20,
+                                  color: Color(0xFFBF84B1),
+                                )
+                              : null,
+                        ),
+                      ),
                       // const Text(
                       //   'Select Category',
                       //   textAlign: TextAlign.center,
@@ -149,7 +178,7 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                               saveCategoryInfo();
                             } else {
                               Fluttertoast.showToast(
-                                  msg: "Please choose your category");
+                                  msg: "Please choose your category.");
                             }
                           },
                         ),
