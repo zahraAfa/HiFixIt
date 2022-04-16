@@ -6,7 +6,7 @@ import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_
 import 'package:hifixit/app/modules/customer/modules/authentication/widgets/log_reg_switch_btn.dart';
 import 'user_input_log_reg.dart';
 
-class LoginFormBody extends StatelessWidget {
+class LoginFormBody extends StatefulWidget {
   const LoginFormBody({
     Key? key,
     required this.pageType,
@@ -17,12 +17,21 @@ class LoginFormBody extends StatelessWidget {
   final String message;
 
   @override
+  State<LoginFormBody> createState() => _LoginFormBodyState();
+}
+
+class _LoginFormBodyState extends State<LoginFormBody> {
+  @override
   Widget build(BuildContext context) {
     String _emailInput = "";
     String _passwordInput = "";
 
     validateForm() {
       Fluttertoast.showToast(msg: "All field must be filled.");
+      setState(() {
+        _emailInput = _emailInput;
+        _passwordInput = _passwordInput;
+      });
     }
 
     return DraggableScrollableSheet(
@@ -52,7 +61,7 @@ class LoginFormBody extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        pageType,
+                        widget.pageType,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 20.0,
@@ -80,7 +89,9 @@ class LoginFormBody extends StatelessWidget {
                       SizedBox(
                         height: 55,
                         child: LogRegSubmitBtn(
-                          label: pageType == 'Sign in' ? 'Sign in' : 'Sign up',
+                          label: widget.pageType == 'Sign in'
+                              ? 'Sign in'
+                              : 'Sign up',
                           press: () {
                             if ((_emailInput.isNotEmpty) &&
                                 (_passwordInput.isNotEmpty)) {
@@ -101,9 +112,10 @@ class LoginFormBody extends StatelessWidget {
                       // const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
-                          btnTitle:
-                              pageType == 'Sign in' ? 'Sign up' : 'Sign in',
-                          message: message,
+                          btnTitle: widget.pageType == 'Sign in'
+                              ? 'Sign up'
+                              : 'Sign in',
+                          message: widget.message,
                           nav: () {
                             Navigator.pushReplacement(
                                 context,

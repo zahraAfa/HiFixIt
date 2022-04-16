@@ -6,7 +6,7 @@ import 'package:hifixit/app/modules/technician/modules/authentication/widgets/lo
 import 'package:hifixit/app/modules/technician/modules/authentication/widgets/log_reg_switch_btn.dart';
 import 'user_input_log_reg.dart';
 
-class SignupFormBody extends StatelessWidget {
+class SignupFormBody extends StatefulWidget {
   const SignupFormBody({
     Key? key,
     required this.pageType,
@@ -17,6 +17,11 @@ class SignupFormBody extends StatelessWidget {
   final String message;
 
   @override
+  State<SignupFormBody> createState() => _SignupFormBodyState();
+}
+
+class _SignupFormBodyState extends State<SignupFormBody> {
+  @override
   Widget build(BuildContext context) {
     String _emailInput = "";
     String _passwordInput = "";
@@ -26,6 +31,13 @@ class SignupFormBody extends StatelessWidget {
 
     validateForm() {
       Fluttertoast.showToast(msg: "All field must be filled.");
+      setState(() {
+        _emailInput = _emailInput;
+        _passwordInput = _passwordInput;
+        _fNameInput = _fNameInput;
+        _lNameInput = _lNameInput;
+        _phoneInput = _phoneInput;
+      });
     }
 
     return DraggableScrollableSheet(
@@ -55,7 +67,7 @@ class SignupFormBody extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Text(
-                        pageType,
+                        widget.pageType,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
                           fontSize: 20.0,
@@ -107,7 +119,8 @@ class SignupFormBody extends StatelessWidget {
                       SizedBox(
                         height: 55,
                         child: LogRegSubmitBtn(
-                          label: pageType == 'Sign up' ? 'Next' : 'Sign up',
+                          label:
+                              widget.pageType == 'Sign up' ? 'Next' : 'Sign up',
                           press: () {
                             if ((_emailInput.isNotEmpty) &&
                                 (_fNameInput.isNotEmpty) &&
@@ -134,9 +147,10 @@ class SignupFormBody extends StatelessWidget {
                       // const SizedBox(height: 50),
                       const Divider(thickness: 0, color: Colors.white),
                       LogRegSwitchBtn(
-                          btnTitle:
-                              pageType == 'Sign in' ? 'Sign up' : 'Sign in',
-                          message: message,
+                          btnTitle: widget.pageType == 'Sign in'
+                              ? 'Sign up'
+                              : 'Sign in',
+                          message: widget.message,
                           nav: () {
                             Navigator.pushReplacement(
                                 context,
