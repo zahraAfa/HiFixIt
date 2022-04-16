@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_edit_btn.dart';
 import 'package:hifixit/app/modules/Customer/modules/account/widgets/account_input.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
+import 'package:hifixit/app/services/global.dart';
 
 class CustAccount extends StatefulWidget {
   const CustAccount({Key? key}) : super(key: key);
@@ -13,16 +17,23 @@ class CustAccount extends StatefulWidget {
 class _CustAccountState extends State<CustAccount> {
   final TextEditingController firstNameC = TextEditingController();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  DocumentSnapshot? _userInfo;
 
-  bool _validate = false;
+  getCustData() async {
+    _userInfo = await FirebaseFirestore.instance
+        .collection("Customer")
+        .doc(currentFirebaseUser!.uid)
+        .get();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getCustData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _fNameController = TextEditingController();
-    final TextEditingController _lNameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
-    final TextEditingController _categoryController = TextEditingController();
-
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MenuDrawer(),
@@ -34,19 +45,22 @@ class _CustAccountState extends State<CustAccount> {
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           width: MediaQuery.of(context).size.width,
-          // color: Color.fromARGB(255, 218, 218, 218),
           child: Column(
             children: [
               InkWell(
                 child: CircleAvatar(
                   radius: MediaQuery.of(context).size.width * 0.20,
                   backgroundColor: Colors.white,
-                  backgroundImage: null,
-                  child: Icon(
-                    Icons.person,
-                    size: MediaQuery.of(context).size.width * 0.20,
-                    color: const Color(0xFFBF84B1),
-                  ),
+                  backgroundImage: _userInfo!["custPicture"] == null
+                      ? null
+                      : NetworkImage(_userInfo!["custPicture"]),
+                  child: _userInfo!["custPicture"] != null
+                      ? null
+                      : Icon(
+                          Icons.person,
+                          size: MediaQuery.of(context).size.width * 0.20,
+                          color: const Color(0xFFBF84B1),
+                        ),
                 ),
               ),
               const SizedBox(
@@ -66,7 +80,7 @@ class _CustAccountState extends State<CustAccount> {
                     ),
                     AccountInputCust(
                       onChanged: (value) {},
-                      hintTitle: 'First Name',
+                      hintTitle: _userInfo!["custFName"] ?? "",
                       keyboardType: TextInputType.text,
                     ),
                     Padding(
@@ -79,7 +93,7 @@ class _CustAccountState extends State<CustAccount> {
                     ),
                     AccountInputCust(
                       onChanged: (value) {},
-                      hintTitle: 'Last Name',
+                      hintTitle: _userInfo!["custLName"] ?? "",
                       keyboardType: TextInputType.text,
                     ),
                     Padding(
@@ -92,7 +106,7 @@ class _CustAccountState extends State<CustAccount> {
                     ),
                     AccountInputCust(
                       onChanged: (value) {},
-                      hintTitle: 'Email',
+                      hintTitle: _userInfo!["custEmail"] ?? "",
                       keyboardType: TextInputType.text,
                       enabled: false,
                     ),
@@ -106,7 +120,7 @@ class _CustAccountState extends State<CustAccount> {
                     ),
                     AccountInputCust(
                       onChanged: (value) {},
-                      hintTitle: 'Phone No.',
+                      hintTitle: _userInfo!["custPhone"] ?? "",
                       keyboardType: TextInputType.text,
                     ),
                   ],
@@ -119,23 +133,7 @@ class _CustAccountState extends State<CustAccount> {
                 height: 40,
                 child: AccountEditBtn(
                   label: 'Save Changes',
-                  press: () {
-                    // if ((_emailInput.isNotEmpty) &&
-                    //     (_fNameInput.isNotEmpty) &&
-                    //     (_lNameInput.isNotEmpty) &&
-                    //     (_phoneInput.isNotEmpty) &&
-                    //     (_passwordInput.isNotEmpty)) {
-                    //   saveCustInfoNow(
-                    //       context: context,
-                    //       emailInput: _emailInput,
-                    //       passwordInput: _passwordInput,
-                    //       fNameInput: _fNameInput,
-                    //       lNameInput: _lNameInput,
-                    //       phoneInput: _phoneInput);
-                    // } else {
-                    //   // validateForm();
-                    // }
-                  },
+                  press: () {},
                 ),
               ),
             ],

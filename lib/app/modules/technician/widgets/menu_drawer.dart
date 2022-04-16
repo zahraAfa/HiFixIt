@@ -44,14 +44,18 @@ class MenuDrawer extends StatelessWidget {
                       ),
                     ),
                     currentAccountPicture: CircleAvatar(
-                      child: ClipOval(
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1523730205978-59fd1b2965e3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8ZGVmYXVsdHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60',
-                          fit: BoxFit.cover,
-                          width: 90,
-                          height: 90,
-                        ),
-                      ),
+                      backgroundColor: Colors.white,
+                      backgroundImage: sharedPreferences!.getString("pic") ==
+                              null
+                          ? null
+                          : NetworkImage(sharedPreferences!.getString("pic")!),
+                      child: sharedPreferences!.getString("pic") != null
+                          ? null
+                          : Icon(
+                              Icons.person,
+                              size: MediaQuery.of(context).size.width * 0.10,
+                              color: const Color(0xFFBF84B1),
+                            ),
                     ),
                   ),
                 ),

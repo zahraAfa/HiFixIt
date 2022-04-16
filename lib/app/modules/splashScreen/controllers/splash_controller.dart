@@ -11,19 +11,15 @@ import 'dart:async';
 import 'package:hifixit/app/services/global.dart';
 
 startTimer(context) {
-  fAuth.currentUser != null
-      ? AssistantMethod.readCurrentOnlineCustInfo()
-      : null;
-
   Timer(const Duration(seconds: 1), () async {
     if (await fAuth.currentUser != null) {
       currentFirebaseUser = fAuth.currentUser;
 
       if (sharedPreferences!.getString("type") != "tech") {
-        // print(sharedPreferences!.getString("type"));
-        // print(sharedPreferences!.getString("name"));
-        // print(sharedPreferences!.getString("email"));
         //if customer
+        fAuth.currentUser != null
+            ? AssistantMethod.readCurrentOnlineCustInfo()
+            : null;
         print("This is customer");
         Navigator.pushAndRemoveUntil(
             context,
@@ -31,6 +27,9 @@ startTimer(context) {
             (Route<dynamic> route) => false);
       } else {
         //if tech
+        fAuth.currentUser != null
+            ? AssistantMethod.readCurrentOnlineTechInfo()
+            : null;
         print("This is technician");
         Navigator.pushAndRemoveUntil(
             context,

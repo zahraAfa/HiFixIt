@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/technician/modules/account/widgets/account_edit_btn.dart';
 import 'package:hifixit/app/modules/technician/modules/account/widgets/account_input.dart';
 import 'package:hifixit/app/modules/technician/widgets/menu_drawer.dart';
+import 'package:hifixit/app/services/global.dart';
 
 class TechAccount extends StatefulWidget {
   const TechAccount({Key? key}) : super(key: key);
@@ -13,16 +15,24 @@ class TechAccount extends StatefulWidget {
 class _TechAccountState extends State<TechAccount> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController firstNameC = TextEditingController();
+  DocumentSnapshot? _userInfo;
 
-  bool _validate = false;
+  getTechData() async {
+    _userInfo = await FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(currentFirebaseUser!.uid)
+        .get();
+    print(_userInfo!["techFName"]);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getTechData();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _fNameController = TextEditingController();
-    final TextEditingController _lNameController = TextEditingController();
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _phoneController = TextEditingController();
-    final TextEditingController _categoryController = TextEditingController();
-
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MenuDrawer(),
@@ -47,12 +57,16 @@ class _TechAccountState extends State<TechAccount> {
                 child: CircleAvatar(
                   radius: MediaQuery.of(context).size.width * 0.20,
                   backgroundColor: Colors.white,
-                  backgroundImage: null,
-                  child: Icon(
-                    Icons.person,
-                    size: MediaQuery.of(context).size.width * 0.20,
-                    color: const Color(0xFFBF84B1),
-                  ),
+                  backgroundImage: _userInfo!["techPicture"] == null
+                      ? null
+                      : NetworkImage(_userInfo!["techPicture"]),
+                  child: _userInfo!["techPicture"] != null
+                      ? null
+                      : Icon(
+                          Icons.person,
+                          size: MediaQuery.of(context).size.width * 0.20,
+                          color: const Color(0xFFBF84B1),
+                        ),
                 ),
               ),
               const SizedBox(
@@ -72,7 +86,8 @@ class _TechAccountState extends State<TechAccount> {
                     ),
                     AccountInputTech(
                       onChanged: (value) {},
-                      hintTitle: 'First Name',
+                      hintTitle: _userInfo!["techFName"] ?? "",
+                      // hintTitle: "fn",
                       keyboardType: TextInputType.text,
                     ),
                     Padding(
@@ -85,7 +100,8 @@ class _TechAccountState extends State<TechAccount> {
                     ),
                     AccountInputTech(
                       onChanged: (value) {},
-                      hintTitle: 'Last Name',
+                      hintTitle: _userInfo!["techLName"] ?? "",
+                      // hintTitle: "ln",
                       keyboardType: TextInputType.text,
                     ),
                     Padding(
@@ -98,7 +114,8 @@ class _TechAccountState extends State<TechAccount> {
                     ),
                     AccountInputTech(
                       onChanged: (value) {},
-                      hintTitle: 'Email',
+                      hintTitle: _userInfo!["techEmail"] ?? "",
+                      // hintTitle: "te",
                       keyboardType: TextInputType.text,
                       enabled: false,
                     ),
@@ -112,7 +129,8 @@ class _TechAccountState extends State<TechAccount> {
                     ),
                     AccountInputTech(
                       onChanged: (value) {},
-                      hintTitle: 'Phone No.',
+                      hintTitle: _userInfo!["techPhone"] ?? "",
+                      // hintTitle: "tp",
                       keyboardType: TextInputType.text,
                     ),
                     Padding(
@@ -125,7 +143,8 @@ class _TechAccountState extends State<TechAccount> {
                     ),
                     AccountInputTech(
                       onChanged: (value) {},
-                      hintTitle: 'Category',
+                      hintTitle: _userInfo!["techCategory"] ?? "",
+                      // hintTitle: "tc",
                       keyboardType: TextInputType.text,
                       enabled: false,
                     ),
@@ -140,6 +159,7 @@ class _TechAccountState extends State<TechAccount> {
                 child: AccountEditBtn(
                   label: 'Save Changes',
                   press: () {
+                    print(_userInfo!["techCategory"]);
                     // if ((_emailInput.isNotEmpty) &&
                     //     (_fNameInput.isNotEmpty) &&
                     //     (_lNameInput.isNotEmpty) &&
