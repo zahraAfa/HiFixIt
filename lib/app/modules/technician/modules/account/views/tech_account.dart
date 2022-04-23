@@ -15,21 +15,21 @@ class TechAccount extends StatefulWidget {
 class _TechAccountState extends State<TechAccount> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController firstNameC = TextEditingController();
-  DocumentSnapshot? _userInfo;
+  // DocumentSnapshot? _userInfo;
 
-  getTechData() async {
-    _userInfo = await FirebaseFirestore.instance
-        .collection("Technician")
-        .doc(currentFirebaseUser!.uid)
-        .get();
-    print(_userInfo!["techFName"]);
-  }
+  // getTechData() async {
+  //   _userInfo = await FirebaseFirestore.instance
+  //       .collection("Technician")
+  //       .doc(currentFirebaseUser!.uid)
+  //       .get();
+  //   print(_userInfo!["techFName"]);
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    getTechData();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   getTechData();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -48,139 +48,153 @@ class _TechAccountState extends State<TechAccount> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            children: [
-              InkWell(
-                child: CircleAvatar(
-                  radius: MediaQuery.of(context).size.width * 0.20,
-                  backgroundColor: Colors.white,
-                  backgroundImage: _userInfo!["techPicture"] == null
-                      ? null
-                      : NetworkImage(_userInfo!["techPicture"]),
-                  child: _userInfo!["techPicture"] != null
-                      ? null
-                      : Icon(
-                          Icons.person,
-                          size: MediaQuery.of(context).size.width * 0.20,
-                          color: const Color(0xFFBF84B1),
-                        ),
-                ),
-              ),
-              const SizedBox(
-                height: 30.0,
-              ),
-              Container(
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: FirebaseFirestore.instance
+                .collection("Technician")
+                .doc(currentFirebaseUser!.uid)
+                .snapshots(),
+            builder: (context, snapshot) {
+              return Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 50.0),
+                width: MediaQuery.of(context).size.width,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "First Name",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
+                    InkWell(
+                      child: CircleAvatar(
+                        radius: MediaQuery.of(context).size.width * 0.20,
+                        backgroundColor: Colors.white,
+                        backgroundImage: snapshot.data!['techPicture'].isEmpty
+                            ? null
+                            : NetworkImage(
+                                snapshot.data!['techPicture'].toString()),
+                        child: snapshot.data!['techPicture'].isNotEmpty
+                            ? null
+                            : Icon(
+                                Icons.person,
+                                size: MediaQuery.of(context).size.width * 0.20,
+                                color: const Color(0xFFBF84B1),
+                              ),
                       ),
                     ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: _userInfo!["techFName"] ?? "",
-                      // hintTitle: "fn",
-                      keyboardType: TextInputType.text,
+                    const SizedBox(
+                      height: 30.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "Last Name",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
+                    Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              "First Name",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          ),
+                          AccountInputTech(
+                            onChanged: (value) {},
+                            hintTitle: snapshot.data!['techFName'].toString(),
+                            // hintTitle: "fn",
+                            keyboardType: TextInputType.text,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              "Last Name",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          ),
+                          AccountInputTech(
+                            onChanged: (value) {},
+                            hintTitle: snapshot.data!['techLName'].toString(),
+                            // hintTitle: "ln",
+                            keyboardType: TextInputType.text,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              "Email",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          ),
+                          AccountInputTech(
+                            onChanged: (value) {},
+                            hintTitle: snapshot.data!['techEmail'].toString(),
+                            // hintTitle: "te",
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              "Phone No.",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          ),
+                          AccountInputTech(
+                            onChanged: (value) {},
+                            hintTitle: snapshot.data!['techPhone'].toString(),
+                            // hintTitle: "tp",
+                            keyboardType: TextInputType.text,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                            child: Text(
+                              "Category",
+                              textAlign: TextAlign.start,
+                              style: TextStyle(color: Colors.grey.shade600),
+                            ),
+                          ),
+                          AccountInputTech(
+                            onChanged: (value) {},
+                            hintTitle:
+                                snapshot.data!['techCategory'].toString(),
+                            // hintTitle: "tc",
+                            keyboardType: TextInputType.text,
+                            enabled: false,
+                          ),
+                        ],
                       ),
                     ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: _userInfo!["techLName"] ?? "",
-                      // hintTitle: "ln",
-                      keyboardType: TextInputType.text,
+                    const SizedBox(
+                      height: 30,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "Email",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
+                    SizedBox(
+                      height: 40,
+                      child: AccountEditBtn(
+                        label: 'Save Changes',
+                        press: () {
+                          // if ((_emailInput.isNotEmpty) &&
+                          //     (_fNameInput.isNotEmpty) &&
+                          //     (_lNameInput.isNotEmpty) &&
+                          //     (_phoneInput.isNotEmpty) &&
+                          //     (_passwordInput.isNotEmpty)) {
+                          //   saveTechInfoNow(
+                          //       context: context,
+                          //       emailInput: _emailInput,
+                          //       passwordInput: _passwordInput,
+                          //       fNameInput: _fNameInput,
+                          //       lNameInput: _lNameInput,
+                          //       phoneInput: _phoneInput);
+                          // } else {
+                          //   // validateForm();
+                          // }
+                        },
                       ),
-                    ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: _userInfo!["techEmail"] ?? "",
-                      // hintTitle: "te",
-                      keyboardType: TextInputType.text,
-                      enabled: false,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "Phone No.",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: _userInfo!["techPhone"] ?? "",
-                      // hintTitle: "tp",
-                      keyboardType: TextInputType.text,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        "Category",
-                        textAlign: TextAlign.start,
-                        style: TextStyle(color: Colors.grey.shade600),
-                      ),
-                    ),
-                    AccountInputTech(
-                      onChanged: (value) {},
-                      hintTitle: _userInfo!["techCategory"] ?? "",
-                      // hintTitle: "tc",
-                      keyboardType: TextInputType.text,
-                      enabled: false,
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              SizedBox(
-                height: 40,
-                child: AccountEditBtn(
-                  label: 'Save Changes',
-                  press: () {
-                    print(_userInfo!["techCategory"]);
-                    // if ((_emailInput.isNotEmpty) &&
-                    //     (_fNameInput.isNotEmpty) &&
-                    //     (_lNameInput.isNotEmpty) &&
-                    //     (_phoneInput.isNotEmpty) &&
-                    //     (_passwordInput.isNotEmpty)) {
-                    //   saveTechInfoNow(
-                    //       context: context,
-                    //       emailInput: _emailInput,
-                    //       passwordInput: _passwordInput,
-                    //       fNameInput: _fNameInput,
-                    //       lNameInput: _lNameInput,
-                    //       phoneInput: _phoneInput);
-                    // } else {
-                    //   // validateForm();
-                    // }
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
+              );
+            }),
       ),
     );
   }
