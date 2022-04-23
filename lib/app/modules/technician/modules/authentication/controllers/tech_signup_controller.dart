@@ -46,6 +46,8 @@ saveTechInfoNow(
       "techLName": lNameInput.trim(),
       "techEmail": emailInput.trim(),
       "techPhone": phoneInput.trim(),
+      "techStatus": "Off",
+      "techCategory": ""
     });
 
     // Save locally

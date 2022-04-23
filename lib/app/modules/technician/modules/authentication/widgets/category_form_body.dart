@@ -140,32 +140,44 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
                       const SizedBox(
                         height: 20,
                       ),
-                      DropdownButton(
-                        alignment: AlignmentDirectional.center,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 42,
-                        underline: SizedBox(),
-                        items: categoryType.map((category) {
-                          return DropdownMenuItem(
-                            child: Text(
-                              category,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 15),
+                      Container(
+                        height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.white,
+                        ),
+                        child: DropdownButton(
+                          icon: Icon(
+                            Icons.arrow_drop_down_rounded,
+                            color: Color(0xFFEF8A56),
+                          ),
+                          underline: SizedBox(),
+                          borderRadius: BorderRadius.circular(20),
+                          alignment: AlignmentDirectional.center,
+                          iconSize: 42,
+                          items: categoryType.map((category) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                category,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                              value: category,
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedCategoryType = newValue.toString();
+                            });
+                          },
+                          value: selectedCategoryType,
+                          hint: const Text(
+                            "Please Choose Category",
+                            style: TextStyle(
+                              fontSize: 20.0,
+                              color: Colors.grey,
                             ),
-                            value: category,
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedCategoryType = newValue.toString();
-                          });
-                        },
-                        value: selectedCategoryType,
-                        hint: const Text(
-                          "Please Choose Category",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.grey,
                           ),
                         ),
                       ),
