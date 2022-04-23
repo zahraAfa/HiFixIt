@@ -10,6 +10,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
@@ -30,25 +31,10 @@ class _HomeTabPageState extends State<HomeTabPage> {
 
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
+  List<String> priceRange = ["Highest Price", "Lowest Price"];
+  String? selectedPriceRange;
 
-  double _bottomPaddingOfMap = 0;
-  int _index = 4;
-
-  // searchCategoryInfo() {
-  //   Map techCategoryMap = {
-  //     "category": selectedCategoryType,
-  //   };
-  //   DatabaseReference techRef =
-  //       FirebaseDatabase.instance.ref().child("Customer");
-  //   // techRef
-  //   //     .child(currentFirebaseUser!.uid)
-  //   //     .child("TechCategory")
-  //   //     .set(techCategoryMap);
-
-  //   Fluttertoast.showToast(msg: "Searching...");
-  //   // Navigator.push(
-  //   //     context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
-  // }
+  final double _bottomPaddingOfMap = 300;
 
   @override
   Widget build(BuildContext context) {
@@ -68,9 +54,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               gmapController(controller);
               _currLoc = await locateCustPosition();
 
-              setState(() {
-                _bottomPaddingOfMap = 300;
-              });
+              setState(() {});
             },
           ),
           Positioned(
@@ -82,38 +66,112 @@ class _HomeTabPageState extends State<HomeTabPage> {
               curve: Curves.easeIn,
               child: Container(
                 height: searchLocationContainerHeight,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: Color.fromARGB(255, 241, 241, 241),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                 ),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
                   child: Column(
                     children: [
-                      DropdownButton(
-                        items: categoryType.map((category) {
-                          return DropdownMenuItem(
-                            child: Text(category),
-                            value: category,
-                          );
-                        }).toList(),
-                        onChanged: (newValue) {
-                          setState(() {
-                            selectedCategoryType = newValue.toString();
-                          });
-                        },
-                        value: selectedCategoryType,
-                        hint: const Text(
-                          "Please Choose Category",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            color: Colors.grey,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Container(
+                            height: 40,
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.white,
+                            ),
+                            child: DropdownButton(
+                              icon: Icon(
+                                Icons.arrow_drop_down_rounded,
+                                color: Color(0xFFEF8A56),
+                              ),
+                              underline: SizedBox(),
+                              borderRadius: BorderRadius.circular(20),
+                              items: categoryType.map((category) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    category,
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      // color: Color(0xFFEF8A56),
+                                    ),
+                                  ),
+                                  value: category,
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedCategoryType = newValue.toString();
+                                });
+                              },
+                              value: selectedCategoryType,
+                              hint: const Text(
+                                "Choose Category",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                          Container(
+                            height: 40,
+                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20.0),
+                              color: Colors.white,
+                            ),
+                            child: DropdownButton(
+                              icon: Icon(
+                                Icons.arrow_drop_down_rounded,
+                                color: Color(0xFFEF8A56),
+                              ),
+                              underline: SizedBox(),
+                              borderRadius: BorderRadius.circular(20),
+                              items: priceRange.map((category) {
+                                return DropdownMenuItem(
+                                  child: Text(
+                                    category,
+                                    style: TextStyle(
+                                      fontSize: 15.0,
+                                      // color: Color(0xFFEF8A56),
+                                    ),
+                                  ),
+                                  value: category,
+                                );
+                              }).toList(),
+                              onChanged: (newValue) {
+                                setState(() {
+                                  selectedPriceRange = newValue.toString();
+                                });
+                              },
+                              value: selectedPriceRange,
+                              hint: const Text(
+                                "Price Range",
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         width: 15,
@@ -125,7 +183,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
             ),
           ),
           Positioned(
-            bottom: 40,
+            bottom: 50,
             left: 0,
             right: 0,
             child: StreamBuilder<QuerySnapshot>(
@@ -137,7 +195,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     return ProgressDialog(message: "No data");
                   }
                   return SizedBox(
-                    height: 180,
+                    height: 190,
                     // width: 300,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
@@ -165,9 +223,11 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                             MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            'Available',
-                                            style:
-                                                TextStyle(color: Colors.green),
+                                            data['techStatus'].toString(),
+                                            style: data['techStatus'] == "Off"
+                                                ? TextStyle(color: Colors.grey)
+                                                : TextStyle(
+                                                    color: Colors.green),
                                             textAlign: TextAlign.end,
                                           ),
                                           SizedBox(
@@ -175,7 +235,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                           ),
                                           Icon(
                                             Icons.circle,
-                                            color: Colors.green,
+                                            color: data['techStatus'] == "Off"
+                                                ? Colors.grey
+                                                : Colors.green,
                                             size: 10,
                                           )
                                         ],
@@ -186,14 +248,18 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                         CircleAvatar(
                                           radius: 25,
                                           backgroundColor: Color.fromARGB(
-                                              255, 235, 235, 235),
-                                          backgroundImage: NetworkImage(
-                                              data['techPicture'].toString()),
+                                              255, 241, 241, 241),
+                                          backgroundImage: data['techPicture']
+                                                  .isEmpty
+                                              ? null
+                                              : NetworkImage(data['techPicture']
+                                                  .toString()),
                                           child: data['techPicture'].isNotEmpty
                                               ? null
                                               : Icon(
                                                   Icons.account_circle_rounded,
-                                                  color: Colors.grey,
+                                                  color: Color.fromARGB(
+                                                      255, 156, 156, 156),
                                                   size: 50,
                                                 ),
                                         ),
@@ -216,12 +282,47 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                         )
                                       ],
                                     ),
-                                    Center(
-                                      child: Text(
-                                        data['techFName'].toString(),
-                                        style: TextStyle(fontSize: 15),
+                                    RatingBar.builder(
+                                      ignoreGestures: true,
+                                      itemSize: 25,
+                                      initialRating: 3,
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(
+                                          horizontal: 1.0, vertical: 3.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
                                       ),
+                                      onRatingUpdate: (rating) {
+                                        print(rating);
+                                      },
                                     ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: (() {}),
+                                          child: Text("Home"),
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      const Color(0xFFBF84B1))),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: (() {}),
+                                          child: Text("Chat"),
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Color.fromARGB(
+                                                          255, 156, 156, 156))),
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),

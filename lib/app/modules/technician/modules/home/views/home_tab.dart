@@ -22,7 +22,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
   );
   String _currLoc = '';
 
-  List<String> techStatus = ["Available", "Offline"];
+  List<String> techStatus = ["Available", "Off"];
   String? selectedTechStatus;
 
   @override
