@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
+import 'package:hifixit/app/services/global.dart';
+import 'package:hifixit/app/widgets/progress_dialog.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
@@ -22,12 +26,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
   );
   String _currLoc = '';
 
-  double searchLocationContainerHeight = 220;
+  double searchLocationContainerHeight = 320;
 
   List<String> categoryType = ["Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
 
   double _bottomPaddingOfMap = 0;
+  int _index = 4;
 
   // searchCategoryInfo() {
   //   Map techCategoryMap = {
@@ -64,7 +69,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               _currLoc = await locateCustPosition();
 
               setState(() {
-                _bottomPaddingOfMap = 200;
+                _bottomPaddingOfMap = 300;
               });
             },
           ),
@@ -78,7 +83,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               child: Container(
                 height: searchLocationContainerHeight,
                 decoration: const BoxDecoration(
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 241, 241, 241),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
@@ -113,13 +118,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       SizedBox(
                         width: 15,
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        child: const Text("Search Technician"),
-                        style: ElevatedButton.styleFrom(
-                          primary: const Color(0xFFBF84B1),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -127,7 +125,116 @@ class _HomeTabPageState extends State<HomeTabPage> {
             ),
           ),
           Positioned(
-              bottom: 230,
+            bottom: 40,
+            left: 0,
+            right: 0,
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection("Technician")
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return ProgressDialog(message: "No data");
+                  }
+                  return SizedBox(
+                    height: 180,
+                    // width: 300,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: snapshot.data!.docs.map((docs) {
+                        Map<String, dynamic> data =
+                            docs.data()! as Map<String, dynamic>;
+                        return SizedBox(
+                          // height: 160,
+                          width: 220,
+                          child: Card(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 13, vertical: 5),
+                            elevation: 2,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(15.0),
+                              child: Container(
+                                child: Column(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            'Available',
+                                            style:
+                                                TextStyle(color: Colors.green),
+                                            textAlign: TextAlign.end,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Icon(
+                                            Icons.circle,
+                                            color: Colors.green,
+                                            size: 10,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 25,
+                                          backgroundColor: Color.fromARGB(
+                                              255, 235, 235, 235),
+                                          backgroundImage: NetworkImage(
+                                              data['techPicture'].toString()),
+                                          child: data['techPicture'].isNotEmpty
+                                              ? null
+                                              : Icon(
+                                                  Icons.account_circle_rounded,
+                                                  color: Colors.grey,
+                                                  size: 50,
+                                                ),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              data['techFName'].toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.grey.shade800),
+                                            ),
+                                            Text(
+                                                data['techCategory'].toString())
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    Center(
+                                      child: Text(
+                                        data['techFName'].toString(),
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  );
+                }),
+          ),
+          Positioned(
+              bottom: 330,
               right: 15,
               child: FloatingActionButton(
                 child: Icon(Icons.location_on),
