@@ -36,7 +36,7 @@ class _CustAccountState extends State<CustAccount> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: const MenuDrawer(),
+      drawer: MenuDrawer(),
       backgroundColor: const Color.fromARGB(255, 229, 229, 229),
       appBar: AppBar(
         title: const Text("Account"),
@@ -51,10 +51,10 @@ class _CustAccountState extends State<CustAccount> {
                 child: CircleAvatar(
                   radius: MediaQuery.of(context).size.width * 0.20,
                   backgroundColor: Colors.white,
-                  backgroundImage: _userInfo!["custPicture"] == null
+                  backgroundImage: _userInfo!["custPicture"].isEmpty
                       ? null
-                      : NetworkImage(_userInfo!["custPicture"]),
-                  child: _userInfo!["custPicture"] != null
+                      : NetworkImage(_userInfo!["custPicture"].toString()),
+                  child: _userInfo!["custPicture"].isNotEmpty
                       ? null
                       : Icon(
                           Icons.person,

@@ -36,7 +36,7 @@ class _MainScreenCustState extends State<MainScreenCust>
     return Scaffold(
       extendBodyBehindAppBar: true,
       key: _scaffoldKey,
-      drawer: const MenuDrawer(),
+      drawer: MenuDrawer(),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,

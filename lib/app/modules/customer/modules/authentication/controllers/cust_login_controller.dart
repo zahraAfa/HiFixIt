@@ -74,6 +74,7 @@ Future readDataAndSetLocally(User currentUser) async {
     await sharedPreferences!.setString("fname", snapshot.data()!["custFName"]);
     await sharedPreferences!.setString("lname", snapshot.data()!["custLName"]);
     await sharedPreferences!.setString("phone", snapshot.data()!["custPhone"]);
+    await sharedPreferences!.setString("pic", snapshot.data()!["custPicture"]);
     await sharedPreferences!.setString("type", "cust");
   });
 }
