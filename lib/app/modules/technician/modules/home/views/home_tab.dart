@@ -1,9 +1,13 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hifixit/app/modules/technician/modules/home/controllers/home_controller.dart';
+import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/color_pallete.dart';
+import 'package:hifixit/app/widgets/marquee_text.dart';
+import 'package:hifixit/app/widgets/progress_dialog.dart';
 
 class HomeTabPage extends StatefulWidget {
   const HomeTabPage({Key? key}) : super(key: key);
@@ -28,84 +32,171 @@ class _HomeTabPageState extends State<HomeTabPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Text('Hi NAME,'),
-          const Text('where are you now?'),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            height: 250,
-            child: GoogleMap(
-              initialCameraPosition: _kGooglePlex,
-              mapType: MapType.normal,
-              myLocationButtonEnabled: true,
-              myLocationEnabled: true,
-              zoomGesturesEnabled: true,
-              zoomControlsEnabled: true,
-              onMapCreated: (GoogleMapController controller) async {
-                _gMapController.complete(controller);
-                gmapController(controller);
-                _currLoc = await locateTechPosition();
-                setState(() {});
-              },
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(
-            _currLoc,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ElevatedButton.icon(
-            style: ButtonStyle(
-              backgroundColor:
-                  MaterialStateProperty.all<Color>(Color(0xFFBF84B1)),
-            ),
-            onPressed: () async {
-              _currLoc = await locateTechPosition();
-            },
-            icon: const Icon(Icons.location_on),
-            label: const Text('Change current location'),
-          ),
-          const SizedBox(
-            height: 40,
-          ),
-          const Text('Status'),
-          const SizedBox(
-            height: 10,
-          ),
-          DropdownButton(
-            items: techStatus.map((category) {
-              return DropdownMenuItem(
-                child: Text(
-                  category,
-                  textAlign: TextAlign.center,
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection("Technician")
+              .doc(currentFirebaseUser!.uid)
+              .snapshots(),
+          builder: (context, snapshot) {
+            // String selectedTechStatus = snapshot.data!["techStatus"].toString();
+            if (!snapshot.hasData) {
+              return ProgressDialog(message: "No data");
+            }
+            return Column(
+              children: [
+                Text(
+                  'Hi ${snapshot.data!["techFName"].toString()},',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xFF7B4067),
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
-                value: category,
-              );
-            }).toList(),
-            onChanged: (newValue) {
-              setState(() {
-                selectedTechStatus = newValue.toString();
-              });
-            },
-            value: selectedTechStatus,
-            hint: const Text(
-              "Please Choose status",
-              style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ],
-      ),
+                const Text('where are you now?'),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  padding: EdgeInsetsDirectional.only(bottom: 20.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    // border: Border.all(width: 2.0, color: Colors.black12),
+                    // color: Color(0xFFBF84B1),
+                    color: Colors.grey.shade200,
+                  ),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 250,
+                        child: GoogleMap(
+                          initialCameraPosition: _kGooglePlex,
+                          mapType: MapType.normal,
+                          myLocationButtonEnabled: false,
+                          myLocationEnabled: true,
+                          zoomGesturesEnabled: true,
+                          zoomControlsEnabled: true,
+                          onMapCreated: (GoogleMapController controller) async {
+                            _gMapController.complete(controller);
+                            gmapController(controller);
+                            _currLoc = await locateTechPosition();
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: MarqueeWidget(
+                          direction: Axis.horizontal,
+                          child: Text(
+                            _currLoc,
+                            style: TextStyle(
+                              // color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ElevatedButton.icon(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color(0xFFBF84B1)),
+                        ),
+                        onPressed: () async {
+                          _currLoc = await locateTechPosition();
+                        },
+                        icon: const Icon(Icons.location_on),
+                        label: const Text('Change current location'),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    // border: Border.all(width: 2.0, color: Colors.black12),
+                    color: Colors.grey.shade200,
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Status',
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFF7B4067),
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20.0),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 1,
+                              blurRadius: 2,
+                              offset:
+                                  Offset(0, 2), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: DropdownButton(
+                          icon: Icon(
+                            Icons.arrow_drop_down_rounded,
+                            color: Color(0xFFEF8A56),
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          underline: SizedBox(),
+                          items: techStatus.map((status) {
+                            return DropdownMenuItem(
+                              child: Text(
+                                status,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                              value: status,
+                            );
+                          }).toList(),
+                          onChanged: (newValue) {
+                            setState(() {
+                              selectedTechStatus = newValue.toString();
+                            });
+                          },
+                          value: selectedTechStatus,
+                          hint: Text(
+                            snapshot.data!["techStatus"],
+                            style: TextStyle(
+                              fontSize: 15.0,
+                              // color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }),
     );
   }
 }
