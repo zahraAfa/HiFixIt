@@ -18,6 +18,14 @@ class Customer {
   //   custPhone = (snap.data() as dynamic)["custPhone"];
   // }
 
+  Customer.fromSnapshot(snapshot)
+      : custId = snapshot.data()["custId"],
+        custEmail = snapshot.data()["custEmail"],
+        custFName = snapshot.data()["custFName"],
+        custLName = snapshot.data()["custLName"],
+        custPhone = snapshot.data()["custPhone"],
+        custPicture = snapshot.data()["custPicture"];
+
   Customer.fromJson(Map<String, dynamic> json) {
     custId = json["custId"];
     custEmail = json["custEmail"];

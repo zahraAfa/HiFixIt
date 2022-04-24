@@ -22,7 +22,7 @@ void main() async {
         title: appTitle,
         theme: ThemeData(
           primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
-          primarySwatch: const MaterialColor(0xFF3d1b3c, primaryPurple),
+          primarySwatch: const MaterialColor(0xFF7B4067, primaryPurple),
         ),
         home: const MySplashScreen(),
         // home: WelcomingPage(title: appTitle),
