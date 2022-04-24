@@ -39,6 +39,7 @@ class _MainScreenTechState extends State<MainScreenTech>
       drawer: const MenuDrawer(),
       appBar: selectedIndex == 0
           ? AppBar(
+              centerTitle: true,
               backgroundColor: Colors.transparent,
               shadowColor: Colors.transparent,
               leading: IconButton(
@@ -52,14 +53,17 @@ class _MainScreenTechState extends State<MainScreenTech>
           : selectedIndex == 1
               ? AppBar(
                   title: const Text("History"),
+                  centerTitle: true,
                 )
               : selectedIndex == 2
                   ? AppBar(
                       title: const Text("Schedule"),
+                      centerTitle: true,
                     )
                   : AppBar(
                       elevation: 0,
                       title: const Text("Your Profile"),
+                      centerTitle: true,
                     ),
       body: TabBarView(
         controller: tabController,

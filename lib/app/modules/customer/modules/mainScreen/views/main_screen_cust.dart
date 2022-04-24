@@ -25,8 +25,13 @@ class _MainScreenCustState extends State<MainScreenCust>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    setCurrentLocation();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     setCurrentLocation();
   }
 
@@ -37,6 +42,7 @@ class _MainScreenCustState extends State<MainScreenCust>
       key: _scaffoldKey,
       drawer: MenuDrawer(),
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         shadowColor: Colors.transparent,
         leading: Material(

@@ -111,7 +111,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           _currLoc = await locateTechPosition();
                         },
                         icon: const Icon(Icons.location_on),
-                        label: const Text('Change current location'),
+                        label: const Text('Recenter location'),
                       ),
                     ],
                   ),
