@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
+import 'package:hifixit/app/modules/customer/modules/profile/views/profile_tab.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -67,8 +68,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
               child: Container(
                 height: searchLocationContainerHeight,
                 decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 241, 241, 241),
-                  borderRadius: BorderRadius.only(
+                  color: const Color.fromARGB(255, 241, 241, 241),
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30),
                   ),
@@ -77,7 +78,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       color: Colors.grey.withOpacity(0.3),
                       spreadRadius: 5,
                       blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
+                      offset: const Offset(0, 3), // changes position of shadow
                     ),
                   ],
                 ),
@@ -91,23 +92,24 @@ class _HomeTabPageState extends State<HomeTabPage> {
                         children: [
                           Container(
                             height: 40,
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
                               color: Colors.white,
                             ),
                             child: DropdownButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down_rounded,
                                 color: Color(0xFFEF8A56),
                               ),
-                              underline: SizedBox(),
+                              underline: const SizedBox(),
                               borderRadius: BorderRadius.circular(20),
                               items: categoryType.map((category) {
                                 return DropdownMenuItem(
                                   child: Text(
                                     category,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 15.0,
                                       // color: Color(0xFFEF8A56),
                                     ),
@@ -132,23 +134,24 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           ),
                           Container(
                             height: 40,
-                            padding: EdgeInsets.symmetric(horizontal: 5.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 5.0),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20.0),
                               color: Colors.white,
                             ),
                             child: DropdownButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.arrow_drop_down_rounded,
-                                color: Color(0xFFEF8A56),
+                                color: const Color(0xFFEF8A56),
                               ),
-                              underline: SizedBox(),
+                              underline: const SizedBox(),
                               borderRadius: BorderRadius.circular(20),
                               items: priceRange.map((category) {
                                 return DropdownMenuItem(
                                   child: Text(
                                     category,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 15.0,
                                       // color: Color(0xFFEF8A56),
                                     ),
@@ -173,7 +176,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                     ],
@@ -206,7 +209,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           // height: 160,
                           width: 220,
                           child: Card(
-                            margin: EdgeInsets.symmetric(
+                            margin: const EdgeInsets.symmetric(
                                 horizontal: 13, vertical: 5),
                             elevation: 2,
                             shape: RoundedRectangleBorder(
@@ -225,12 +228,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                           Text(
                                             data['techStatus'].toString(),
                                             style: data['techStatus'] == "Off"
-                                                ? TextStyle(color: Colors.grey)
-                                                : TextStyle(
+                                                ? const TextStyle(
+                                                    color: Colors.grey)
+                                                : const TextStyle(
                                                     color: Colors.green),
                                             textAlign: TextAlign.end,
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             width: 5,
                                           ),
                                           Icon(
@@ -247,7 +251,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                       children: [
                                         CircleAvatar(
                                           radius: 25,
-                                          backgroundColor: Color.fromARGB(
+                                          backgroundColor: const Color.fromARGB(
                                               255, 241, 241, 241),
                                           backgroundImage: data['techPicture']
                                                   .isEmpty
@@ -256,14 +260,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                                   .toString()),
                                           child: data['techPicture'].isNotEmpty
                                               ? null
-                                              : Icon(
+                                              : const Icon(
                                                   Icons.account_circle_rounded,
                                                   color: Color.fromARGB(
                                                       255, 156, 156, 156),
                                                   size: 50,
                                                 ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                         Column(
@@ -277,7 +281,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                                   color: Colors.grey.shade800),
                                             ),
                                             Text(
-                                                data['techCategory'].toString())
+                                              data['techCategory'].toString(),
+                                            ),
                                           ],
                                         )
                                       ],
@@ -285,14 +290,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                     RatingBar.builder(
                                       ignoreGestures: true,
                                       itemSize: 25,
-                                      initialRating: 3,
+                                      initialRating: data['rating'].toDouble(),
                                       minRating: 1,
                                       direction: Axis.horizontal,
                                       allowHalfRating: true,
                                       itemCount: 5,
-                                      itemPadding: EdgeInsets.symmetric(
+                                      itemPadding: const EdgeInsets.symmetric(
                                           horizontal: 1.0, vertical: 3.0),
-                                      itemBuilder: (context, _) => Icon(
+                                      itemBuilder: (context, _) => const Icon(
                                         Icons.star,
                                         color: Colors.amber,
                                       ),
@@ -305,8 +310,17 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         ElevatedButton(
-                                          onPressed: (() {}),
-                                          child: Text("Home"),
+                                          onPressed: (() {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (c) =>
+                                                        ProfileTabPage(
+                                                            techId: data[
+                                                                    'techId']
+                                                                .toString())));
+                                          }),
+                                          child: const Text("Home"),
                                           style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
@@ -314,12 +328,14 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                         ),
                                         ElevatedButton(
                                           onPressed: (() {}),
-                                          child: Text("Chat"),
+                                          child: const Text("Chat"),
                                           style: ButtonStyle(
-                                              backgroundColor:
-                                                  MaterialStateProperty.all(
-                                                      Color.fromARGB(
-                                                          255, 156, 156, 156))),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                              const Color.fromARGB(
+                                                  255, 156, 156, 156),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     )
@@ -338,7 +354,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
               bottom: 330,
               right: 15,
               child: FloatingActionButton(
-                child: Icon(Icons.location_on),
+                child: const Icon(Icons.location_on),
                 onPressed: () => locateCustPosition(),
               ))
         ],

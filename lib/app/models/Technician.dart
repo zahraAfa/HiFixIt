@@ -9,6 +9,7 @@ class Technician {
   double? rating;
   String? techCategory;
   String? techPicture;
+  String? techStatus;
 
   Technician(
       {this.techEmail,
@@ -17,18 +18,19 @@ class Technician {
       this.techPhone,
       this.techPicture,
       this.techCategory,
+      this.techStatus,
       this.rating});
 
-  // Technician.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
-  //   techId = (snap.data() as dynamic)["techId"];
-  //   techEmail = (snap.data() as dynamic)["techEmail"];
-  //   techFName = (snap.data() as dynamic)["techFName"];
-  //   techLName = (snap.data() as dynamic)["techLName"];
-  //   techPhone = (snap.data() as dynamic)["techPhone"];
-  //   rating = (snap.data() as dynamic)["rating"];
-  //   techCategory = (snap.data() as dynamic)["techCategory"];
-  //   techPicture = (snap.data() as dynamic)["techPicture"];
-  // }
+  Technician.fromSnapshot(snapshot)
+      : techId = snapshot.data()["techId"],
+        techEmail = snapshot.data()["techEmail"],
+        techFName = snapshot.data()["techFName"],
+        techLName = snapshot.data()["techLName"],
+        techPhone = snapshot.data()["techPhone"],
+        rating = snapshot.data()["rating"],
+        techCategory = snapshot.data()["techCategory"],
+        techStatus = snapshot.data()["techStatus"],
+        techPicture = snapshot.data()["techPicture"];
 
   Technician.fromJson(Map<String, dynamic> json) {
     techId = json["techId"];
@@ -39,6 +41,7 @@ class Technician {
     techPicture = json["techPicture"];
     techCategory = json["techCategory"];
     rating = json["rating"];
+    techStatus = json["techStatus"];
   }
 
   Map<String, dynamic> toJson() {
@@ -51,6 +54,7 @@ class Technician {
     data["techPicture"] = this.techPicture;
     data["techCategory"] = this.techCategory;
     data["rating"] = this.rating;
+    data["techStatus"] = this.techStatus;
 
     return data;
   }

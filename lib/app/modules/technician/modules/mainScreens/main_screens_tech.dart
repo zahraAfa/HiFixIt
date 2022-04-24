@@ -37,17 +37,34 @@ class _MainScreenTechState extends State<MainScreenTech>
     return Scaffold(
       key: _scaffoldKey,
       drawer: const MenuDrawer(),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        leading: IconButton(
-          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
-          icon: const Icon(
-            Icons.menu,
-            color: Color(0xFFEF8A56),
-          ),
-        ),
-      ),
+      appBar: selectedIndex == 0
+          ? AppBar(
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              leading: IconButton(
+                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+                icon: const Icon(
+                  Icons.menu,
+                  color: Color(0xFFEF8A56),
+                ),
+              ),
+            )
+          : selectedIndex == 1
+              ? AppBar(
+                  title: const Text("History"),
+                  centerTitle: true,
+                )
+              : selectedIndex == 2
+                  ? AppBar(
+                      title: const Text("Schedule"),
+                      centerTitle: true,
+                    )
+                  : AppBar(
+                      elevation: 0,
+                      title: const Text("Your Profile"),
+                      centerTitle: true,
+                    ),
       body: TabBarView(
         controller: tabController,
         physics: const NeverScrollableScrollPhysics(),
