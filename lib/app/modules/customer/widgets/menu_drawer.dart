@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/customer/modules/account/views/cust_account.dart';
 import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
+import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_list_with_icon.dart';
@@ -77,7 +78,7 @@ class MenuDrawer extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (c) => const MySplashScreen()));
+                            builder: (c) => const ScheduleTabPage()));
                   },
                 ),
                 MenuListWithIcon(
