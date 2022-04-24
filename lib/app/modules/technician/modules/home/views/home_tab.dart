@@ -46,9 +46,9 @@ class _HomeTabPageState extends State<HomeTabPage> {
               children: [
                 Text(
                   'Hi ${snapshot.data!["techFName"].toString()},',
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
-                    color: Color(0xFF7B4067),
+                    color: const Color(0xFF7B4067),
                     fontWeight: FontWeight.w700,
                   ),
                 ),
@@ -57,7 +57,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                   height: 20,
                 ),
                 Container(
-                  padding: EdgeInsetsDirectional.only(bottom: 20.0),
+                  padding: const EdgeInsetsDirectional.only(bottom: 20.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     // border: Border.all(width: 2.0, color: Colors.black12),
@@ -92,7 +92,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           direction: Axis.horizontal,
                           child: Text(
                             _currLoc,
-                            style: TextStyle(
+                            style: const TextStyle(
                               // color: Colors.white,
                               fontSize: 14,
                             ),
@@ -105,7 +105,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       ElevatedButton.icon(
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
-                              Color(0xFFBF84B1)),
+                              const Color(0xFFBF84B1)),
                         ),
                         onPressed: () async {
                           _currLoc = await locateTechPosition();
@@ -121,8 +121,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
                 ),
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 20.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
                     // border: Border.all(width: 2.0, color: Colors.black12),
@@ -143,7 +143,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       ),
                       Container(
                         height: 40,
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20.0),
                           color: Colors.white,
@@ -152,24 +152,24 @@ class _HomeTabPageState extends State<HomeTabPage> {
                               color: Colors.grey.withOpacity(0.3),
                               spreadRadius: 1,
                               blurRadius: 2,
-                              offset:
-                                  Offset(0, 2), // changes position of shadow
+                              offset: const Offset(
+                                  0, 2), // changes position of shadow
                             ),
                           ],
                         ),
                         child: DropdownButton(
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_drop_down_rounded,
-                            color: Color(0xFFEF8A56),
+                            color: const Color(0xFFEF8A56),
                           ),
                           borderRadius: BorderRadius.circular(20),
-                          underline: SizedBox(),
+                          underline: const SizedBox(),
                           items: techStatus.map((status) {
                             return DropdownMenuItem(
                               child: Text(
                                 status,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 15.0,
                                 ),
                               ),
@@ -179,12 +179,19 @@ class _HomeTabPageState extends State<HomeTabPage> {
                           onChanged: (newValue) {
                             setState(() {
                               selectedTechStatus = newValue.toString();
+                              Map<String, dynamic> techStatMap = {
+                                "techStatus": selectedTechStatus,
+                              };
+                              FirebaseFirestore.instance
+                                  .collection("Technician")
+                                  .doc(currentFirebaseUser!.uid)
+                                  .update(techStatMap);
                             });
                           },
                           value: selectedTechStatus,
                           hint: Text(
                             snapshot.data!["techStatus"],
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 15.0,
                               // color: Colors.grey,
                             ),

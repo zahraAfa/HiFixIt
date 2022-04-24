@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hifixit/app/services/global.dart';
 
 class TechHomeController {}
 
@@ -62,6 +64,17 @@ locateTechPosition() async {
 
   newGoogleMapController!
       .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+  Map<String, dynamic> techNewMap = {
+    "latitude": techCurrentPosition!.latitude,
+    "longitude": techCurrentPosition!.longitude,
+    "currLocation": techCompleteAddress,
+  };
+
+  FirebaseFirestore.instance
+      .collection("Technician")
+      .doc(currentFirebaseUser!.uid)
+      .update(techNewMap);
 
   return techCompleteAddress;
 }

@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
 import 'package:hifixit/app/modules/customer/modules/home/views/home_tab.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
+import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/marquee_text.dart';
 
 class MainScreenCust extends StatefulWidget {
@@ -15,25 +17,6 @@ class MainScreenCust extends StatefulWidget {
 class _MainScreenCustState extends State<MainScreenCust>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  String _currLoc = '';
-
-  void setCurrentLocation() async {
-    _currLoc = await locateCustPosition();
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    setCurrentLocation();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    setCurrentLocation();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,19 +70,34 @@ class _MainScreenCustState extends State<MainScreenCust>
               SizedBox(
                 width: 10,
               ),
-              SizedBox(
-                width: 210,
-                child: MarqueeWidget(
-                  direction: Axis.horizontal,
-                  child: Text(
-                    _currLoc,
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                ),
-              )
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: FirebaseFirestore.instance
+                    .collection("Customer")
+                    .doc(currentFirebaseUser!.uid)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.connectionState ==
+                          ConnectionState.active ||
+                      snapshot.connectionState == ConnectionState.done) {
+                    return SizedBox(
+                      width: 210,
+                      child: MarqueeWidget(
+                        direction: Axis.horizontal,
+                        child: Text(
+                          snapshot.data!["currLocation"],
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
             ],
           ),
         ),
