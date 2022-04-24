@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hifixit/app/services/global.dart';
 
 Position? custCurrentPosition;
 var geoLocator = Geolocator();
@@ -59,6 +61,17 @@ locateCustPosition() async {
 
   newGoogleMapController!
       .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+
+  Map<String, dynamic> custNewMap = {
+    "latitude": custCurrentPosition!.latitude,
+    "longitude": custCurrentPosition!.longitude,
+    "currLocation": custCompleteAddress,
+  };
+
+  FirebaseFirestore.instance
+      .collection("Customer")
+      .doc(currentFirebaseUser!.uid)
+      .update(custNewMap);
 
   return custCompleteAddress;
 }
