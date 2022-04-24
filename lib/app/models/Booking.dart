@@ -5,7 +5,7 @@ class Booking {
   String? techId;
   double? rate;
   String? bookStatus; //pending, booked, on going, done, canceled
-  String? paidStatus; //pending, booked, on going, done, canceled
+  String? paidStatus; //paid, not paid
   DateTime? created_at;
   DateTime? bookDate;
 

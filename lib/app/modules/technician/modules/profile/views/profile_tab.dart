@@ -146,14 +146,28 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                         ),
                         child: Row(
                           children: [
-                            const CircleAvatar(
+                            CircleAvatar(
                               radius: 25,
                               backgroundColor: Color(0xFFBF84B1),
-                              child: const Icon(
-                                Icons.local_laundry_service_outlined,
-                                color: Colors.white,
-                                size: 30,
-                              ),
+                              child: snapshot.data!["techCategory"] ==
+                                      "Washing Machine"
+                                  ? Icon(
+                                      Icons.local_laundry_service_outlined,
+                                      color: Colors.white,
+                                      size: 30,
+                                    )
+                                  : snapshot.data!["techCategory"] ==
+                                          "Air Conditioner"
+                                      ? Icon(
+                                          Icons.ac_unit_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        )
+                                      : Icon(
+                                          Icons.build_rounded,
+                                          color: Colors.white,
+                                          size: 30,
+                                        ),
                             ),
                             const SizedBox(
                               width: 20,
@@ -188,7 +202,7 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                                           ConnectionState.done ||
                                       snap.hasData ||
                                       snap.data != null) {
-                                    return RateCard(_rates[index] as Rates);
+                                    return RateCardList(_rates[index] as Rates);
                                   }
                                   return const Center(
                                       child: const CircularProgressIndicator());
@@ -213,13 +227,13 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
         .get();
     setState(() {
       _rates = List.from(data.docs.map((doc) => Rates.fromSnapshot(doc)));
-      print(_rates);
+      // print(_rates);
     });
   }
 }
 
-class RateCard extends StatelessWidget {
-  const RateCard(
+class RateCardList extends StatelessWidget {
+  const RateCardList(
     this._rateData,
   );
 
@@ -251,14 +265,21 @@ class RateCard extends StatelessWidget {
                         snapshot.data!["custFName"] +
                             " " +
                             snapshot.data!["custLName"],
-                        style: const TextStyle(fontSize: 20),
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
                       );
                     }),
                 Text(
-                  DateFormat('MM/dd/yyyy')
+                  DateFormat('dd MMM yyyy')
                       .format(_rateData.created_at!)
                       .toString(),
-                  style: const TextStyle(color: const Color(0xFFD96464)),
+                  style: const TextStyle(
+                    color: const Color(0xFFD96464),
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
                 const SizedBox(
                   height: 10,
@@ -280,7 +301,7 @@ class RateCard extends StatelessWidget {
                       color: Colors.amber,
                     ),
                     onRatingUpdate: (rating) {
-                      print(rating);
+                      // print(rating);
                     },
                   ),
                 ),
