@@ -17,9 +17,8 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
   List<Object> _book = [];
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getAllBooking();
   }
 
@@ -105,7 +104,7 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
         .collection("Booking")
         .where("techId", isEqualTo: currentFirebaseUser!.uid)
         .where("bookStatus", isEqualTo: "Booked")
-        .orderBy("bookDate", descending: true)
+        .orderBy("bookDate", descending: false)
         .get();
     setState(() {
       _book = List.from(data.docs.map((doc) => Booking.fromSnapshot(doc)));
@@ -136,7 +135,7 @@ class BookCardList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      DateFormat('dd').format(_bookData.created_at!).toString(),
+                      DateFormat('dd').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -144,9 +143,7 @@ class BookCardList extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat('MMM')
-                          .format(_bookData.created_at!)
-                          .toString(),
+                      DateFormat('MMM').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -154,7 +151,7 @@ class BookCardList extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat('yy').format(_bookData.created_at!).toString(),
+                      DateFormat('yy').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -210,7 +207,7 @@ class BookCardList extends StatelessWidget {
                         }),
                     Text(
                       DateFormat('hh:mm')
-                          .format(_bookData.created_at!)
+                          .format(_bookData.bookDate!)
                           .toString(),
                       style: const TextStyle(
                         color: Color(0xFFD96464),

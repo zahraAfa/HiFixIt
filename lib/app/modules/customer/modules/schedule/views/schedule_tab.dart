@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hifixit/app/models/Booking.dart';
+import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -14,22 +15,33 @@ class ScheduleTabPage extends StatefulWidget {
 }
 
 class _ScheduleTabPageState extends State<ScheduleTabPage> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Object> _book = [];
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     getAllBooking();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: MenuDrawer(),
       appBar: AppBar(
         elevation: 0,
         title: Text("Schedules"),
         centerTitle: true,
+        leading: IconButton(
+          visualDensity: VisualDensity.comfortable,
+          padding: const EdgeInsets.all(2.0),
+          onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
+        ),
         actions: [
           ElevatedButton.icon(
             icon: const Icon(Icons.pending_actions_rounded),
@@ -127,7 +139,7 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
         .collection("Booking")
         .where("custId", isEqualTo: currentFirebaseUser!.uid)
         .where("bookStatus", isEqualTo: "Booked")
-        .orderBy("bookDate", descending: true)
+        .orderBy("bookDate", descending: false)
         .get();
     setState(() {
       _book = List.from(data.docs.map((doc) => Booking.fromSnapshot(doc)));
@@ -158,7 +170,7 @@ class BookCardList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      DateFormat('dd').format(_bookData.created_at!).toString(),
+                      DateFormat('dd').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -166,9 +178,7 @@ class BookCardList extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat('MMM')
-                          .format(_bookData.created_at!)
-                          .toString(),
+                      DateFormat('MMM').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -176,7 +186,7 @@ class BookCardList extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      DateFormat('yy').format(_bookData.created_at!).toString(),
+                      DateFormat('yy').format(_bookData.bookDate!).toString(),
                       style: TextStyle(
                         color: Color(0xFFD96464),
                         fontWeight: FontWeight.w700,
@@ -240,7 +250,7 @@ class BookCardList extends StatelessWidget {
                         }),
                     Text(
                       DateFormat('hh:mm')
-                          .format(_bookData.created_at!)
+                          .format(_bookData.bookDate!)
                           .toString(),
                       style: const TextStyle(
                         color: Color(0xFFD96464),
