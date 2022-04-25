@@ -1,23 +1,20 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:hifixit/app/models/Booking.dart';
-import 'package:hifixit/app/modules/customer/modules/pending/views/pending_booking_page.dart';
-import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
-import 'package:hifixit/app/services/global.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:hifixit/app/modules/technician/widgets/menu_drawer.dart';
 import 'package:intl/intl.dart';
+import 'package:hifixit/app/models/Booking.dart';
+import 'package:hifixit/app/services/global.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ScheduleTabPage extends StatefulWidget {
-  const ScheduleTabPage({Key? key}) : super(key: key);
+class PendingBookingPage extends StatefulWidget {
+  const PendingBookingPage({Key? key}) : super(key: key);
 
   @override
-  State<ScheduleTabPage> createState() => _ScheduleTabPageState();
+  State<PendingBookingPage> createState() => _PendingBookingPageState();
 }
 
-class _ScheduleTabPageState extends State<ScheduleTabPage> {
+class _PendingBookingPageState extends State<PendingBookingPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Object> _book = [];
+  List<Object> _bookings = [];
 
   @override
   void didChangeDependencies() {
@@ -32,7 +29,7 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
       drawer: MenuDrawer(),
       appBar: AppBar(
         elevation: 0,
-        title: Text("Schedules"),
+        title: const Text("Pending"),
         centerTitle: true,
         leading: IconButton(
           visualDensity: VisualDensity.comfortable,
@@ -43,45 +40,13 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
             color: Colors.white,
           ),
         ),
-        actions: [
-          ElevatedButton.icon(
-            icon: const Icon(Icons.pending_actions_rounded),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (c) => const PendingBookingPage()));
-            },
-            label: const Text("Pending"),
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
-                  const Color(0xFFA74385),
-                ),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        side: BorderSide(color: Color(0xFFA74385))))),
-          ),
-          SizedBox(
-            width: 3,
-          )
-        ],
       ),
       body: Container(
         child: Column(
           children: [
-            TableCalendar(
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: DateTime.now(),
-            ),
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
-                  ),
                   color: Colors.grey.shade300,
                 ),
                 // height: 200,
@@ -90,40 +55,28 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Text(
-                      "Booked",
-                      style: TextStyle(
-                          color: Color(0xFF7B4067),
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
                     Expanded(
                       child: ListView.builder(
                         // shrinkWrap: true,
-                        itemCount: _book.length,
+                        itemCount: _bookings.length,
                         itemBuilder: (BuildContext context, int index) =>
                             StreamBuilder(
                                 stream: FirebaseFirestore.instance
                                     .collection("Booking")
-                                    .where("custId",
+                                    .where("techId",
                                         isEqualTo: currentFirebaseUser!.uid)
                                     .snapshots(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snap) {
                                   if (!snap.hasData) {
-                                    print("No data");
                                     return const Center(
                                         child: CircularProgressIndicator());
                                   } else if (snap.connectionState ==
                                           ConnectionState.done ||
                                       snap.hasData ||
                                       snap.data != null) {
-                                    print(snap.data);
                                     return BookCardList(
-                                        _book[index] as Booking);
+                                        _bookings[index] as Booking);
                                   }
                                   return const Center(
                                       child: const CircularProgressIndicator());
@@ -143,23 +96,23 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
   Future getAllBooking() async {
     var data = await FirebaseFirestore.instance
         .collection("Booking")
-        .where("custId", isEqualTo: currentFirebaseUser!.uid)
-        .where("bookStatus", isEqualTo: "Booked")
+        .where("techId", isEqualTo: currentFirebaseUser!.uid)
+        .where("bookStatus", isEqualTo: "Pending")
         .orderBy("bookDate", descending: false)
         .get();
     setState(() {
-      _book = List.from(data.docs.map((doc) => Booking.fromSnapshot(doc)));
-      // print(_book);
+      _bookings += List.from(data.docs.map((doc) => Booking.fromSnapshot(doc)));
+      // print(_bookings);
     });
   }
 }
 
 class BookCardList extends StatelessWidget {
   const BookCardList(
-    this._bookData,
+    this._bookingsData,
   );
 
-  final Booking _bookData;
+  final Booking _bookingsData;
 
   @override
   Widget build(BuildContext context) {
@@ -176,25 +129,31 @@ class BookCardList extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      DateFormat('dd').format(_bookData.bookDate!).toString(),
+                      DateFormat('dd')
+                          .format(_bookingsData.bookDate!)
+                          .toString(),
                       style: TextStyle(
-                        color: Color(0xFFD96464),
+                        color: Colors.grey.shade500,
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                       ),
                     ),
                     Text(
-                      DateFormat('MMM').format(_bookData.bookDate!).toString(),
+                      DateFormat('MMM')
+                          .format(_bookingsData.bookDate!)
+                          .toString(),
                       style: TextStyle(
-                        color: Color(0xFFD96464),
+                        color: Colors.grey.shade500,
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                       ),
                     ),
                     Text(
-                      DateFormat('yy').format(_bookData.bookDate!).toString(),
+                      DateFormat('yy')
+                          .format(_bookingsData.bookDate!)
+                          .toString(),
                       style: TextStyle(
-                        color: Color(0xFFD96464),
+                        color: Colors.grey.shade500,
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
                       ),
@@ -220,8 +179,8 @@ class BookCardList extends StatelessWidget {
                   children: [
                     StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                         stream: FirebaseFirestore.instance
-                            .collection("Technician")
-                            .doc(_bookData.techId.toString())
+                            .collection("Customer")
+                            .doc(_bookingsData.custId.toString())
                             .snapshots(),
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
@@ -232,9 +191,9 @@ class BookCardList extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                snapshot.data!["techFName"] +
+                                snapshot.data!["custFName"] +
                                     " " +
-                                    snapshot.data!["techLName"],
+                                    snapshot.data!["custLName"],
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w500,
@@ -243,23 +202,23 @@ class BookCardList extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
-                              Text(
-                                snapshot.data!["techCategory"],
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xFFD96464),
-                                ),
-                              ),
                             ],
                           );
                         }),
                     Text(
+                      _bookingsData.bookStatus.toString(),
+                      style: TextStyle(
+                        color: Color(0xFFD96464),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
                       DateFormat('hh:mm')
-                          .format(_bookData.bookDate!)
+                          .format(_bookingsData.bookDate!)
                           .toString(),
                       style: const TextStyle(
-                        color: Color(0xFFD96464),
+                        color: Colors.grey,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),
