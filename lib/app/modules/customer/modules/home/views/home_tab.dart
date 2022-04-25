@@ -195,7 +195,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return ProgressDialog(message: "No data");
+                    return ProgressDialog(message: "Loading...");
                   }
                   return SizedBox(
                     height: 190,

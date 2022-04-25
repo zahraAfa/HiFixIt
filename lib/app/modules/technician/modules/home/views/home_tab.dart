@@ -40,7 +40,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
           builder: (context, snapshot) {
             // String selectedTechStatus = snapshot.data!["techStatus"].toString();
             if (!snapshot.hasData) {
-              return ProgressDialog(message: "No data");
+              return ProgressDialog(message: "Loading...");
             }
             return Column(
               children: [
