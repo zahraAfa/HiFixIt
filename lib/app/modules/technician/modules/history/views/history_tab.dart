@@ -189,16 +189,6 @@ class BookCardList extends StatelessWidget {
                           );
                         }),
                     Text(
-                      DateFormat('hh:mm')
-                          .format(_historiesData.bookDate!)
-                          .toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Text(
                       _historiesData.bookStatus.toString(),
                       style: TextStyle(
                         color: _historiesData.bookStatus.toString() ==
@@ -207,6 +197,16 @@ class BookCardList extends StatelessWidget {
                             : _historiesData.bookStatus.toString() == "Ongoing"
                                 ? Color(0xFF2FB83D)
                                 : Colors.grey.shade500,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('hh:mm')
+                          .format(_historiesData.bookDate!)
+                          .toString(),
+                      style: const TextStyle(
+                        color: Colors.grey,
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/technician/modules/account/views/tech_account.dart';
 import 'package:hifixit/app/modules/technician/modules/mainScreens/main_screens_tech.dart';
+import 'package:hifixit/app/modules/technician/modules/pending/views/pending_booking_page.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
 import 'package:hifixit/app/modules/technician/widgets/menu_list_with_icon.dart';
@@ -67,6 +68,17 @@ class MenuDrawer extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (c) => const MainScreenTech()),
+                        (Route<dynamic> route) => false);
+                  },
+                ),
+                MenuListWithIcon(
+                  icon: Icons.pending_actions_rounded,
+                  title: 'Pending Requests',
+                  onTap: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (c) => const PendingBookingPage()),
                         (Route<dynamic> route) => false);
                   },
                 ),
