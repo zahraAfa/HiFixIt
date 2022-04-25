@@ -126,6 +126,7 @@ class _ScheduleTabPageState extends State<ScheduleTabPage> {
     var data = await FirebaseFirestore.instance
         .collection("Booking")
         .where("custId", isEqualTo: currentFirebaseUser!.uid)
+        .where("bookStatus", isEqualTo: "Booked")
         .orderBy("bookDate", descending: true)
         .get();
     setState(() {
