@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hifixit/app/models/Rates.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/views/create_booking_page.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
 import 'package:intl/intl.dart';
@@ -203,7 +204,15 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                             SizedBox(width: 17),
                             ElevatedButton.icon(
                               icon: const Icon(Icons.bookmark_add_outlined),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (c) => CreateBookingPage(
+                                              techId: snapshot.data!["techId"]
+                                                  .toString(),
+                                            )));
+                              },
                               label: const Text("Book"),
                               style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all(
