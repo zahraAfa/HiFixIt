@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/customer/widgets/button_widget.dart';
 import 'package:intl/intl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatePickerWidget extends StatefulWidget {
   const DatePickerWidget({Key? key}) : super(key: key);
@@ -17,6 +18,10 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       return 'Select Date';
     } else {
       // return '${date.month} / ${date.day} / ${date.year}';
+      // DateTime selectedDT=pickedDateTime;
+      // FirebaseFirestore.instance.collection('Booking').doc('').setData({
+      // 'date_time': selectedDT
+      // });
       return DateFormat('dd MMM yyyy').format(date!);
     }
   }
