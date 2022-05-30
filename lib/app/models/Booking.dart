@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Booking {
+  String? bookingId;
   String? custId;
   String? techId;
   double? rate;
@@ -45,7 +46,8 @@ class Booking {
   }
 
   Booking.fromSnapshot(snapshot)
-      : custId = snapshot.data()["custId"],
+      : bookingId = snapshot.id,
+        custId = snapshot.data()["custId"],
         techId = snapshot.data()["techId"],
         rate = snapshot.data()["rate"].toDouble(),
         bookStatus = snapshot.data()["bookStatus"],
