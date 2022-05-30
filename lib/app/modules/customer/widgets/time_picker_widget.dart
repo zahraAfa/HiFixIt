@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/controllers/booking_controller.dart';
 import 'package:hifixit/app/modules/customer/widgets/button_widget.dart';
 import 'package:intl/intl.dart';
 
@@ -26,7 +27,9 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
   Widget build(BuildContext context) => ButtonHeaderWidget(
         title: 'Time',
         text: getText(),
-        onClicked: () => pickTime(context),
+        onClicked: () {
+          pickTime(context);
+        },
       );
 
   Future pickTime(BuildContext context) async {
@@ -39,5 +42,6 @@ class _TimePickerWidgetState extends State<TimePickerWidget> {
     if (newTime == null) return;
 
     setState(() => time = newTime);
+    setBookingTime(time);
   }
 }

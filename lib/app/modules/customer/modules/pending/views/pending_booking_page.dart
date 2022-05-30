@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
+import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
 import 'package:intl/intl.dart';
 import 'package:hifixit/app/models/Booking.dart';
 import 'package:hifixit/app/services/global.dart';
@@ -25,6 +26,12 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // leading: BackButton(
+        //   onPressed: () {
+        //     Navigator.pop(context,
+        //         MaterialPageRoute(builder: (c) => const ScheduleTabPage()));
+        //   },
+        // ),
         elevation: 0,
         title: const Text("Pending"),
         centerTitle: true,

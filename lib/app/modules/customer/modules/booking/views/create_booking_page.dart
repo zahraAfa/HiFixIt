@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/controllers/booking_controller.dart';
 import 'package:hifixit/app/modules/customer/widgets/date_picker_widget.dart';
 import 'package:hifixit/app/modules/customer/widgets/time_picker_widget.dart';
 import 'package:hifixit/app/services/global.dart';
@@ -17,6 +18,20 @@ class CreateBookingPage extends StatefulWidget {
 }
 
 class _CreateBookingPageState extends State<CreateBookingPage> {
+  final pickedDateController = TextEditingController();
+  final pickedTimeController = TextEditingController();
+  final locDetailController = TextEditingController();
+  final repDetailController = TextEditingController();
+
+  @override
+  void dispose() {
+    pickedDateController.dispose();
+    pickedTimeController.dispose();
+    locDetailController.dispose();
+    repDetailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +48,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                 .collection("Technician")
                 .doc(widget.techId)
                 .snapshots(),
-            builder: (context, snapshot) {
+            builder: (context, snapshotTech) {
               return Column(
                 children: [
                   Container(
@@ -59,11 +74,12 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                         CircleAvatar(
                           radius: 50,
                           backgroundColor: const Color(0xFF7B4067),
-                          backgroundImage: snapshot.data?['techPicture'].isEmpty
+                          backgroundImage: snapshotTech
+                                  .data?['techPicture'].isEmpty
                               ? null
                               : NetworkImage(
-                                  snapshot.data!['techPicture'].toString()),
-                          child: snapshot.data?['techPicture'].isNotEmpty
+                                  snapshotTech.data!['techPicture'].toString()),
+                          child: snapshotTech.data?['techPicture'].isNotEmpty
                               ? null
                               : const Icon(
                                   Icons.account_circle_rounded,
@@ -77,9 +93,9 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                snapshot.data?["techFName"] +
+                                snapshotTech.data?["techFName"] +
                                     " " +
-                                    snapshot.data?["techLName"],
+                                    snapshotTech.data?["techLName"],
                                 style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w600,
@@ -106,10 +122,11 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                 child: Row(
                                   children: [
                                     Icon(
-                                      snapshot.data?["techCategory"] ==
+                                      snapshotTech.data?["techCategory"] ==
                                               "Washing Machine"
                                           ? Icons.local_laundry_service_outlined
-                                          : snapshot.data?["techCategory"] ==
+                                          : snapshotTech
+                                                      .data?["techCategory"] ==
                                                   "Air Conditioner"
                                               ? Icons.ac_unit_rounded
                                               : Icons.build_rounded,
@@ -117,7 +134,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       size: 20,
                                     ),
                                     Text(
-                                      snapshot.data?["techCategory"],
+                                      snapshotTech.data?["techCategory"],
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600,
@@ -159,7 +176,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                 .collection("Customer")
                                 .doc(currentFirebaseUser!.uid)
                                 .snapshots(),
-                            builder: (context, snapshot) {
+                            builder: (context, snapshotCust) {
                               return Column(
                                 children: [
                                   // Row(),
@@ -192,7 +209,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                         fillColor: Colors.white,
                                         border: InputBorder.none,
                                         hintText:
-                                            snapshot.data?['currLocation'],
+                                            snapshotCust.data?['currLocation'],
                                       ),
                                     ),
                                   ),
@@ -219,6 +236,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       vertical: 1,
                                     ),
                                     child: TextFormField(
+                                      controller: locDetailController,
                                       decoration: const InputDecoration(
                                         fillColor: Colors.white,
                                         border: InputBorder.none,
@@ -250,6 +268,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       vertical: 1,
                                     ),
                                     child: TextFormField(
+                                      controller: repDetailController,
                                       maxLines: 4,
                                       decoration: const InputDecoration(
                                         fillColor: Colors.white,
@@ -264,7 +283,17 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                   ElevatedButton.icon(
                                     icon:
                                         const Icon(Icons.bookmark_add_outlined),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      createBookNow(
+                                          context: context,
+                                          techId: widget.techId,
+                                          location: snapshotCust
+                                              .data?['currLocation'],
+                                          locationDetail:
+                                              locDetailController.text,
+                                          reparationDetail:
+                                              repDetailController.text);
+                                    },
                                     label: const Text("Book"),
                                     style: ButtonStyle(
                                         minimumSize: MaterialStateProperty.all(

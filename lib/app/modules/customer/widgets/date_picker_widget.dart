@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/controllers/booking_controller.dart';
 import 'package:hifixit/app/modules/customer/widgets/button_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -30,7 +31,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   Widget build(BuildContext context) => ButtonHeaderWidget(
         title: 'Date',
         text: getText(),
-        onClicked: () => pickDate(context),
+        onClicked: () {
+          pickDate(context);
+        },
       );
 
   Future pickDate(BuildContext context) async {
@@ -43,7 +46,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     );
 
     if (newDate == null) return;
-
     setState(() => date = newDate);
+    setBookingDate(date);
   }
 }
