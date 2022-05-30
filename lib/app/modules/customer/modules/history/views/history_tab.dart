@@ -97,7 +97,8 @@ class _HistoryTabPageState extends State<HistoryTabPage> {
     var data = await FirebaseFirestore.instance
         .collection("Booking")
         .where("custId", isEqualTo: currentFirebaseUser!.uid)
-        .where("bookStatus", whereIn: ["Ongoing", "Canceled", "Completed"])
+        .where("bookStatus",
+            whereIn: ["Ongoing", "Canceled", "Completed", "Rejected"])
         .orderBy("bookDate", descending: false)
         .get();
     setState(() {
