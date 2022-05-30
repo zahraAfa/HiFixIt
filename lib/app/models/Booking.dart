@@ -8,6 +8,9 @@ class Booking {
   String? paidStatus; //paid, not paid
   DateTime? created_at;
   DateTime? bookDate;
+  String? location;
+  String? locationDetail;
+  String? reparationDetail;
 
   // Booking({this.custId, this.rate, this.created_at});
   Booking();
@@ -20,6 +23,9 @@ class Booking {
     paidStatus = json["paidStatus"];
     created_at = json["created_at"];
     bookDate = json["bookDate"];
+    location = json["location"];
+    locationDetail = json["locationDetail"];
+    reparationDetail = json["reparationDetail"];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,6 +37,9 @@ class Booking {
     data["paidStatus"] = this.paidStatus;
     data["created_at"] = this.created_at;
     data["bookDate"] = this.bookDate;
+    data["location"] = this.location;
+    data["locationDetail"] = this.locationDetail;
+    data["reparationDetail"] = this.reparationDetail;
 
     return data;
   }
@@ -42,5 +51,8 @@ class Booking {
         bookStatus = snapshot.data()["bookStatus"],
         paidStatus = snapshot.data()["paidStatus"],
         created_at = snapshot.data()["created_at"].toDate(),
-        bookDate = snapshot.data()["bookDate"].toDate();
+        bookDate = snapshot.data()["bookDate"].toDate(),
+        location = snapshot.data()["location"],
+        locationDetail = snapshot.data()["locationDetail"],
+        reparationDetail = snapshot.data()["reparationDetail"];
 }
