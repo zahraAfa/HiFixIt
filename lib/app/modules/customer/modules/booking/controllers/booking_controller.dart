@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:hifixit/app/modules/customer/modules/history/views/history_tab.dart';
 import 'package:hifixit/app/modules/customer/modules/pending/views/pending_booking_page.dart';
+import 'package:hifixit/app/modules/technician/modules/schedule/views/schedule_tab.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
 
@@ -73,5 +75,26 @@ createBookNow({
   Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (c) => const PendingBookingPage()),
+      (Route<dynamic> route) => route.isFirst);
+}
+
+custBookingUpdate({
+  context,
+  bookStatus,
+  bookId,
+}) async {
+  Map<String, dynamic> custBookUpdateMap = {
+    "bookStatus": bookStatus,
+  };
+
+  FirebaseFirestore.instance
+      .collection("Booking")
+      .doc(bookId)
+      .update(custBookUpdateMap);
+
+  Fluttertoast.showToast(msg: "Updated");
+  Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (c) => const HistoryTabPage()),
       (Route<dynamic> route) => route.isFirst);
 }

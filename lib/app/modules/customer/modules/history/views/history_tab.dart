@@ -204,6 +204,14 @@ class BookCardList extends StatelessWidget {
                               const SizedBox(
                                 height: 5,
                               ),
+                              Text(
+                                snapshot.data!["techCategory"],
+                                style: TextStyle(
+                                  color: Colors.grey.shade500,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ],
                           );
                         }),

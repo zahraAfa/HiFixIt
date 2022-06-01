@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/views/booking_info_page.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
 import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
 import 'package:intl/intl.dart';
@@ -116,6 +117,13 @@ class BookCardList extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           print("tapped on ${_bookingsData.bookingId}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) =>
+                  CustBookingInfoPage(bookId: _bookingsData.bookingId!),
+            ),
+          );
         },
         child: Card(
             shape:

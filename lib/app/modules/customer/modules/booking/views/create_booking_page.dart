@@ -205,6 +205,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                       vertical: 1,
                                     ),
                                     child: TextFormField(
+                                      enabled: false,
                                       decoration: InputDecoration(
                                         fillColor: Colors.white,
                                         border: InputBorder.none,
