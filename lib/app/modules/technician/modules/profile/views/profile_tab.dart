@@ -104,7 +104,8 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                             RatingBar.builder(
                               ignoreGestures: true,
                               itemSize: 30,
-                              initialRating: snapshot.data!["rating"],
+                              initialRating:
+                                  snapshot.data!["rating"].toDouble(),
                               minRating: 1,
                               direction: Axis.horizontal,
                               allowHalfRating: true,
