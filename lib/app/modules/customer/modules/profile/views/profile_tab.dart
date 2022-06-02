@@ -232,8 +232,9 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
                             StreamBuilder(
                                 stream: FirebaseFirestore.instance
                                     .collection("Rates")
-                                    .where("techId",
-                                        isEqualTo: currentFirebaseUser!.uid)
+                                    .where("techId", isEqualTo: widget.techId)
+                                    // .where("techId",
+                                    //     isEqualTo: currentFirebaseUser!.uid)
                                     .snapshots(),
                                 builder: (BuildContext context,
                                     AsyncSnapshot<QuerySnapshot> snap) {
