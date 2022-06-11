@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/modules/customer/modules/history/views/history_tab.dart';
 import 'package:hifixit/app/modules/customer/modules/pending/views/pending_booking_page.dart';
-import 'package:hifixit/app/modules/technician/modules/schedule/views/schedule_tab.dart';
+import 'package:hifixit/app/modules/customer/modules/profile/views/profile_tab.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
 
@@ -96,5 +96,62 @@ custBookingUpdate({
   Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (c) => const HistoryTabPage()),
+      (Route<dynamic> route) => route.isFirst);
+}
+
+custReviewUpdate({
+  context,
+  bookId,
+  rate,
+  techId,
+  custId,
+}) async {
+  Map<String, dynamic> custReviewUp = {
+    "rate": rate,
+  };
+  Map<String, dynamic> custReviewTech = {
+    "created_at": DateTime.now(),
+    "custId": custId,
+    "rate": rate,
+  };
+
+  FirebaseFirestore.instance
+      .collection("Booking")
+      .doc(bookId)
+      .update(custReviewUp);
+
+  FirebaseFirestore.instance
+      .collection("Technician")
+      .doc(techId)
+      .collection('Rates')
+      .doc()
+      .set(custReviewTech);
+
+  var collection = FirebaseFirestore.instance.collection('Technician');
+  var docSnapshot = await collection.doc(techId).get();
+  if (docSnapshot.exists) {
+    print('exists');
+    Map<String, dynamic>? data = docSnapshot.data();
+
+    // DocumentSnapshot variable = await FirebaseFirestore.instance.collection('Technician').doc('tech').get();
+    var rateNow = data?['rating'];
+    double techRate = (rateNow + rate) / 2;
+
+    Map<String, dynamic> techRateCalc = {
+      "rating": techRate,
+    };
+
+    print(techRate);
+
+    FirebaseFirestore.instance
+        .collection("Technician")
+        .doc(techId)
+        .update(techRateCalc);
+  }
+
+  Fluttertoast.showToast(msg: "Rated");
+  Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (c) => ProfileTabPage(techId: techId)),
       (Route<dynamic> route) => route.isFirst);
 }
