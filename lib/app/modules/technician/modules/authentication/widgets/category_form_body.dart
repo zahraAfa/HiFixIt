@@ -62,6 +62,7 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
       "techCategory": selectedCategoryType,
       "techPicture": techImageUrl,
       "rating": 0.0,
+      "serviceFee": 0,
     };
 
     FirebaseFirestore.instance
