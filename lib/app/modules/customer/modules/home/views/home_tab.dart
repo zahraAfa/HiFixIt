@@ -35,6 +35,8 @@ class _HomeTabPageState extends State<HomeTabPage> {
   List<String> priceRange = ["Highest Price", "Lowest Price"];
   String? selectedPriceRange;
 
+  // filtered
+
   final double _bottomPaddingOfMap = 300;
 
   @override
@@ -192,6 +194,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
             child: StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection("Technician")
+                    .orderBy("techStatus", descending: false)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
@@ -205,146 +208,159 @@ class _HomeTabPageState extends State<HomeTabPage> {
                       children: snapshot.data!.docs.map((docs) {
                         Map<String, dynamic> data =
                             docs.data()! as Map<String, dynamic>;
-                        return SizedBox(
-                          // height: 160,
-                          width: 220,
-                          child: Card(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 13, vertical: 5),
-                            elevation: 2,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(15.0),
-                              child: Container(
-                                child: Column(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
+                        double distancetech = coordinateDistance(
+                            data['latitude'], data['longitude']);
+                        if ((10 - distancetech) > 0.0) {
+                          //Within 10km
+                          return SizedBox(
+                            // height: 160,
+                            width: 220,
+                            child: Card(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 13, vertical: 5),
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Container(
+                                  child: Column(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topRight,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              data['techStatus'].toString(),
+                                              style: data['techStatus'] == "Off"
+                                                  ? const TextStyle(
+                                                      color: Colors.grey)
+                                                  : const TextStyle(
+                                                      color: Colors.green),
+                                              textAlign: TextAlign.end,
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            Icon(
+                                              Icons.circle,
+                                              color: data['techStatus'] == "Off"
+                                                  ? Colors.grey
+                                                  : Colors.green,
+                                              size: 10,
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Row(
                                         children: [
-                                          Text(
-                                            data['techStatus'].toString(),
-                                            style: data['techStatus'] == "Off"
-                                                ? const TextStyle(
-                                                    color: Colors.grey)
-                                                : const TextStyle(
-                                                    color: Colors.green),
-                                            textAlign: TextAlign.end,
+                                          CircleAvatar(
+                                            radius: 25,
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 241, 241, 241),
+                                            backgroundImage:
+                                                data['techPicture'].isEmpty
+                                                    ? null
+                                                    : NetworkImage(
+                                                        data['techPicture']
+                                                            .toString()),
+                                            child:
+                                                data['techPicture'].isNotEmpty
+                                                    ? null
+                                                    : const Icon(
+                                                        Icons
+                                                            .account_circle_rounded,
+                                                        color: Color.fromARGB(
+                                                            255, 156, 156, 156),
+                                                        size: 50,
+                                                      ),
                                           ),
                                           const SizedBox(
                                             width: 5,
                                           ),
-                                          Icon(
-                                            Icons.circle,
-                                            color: data['techStatus'] == "Off"
-                                                ? Colors.grey
-                                                : Colors.green,
-                                            size: 10,
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                data['techFName'].toString(),
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w700,
+                                                    color:
+                                                        Colors.grey.shade800),
+                                              ),
+                                              Text(
+                                                data['techCategory'].toString(),
+                                              ),
+                                            ],
                                           )
                                         ],
                                       ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        CircleAvatar(
-                                          radius: 25,
-                                          backgroundColor: const Color.fromARGB(
-                                              255, 241, 241, 241),
-                                          backgroundImage: data['techPicture']
-                                                  .isEmpty
-                                              ? null
-                                              : NetworkImage(data['techPicture']
-                                                  .toString()),
-                                          child: data['techPicture'].isNotEmpty
-                                              ? null
-                                              : const Icon(
-                                                  Icons.account_circle_rounded,
-                                                  color: Color.fromARGB(
-                                                      255, 156, 156, 156),
-                                                  size: 50,
-                                                ),
+                                      RatingBar.builder(
+                                        ignoreGestures: true,
+                                        itemSize: 25,
+                                        initialRating:
+                                            data['rating'].toDouble(),
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 5,
+                                        itemPadding: const EdgeInsets.symmetric(
+                                            horizontal: 1.0, vertical: 3.0),
+                                        itemBuilder: (context, _) => const Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
                                         ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              data['techFName'].toString(),
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Colors.grey.shade800),
-                                            ),
-                                            Text(
-                                              data['techCategory'].toString(),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    RatingBar.builder(
-                                      ignoreGestures: true,
-                                      itemSize: 25,
-                                      initialRating: data['rating'].toDouble(),
-                                      minRating: 1,
-                                      direction: Axis.horizontal,
-                                      allowHalfRating: true,
-                                      itemCount: 5,
-                                      itemPadding: const EdgeInsets.symmetric(
-                                          horizontal: 1.0, vertical: 3.0),
-                                      itemBuilder: (context, _) => const Icon(
-                                        Icons.star,
-                                        color: Colors.amber,
+                                        onRatingUpdate: (rating) {
+                                          print(rating);
+                                        },
                                       ),
-                                      onRatingUpdate: (rating) {
-                                        print(rating);
-                                      },
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton(
-                                          onPressed: (() {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (c) =>
-                                                        ProfileTabPage(
-                                                            techId: data[
-                                                                    'techId']
-                                                                .toString())));
-                                          }),
-                                          child: const Text("Home"),
-                                          style: ButtonStyle(
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            onPressed: (() {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (c) =>
+                                                          ProfileTabPage(
+                                                              techId: data[
+                                                                      'techId']
+                                                                  .toString())));
+                                            }),
+                                            child: const Text("Home"),
+                                            style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all(
+                                                        const Color(
+                                                            0xFFBF84B1))),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: (() {}),
+                                            child: const Text("Chat"),
+                                            style: ButtonStyle(
                                               backgroundColor:
                                                   MaterialStateProperty.all(
-                                                      const Color(0xFFBF84B1))),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: (() {}),
-                                          child: const Text("Chat"),
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                              const Color.fromARGB(
-                                                  255, 156, 156, 156),
+                                                const Color.fromARGB(
+                                                    255, 156, 156, 156),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
+                                        ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        );
+                          );
+                        } //if
+                        return SizedBox();
                       }).toList(),
                     ),
                   );
