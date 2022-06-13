@@ -46,26 +46,27 @@ saveTechInfoNow(
       "techLName": lNameInput.trim(),
       "techEmail": emailInput.trim(),
       "techPhone": phoneInput.trim(),
-      "techStatus": "Off",
+      "techStatus": "Pending",
       "techCategory": ""
     });
 
     // Save locally
-    sharedPreferences = await SharedPreferences.getInstance();
-    await sharedPreferences!.setString("uid", firebaseUser!.uid);
-    await sharedPreferences!
-        .setString("name", fNameInput.trim() + " " + lNameInput.trim());
-    await sharedPreferences!.setString("fname", fNameInput.trim());
-    await sharedPreferences!.setString("lname", lNameInput.trim());
-    await sharedPreferences!.setString("phone", phoneInput.trim());
-    await sharedPreferences!.setString("email", firebaseUser!.email.toString());
-    await sharedPreferences!.setString("type", "tech");
+    // sharedPreferences = await SharedPreferences.getInstance();
+    // await sharedPreferences!.setString("uid", firebaseUser!.uid);
+    // await sharedPreferences!
+    //     .setString("name", fNameInput.trim() + " " + lNameInput.trim());
+    // await sharedPreferences!.setString("fname", fNameInput.trim());
+    // await sharedPreferences!.setString("lname", lNameInput.trim());
+    // await sharedPreferences!.setString("phone", phoneInput.trim());
+    // await sharedPreferences!.setString("email", firebaseUser!.email.toString());
+    // await sharedPreferences!.setString("type", "tech");
   } else {
     Fluttertoast.showToast(msg: "Account has not been created.");
   }
 
   currentFirebaseUser = firebaseUser;
-  Fluttertoast.showToast(msg: "Account has been created.");
+  Fluttertoast.showToast(
+      msg: "Account has been created and request sent to admin.");
   Navigator.push(
     context,
     MaterialPageRoute(

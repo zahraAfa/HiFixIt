@@ -76,7 +76,8 @@ class _CategoryFormBodyState extends State<CategoryFormBody> {
     await sharedPreferences!.setString("pic", techImageUrl);
     await sharedPreferences!.setDouble("rating", 0.0);
 
-    Fluttertoast.showToast(msg: "Welcome to HiFixIt");
+    Fluttertoast.showToast(msg: "Registration request sent to admin");
+    fAuth.signOut();
     Navigator.push(
         context, MaterialPageRoute(builder: (c) => const MySplashScreen()));
   }
