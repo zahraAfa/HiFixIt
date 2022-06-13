@@ -264,43 +264,50 @@ class _PayAndRateState extends State<PayAndRate> {
                                             SizedBox(
                                               height: 20,
                                             ),
-                                            ElevatedButton.icon(
-                                              icon: const Icon(Icons
-                                                  .check_circle_outline_outlined),
-                                              onPressed: () {
-                                                custReviewUpdate(
-                                                    context: context,
-                                                    bookId: widget.bookId,
-                                                    rate: _rating,
-                                                    techId: snapshotBook
-                                                        .data?["techId"],
-                                                    custId: snapshotBook
-                                                        .data?["custId"]);
-                                              },
-                                              label: const Text("Submit"),
-                                              style: ButtonStyle(
-                                                  minimumSize:
-                                                      MaterialStateProperty.all(
-                                                          Size(300, 50)),
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                    Color.fromARGB(
-                                                        255, 41, 193, 17),
-                                                  ),
-                                                  shape: MaterialStateProperty.all<
-                                                          RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(
-                                                                  30.0),
-                                                          side: BorderSide(
-                                                              color:
-                                                                  Color.fromARGB(
-                                                                      255,
-                                                                      41,
-                                                                      193,
-                                                                      17))))),
-                                            ),
+                                            if (snapshotBook.data?["rate"] !=
+                                                0) ...[
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                            ] else ...[
+                                              ElevatedButton.icon(
+                                                icon: const Icon(Icons
+                                                    .check_circle_outline_outlined),
+                                                onPressed: () {
+                                                  custReviewUpdate(
+                                                      context: context,
+                                                      bookId: widget.bookId,
+                                                      rate: _rating,
+                                                      techId: snapshotBook
+                                                          .data?["techId"],
+                                                      custId: snapshotBook
+                                                          .data?["custId"]);
+                                                },
+                                                label: const Text("Submit"),
+                                                style: ButtonStyle(
+                                                    minimumSize:
+                                                        MaterialStateProperty.all(
+                                                            Size(300, 50)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(
+                                                      Color.fromARGB(
+                                                          255, 41, 193, 17),
+                                                    ),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    30.0),
+                                                            side: BorderSide(
+                                                                color: Color.fromARGB(
+                                                                    255,
+                                                                    41,
+                                                                    193,
+                                                                    17))))),
+                                              ),
+                                            ],
                                           ],
                                         );
                                       }),
