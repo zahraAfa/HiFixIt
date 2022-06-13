@@ -34,16 +34,28 @@ loginTechNow({emailInput, passwordInput, context}) async {
         .get()
         .then((snapshot) async {
       if (snapshot.exists) {
-        readDataAndSetLocally(firebaseUser).then((value) {
+        if (snapshot.data()!["techStatus"] != "Pending") {
+          readDataAndSetLocally(firebaseUser).then((value) {
+            currentFirebaseUser = firebaseUser;
+            Fluttertoast.showToast(msg: "Login Successful.");
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (c) => const MySplashScreen(),
+              ),
+            );
+          });
+        } else {
           currentFirebaseUser = firebaseUser;
-          Fluttertoast.showToast(msg: "Login Successful.");
+          fAuth.signOut();
+          Fluttertoast.showToast(msg: "Your registration request in queue.");
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (c) => const MySplashScreen(),
             ),
           );
-        });
+        }
       } else {
         Fluttertoast.showToast(msg: "No record exist with this email");
         fAuth.signOut();
@@ -71,6 +83,8 @@ Future readDataAndSetLocally(User currentUser) async {
     await sharedPreferences!.setString("email", snapshot.data()!["techEmail"]);
     await sharedPreferences!.setString("name",
         snapshot.data()!["techFName"] + " " + snapshot.data()!["techLName"]);
+    await sharedPreferences!
+        .setString("status", snapshot.data()!["techStatus"]);
     await sharedPreferences!.setString("fname", snapshot.data()!["techFName"]);
     await sharedPreferences!.setString("lname", snapshot.data()!["techLName"]);
     await sharedPreferences!.setString("phone", snapshot.data()!["techPhone"]);
