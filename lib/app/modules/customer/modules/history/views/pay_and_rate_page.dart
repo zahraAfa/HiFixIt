@@ -202,7 +202,7 @@ class _PayAndRateState extends State<PayAndRate> {
                                             ),
                                             Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text("Pay now"),
+                                              child: Text("Payment Status"),
                                             ),
                                             Container(
                                               decoration: const BoxDecoration(
@@ -265,11 +265,11 @@ class _PayAndRateState extends State<PayAndRate> {
                                               height: 20,
                                             ),
                                             if (snapshotBook.data?["rate"] !=
-                                                0) ...[
+                                                0) ...{
                                               SizedBox(
                                                 height: 20,
                                               ),
-                                            ] else ...[
+                                            } else ...{
                                               ElevatedButton.icon(
                                                 icon: const Icon(Icons
                                                     .check_circle_outline_outlined),
@@ -307,7 +307,7 @@ class _PayAndRateState extends State<PayAndRate> {
                                                                     193,
                                                                     17))))),
                                               ),
-                                            ],
+                                            },
                                           ],
                                         );
                                       }),

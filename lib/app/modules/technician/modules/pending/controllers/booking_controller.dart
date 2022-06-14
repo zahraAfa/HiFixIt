@@ -18,7 +18,7 @@ techBookingUpdate({
       .doc(bookId)
       .update(updateTechBook);
 
-  if (bookStatus == "Accepted") {
+  if (bookStatus == "Booked") {
     Fluttertoast.showToast(msg: "Booked");
     Navigator.pushAndRemoveUntil(
         context,

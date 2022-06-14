@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hifixit/app/modules/technician/modules/history/controllers/review_controller.dart';
 import 'package:hifixit/app/modules/technician/modules/pending/controllers/booking_controller.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:intl/intl.dart';
@@ -170,7 +171,7 @@ class _ReviewBookingInfoPageState extends State<ReviewBookingInfoPage> {
                               child: SingleChildScrollView(
                                 child: Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.9,
+                                      MediaQuery.of(context).size.height * 1.0,
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     color: const Color.fromARGB(
@@ -390,7 +391,7 @@ class _ReviewBookingInfoPageState extends State<ReviewBookingInfoPage> {
                                             ),
                                             Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text("Paid Status"),
+                                              child: Text("Payment Status"),
                                             ),
                                             Container(
                                               decoration: const BoxDecoration(
@@ -420,6 +421,48 @@ class _ReviewBookingInfoPageState extends State<ReviewBookingInfoPage> {
                                                 ),
                                               ),
                                             ),
+                                            if (snapshotBook
+                                                    .data?["paidStatus"] ==
+                                                "Not Paid") ...{
+                                              SizedBox(
+                                                height: 10,
+                                              ),
+                                              ElevatedButton.icon(
+                                                icon: const Icon(
+                                                    Icons.payments_outlined),
+                                                onPressed: () {
+                                                  techReviewUpdate(
+                                                    context: context,
+                                                    paidStatus: "Paid",
+                                                    bookId: widget.bookId,
+                                                  );
+                                                },
+                                                label: const Text(
+                                                    "Paid with cash"),
+                                                style: ButtonStyle(
+                                                    minimumSize:
+                                                        MaterialStateProperty.all(
+                                                            Size(300, 50)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all(
+                                                      Color.fromARGB(
+                                                          255, 41, 193, 17),
+                                                    ),
+                                                    shape: MaterialStateProperty.all<
+                                                            RoundedRectangleBorder>(
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.circular(
+                                                                    30.0),
+                                                            side: BorderSide(
+                                                                color: Color.fromARGB(
+                                                                    255,
+                                                                    41,
+                                                                    193,
+                                                                    17))))),
+                                              ),
+                                            },
                                             SizedBox(
                                               height: 20,
                                             ),

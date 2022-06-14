@@ -16,7 +16,8 @@ class CustReviewBookingInfoPage extends StatefulWidget {
   // final String bookStat;
 
   @override
-  State<CustReviewBookingInfoPage> createState() => _CustReviewBookingInfoPageState();
+  State<CustReviewBookingInfoPage> createState() =>
+      _CustReviewBookingInfoPageState();
 }
 
 class _CustReviewBookingInfoPageState extends State<CustReviewBookingInfoPage> {
@@ -388,7 +389,7 @@ class _CustReviewBookingInfoPageState extends State<CustReviewBookingInfoPage> {
                                             ),
                                             Align(
                                               alignment: Alignment.centerLeft,
-                                              child: Text("Paid Status"),
+                                              child: Text("Payment Status"),
                                             ),
                                             Container(
                                               decoration: const BoxDecoration(

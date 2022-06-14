@@ -126,7 +126,7 @@ class BookCardList extends StatelessWidget {
         onTap: () {
           print("tapped on ${_historiesData.bookingId}");
           if (_historiesData.bookStatus == 'Completed' &&
-              _historiesData.paidStatus == 'Paid') {
+              _historiesData.rate != 0) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -136,7 +136,7 @@ class BookCardList extends StatelessWidget {
               ),
             );
           } else if (_historiesData.bookStatus == 'Completed' &&
-              _historiesData.paidStatus == 'Not Paid') {
+              _historiesData.rate == 0) {
             Navigator.push(
               context,
               MaterialPageRoute(
