@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hifixit/app/modules/customer/modules/chat/views/chats_page.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
 import 'package:hifixit/app/modules/customer/modules/profile/views/profile_tab.dart';
 import 'package:hifixit/app/services/global.dart';
@@ -388,8 +389,16 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                                               0xFFBF84B1))),
                                             ),
                                             ElevatedButton(
-                                              onPressed: (() {}),
-                                              child: const Text("Chat"),
+                                              onPressed: (() {
+                                                print("Chat");
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (c) => ChatsPage(),
+                                                  ),
+                                                );
+                                              }),
+                                              child: const Text("Ct"),
                                               style: ButtonStyle(
                                                 backgroundColor:
                                                     MaterialStateProperty.all(

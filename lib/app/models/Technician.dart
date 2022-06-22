@@ -10,9 +10,17 @@ class Technician {
   String? techCategory;
   String? techPicture;
   String? techStatus;
+  String? currLocation;
+  double? latitude;
+  double? longitude;
+  double? serviceFee;
 
   Technician(
       {this.techEmail,
+      this.currLocation,
+      this.latitude,
+      this.longitude,
+      this.serviceFee,
       this.techFName,
       this.techLName,
       this.techPhone,
@@ -30,6 +38,10 @@ class Technician {
         rating = snapshot.data()["rating"],
         techCategory = snapshot.data()["techCategory"],
         techStatus = snapshot.data()["techStatus"],
+        currLocation = snapshot.data()["currLocation"],
+        latitude = snapshot.data()["latitude"],
+        longitude = snapshot.data()["longitude"],
+        serviceFee = snapshot.data()["serviceFee"],
         techPicture = snapshot.data()["techPicture"];
 
   Technician.fromJson(Map<String, dynamic> json) {
@@ -41,6 +53,10 @@ class Technician {
     techPicture = json["techPicture"];
     techCategory = json["techCategory"];
     rating = json["rating"];
+    currLocation = json["currLocation"];
+    latitude = json["latitude"];
+    longitude = json["longitude"];
+    serviceFee = json["serviceFee"];
     techStatus = json["techStatus"];
   }
 
@@ -55,6 +71,10 @@ class Technician {
     data["techCategory"] = this.techCategory;
     data["rating"] = this.rating;
     data["techStatus"] = this.techStatus;
+    data["currLocation"] = this.currLocation;
+    data["latitude"] = this.latitude;
+    data["longitude"] = this.longitude;
+    data["serviceFee"] = this.serviceFee;
 
     return data;
   }
