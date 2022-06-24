@@ -6,20 +6,26 @@ import 'package:hifixit/app/modules/customer/modules/chat/views/chat_body_widget
 class ChatsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Scaffold(
-        backgroundColor: Colors.blue,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Chats'),
+          elevation: 0,
+        ),
+        backgroundColor: Color(0xFF7B4067),
         body: SafeArea(
           child: StreamBuilder<List<Customer>>(
-            stream: FirebaseApi.getCustomers(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
+            stream: FirebaseApi.getCustomersChatList(),
+            builder: (context, snapshotCust) {
+              print(snapshotCust.data);
+              switch (snapshotCust.connectionState) {
                 case ConnectionState.waiting:
                   return Center(child: CircularProgressIndicator());
                 default:
-                  if (snapshot.hasError) {
-                    print(snapshot.error);
+                  if (snapshotCust.hasError) {
+                    print(snapshotCust.error);
                     return buildText('Something Went Wrong Try later');
                   } else {
-                    final customer = snapshot.data;
+                    final customer = snapshotCust.data;
 
                     if (customer!.isEmpty) {
                       return buildText('No Users Found');

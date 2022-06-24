@@ -398,7 +398,7 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                                   ),
                                                 );
                                               }),
-                                              child: const Text("Ct"),
+                                              child: const Text("Chat"),
                                               style: ButtonStyle(
                                                 backgroundColor:
                                                     MaterialStateProperty.all(

@@ -12,8 +12,8 @@ class ChatBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Expanded(
         child: Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
+          padding: const EdgeInsets.all(10),
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(25),
@@ -25,7 +25,7 @@ class ChatBodyWidget extends StatelessWidget {
       );
 
   Widget buildChats() => ListView.builder(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           final customer = customers[index];
 
@@ -39,9 +39,20 @@ class ChatBodyWidget extends StatelessWidget {
               },
               leading: CircleAvatar(
                 radius: 25,
-                backgroundImage: NetworkImage(customer.custPicture!),
+                backgroundColor: Colors.grey[200],
+                // backgroundImage: customer.custPicture ? NetworkImage(customer.custPicture!): ,
+                backgroundImage: customer.custPicture!.isEmpty
+                    ? null
+                    : NetworkImage(customer.custPicture!.toString()),
+                child: customer.custPicture!.isNotEmpty
+                    ? null
+                    : Icon(
+                        Icons.person,
+                        size: MediaQuery.of(context).size.width * 0.10,
+                        color: const Color(0xFFBF84B1),
+                      ),
               ),
-              title: Text(customer.custFName! + '' + customer.custLName!),
+              title: Text(customer.custFName! + ' ' + customer.custLName!),
             ),
           );
         },

@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hifixit/app/controllers/utils.dart';
+import 'package:hifixit/app/services/global.dart';
 
 class UserField {
   static final String lastMessageTime = 'lastMessageTime';
 }
 
 class Customer {
-  String? custId;
+  String custId;
   String? custEmail;
   String? custFName;
   String? custLName;
@@ -24,7 +26,7 @@ class Customer {
       this.latitude,
       this.longitude,
       this.custPhone,
-      this.custId});
+      required this.custId});
 
   // Customer.fromDocumentSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
   //   custId = (snap.data() as dynamic)["custId"];
@@ -82,4 +84,17 @@ class Customer {
 
     return data;
   }
+
+  // static Stream<List<Customer>> getCustomer() => FirebaseFirestore.instance
+  //     .collection('Customer').doc(currentFirebaseUser!.uid)
+  //     .snapshots().then(()=>{});
+  // static Future<DocumentSnapshot<Map<String, dynamic>>>
+  //     getCurrCustomer() async {
+  //   return
+  //   await FirebaseFirestore.instance
+  //       .collection('Customer')
+  //       .doc(currentFirebaseUser!.uid)
+  //       .get();
+  //       if()
+  // }
 }
