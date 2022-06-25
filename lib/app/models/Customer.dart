@@ -66,8 +66,8 @@ class Customer {
         custPhone: json["custPhone"],
         custPicture: json["custPicture"],
         currLocation: json["currLocation"],
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        latitude: json["latitude"].toDouble(),
+        longitude: json["longitude"].toDouble(),
       );
 
   Map<String, dynamic> toJson() {

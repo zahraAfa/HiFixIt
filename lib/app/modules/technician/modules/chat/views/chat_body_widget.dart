@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/models/Customer.dart';
 import 'package:hifixit/app/models/Technician.dart';
-import 'package:hifixit/app/modules/customer/modules/chat/views/chat_page.dart';
+import 'package:hifixit/app/modules/technician/modules/chat/views/chat_page.dart';
 
 class ChatBodyWidget extends StatelessWidget {
-  final List<Technician> technicians;
+  final List<Customer> customers;
 
   const ChatBodyWidget({
-    required this.technicians,
+    required this.customers,
     Key? key,
   }) : super(key: key);
 
@@ -29,24 +29,24 @@ class ChatBodyWidget extends StatelessWidget {
   Widget buildChats() => ListView.builder(
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          final technician = technicians[index];
+          final customer = customers[index];
 
           return Container(
             height: 75,
             child: ListTile(
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => ChatPage(technician: technician),
+                  builder: (context) => ChatPage(customer: customer),
                 ));
               },
               leading: CircleAvatar(
                 radius: 25,
                 backgroundColor: Colors.grey[200],
-                // backgroundImage: technician.techPicture ? NetworkImage(technician.techPicture!): ,
-                backgroundImage: technician.techPicture!.isEmpty
+                // backgroundImage: customer.custPicture ? NetworkImage(customer.custPicture!): ,
+                backgroundImage: customer.custPicture!.isEmpty
                     ? null
-                    : NetworkImage(technician.techPicture!.toString()),
-                child: technician.techPicture!.isNotEmpty
+                    : NetworkImage(customer.custPicture!.toString()),
+                child: customer.custPicture!.isNotEmpty
                     ? null
                     : Icon(
                         Icons.person,
@@ -54,10 +54,10 @@ class ChatBodyWidget extends StatelessWidget {
                         color: const Color(0xFFBF84B1),
                       ),
               ),
-              title: Text(technician.techFName! + ' ' + technician.techLName!),
+              title: Text(customer.custFName! + ' ' + customer.custLName!),
             ),
           );
         },
-        itemCount: technicians.length,
+        itemCount: customers.length,
       );
 }

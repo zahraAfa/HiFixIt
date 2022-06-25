@@ -1,13 +1,9 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hifixit/app/controllers/utils.dart';
 import 'package:hifixit/app/models/Customer.dart';
 import 'package:hifixit/app/models/Message.dart';
 import 'package:hifixit/app/models/Technician.dart';
 import 'package:hifixit/app/services/global.dart';
-
-// import 'package:js/js_util.dart';
 
 class FirebaseApi {
   static Stream<List<Customer>> getCustomers() => FirebaseFirestore.instance
@@ -18,7 +14,7 @@ class FirebaseApi {
   static Stream<List<Customer>> getCustomersChatList() =>
       FirebaseFirestore.instance
           .collection('Customer')
-          .orderBy(UserField.lastMessageTime, descending: true)
+          // .orderBy(UserField.lastMessageTime, descending: true)
           .snapshots()
           .transform(Utils.transformer(Customer.fromJson));
 
@@ -30,71 +26,85 @@ class FirebaseApi {
   static Stream<List<Technician>> getTechniciansChatList() =>
       FirebaseFirestore.instance
           .collection('Technician')
-          .orderBy(UserField.lastMessageTime, descending: true)
+          // .orderBy(UserField.lastMessageTime, descending: true)
           .snapshots()
           .transform(Utils.transformer(Technician.fromJson));
 
-  static Future uploadCustMessage(String userId, String message) async {
+  static Future uploadCustMessage(
+      //message created by cust
+      String userId,
+      String message,
+      String techId) async {
     final refMessages =
-        FirebaseFirestore.instance.collection('Chat/Customer/$userId/Messages');
+        FirebaseFirestore.instance.collection('Chat/$techId$userId/Messages');
     final refCustomers = FirebaseFirestore.instance.collection('Customer');
     var custSnapshot = await refCustomers.doc(userId).get();
     Map<String, dynamic>? custData = custSnapshot.data();
 
-    // var customer = Customer.getCurrCustomer();
-
     final newMessage = Message(
-      userId: currentFirebaseUser!.uid,
-      userPicture: custData?['custPicture'] ?? null,
+      userId: userId,
+      userPicture: custData?['custPicture'],
       email: custData!['custEmail'],
       message: message,
       userType: 'customer',
+      messageTo: techId,
       createdAt: DateTime.now(),
     );
     await refMessages.add(newMessage.toJson());
 
-    // final refUsers = FirebaseFirestore.instance.collection('users');
     await refCustomers
         .doc(userId)
+        .collection('MessagesTime')
+        .doc(techId + userId)
         .update({UserField.lastMessageTime: DateTime.now()});
   }
 
-  static Future uploadTechMessage(String userId, String message) async {
-    final refMessages = FirebaseFirestore.instance
-        .collection('Chat/Technician/$userId/Messages');
+  static Future uploadTechMessage(
+      //message created by tech
+      String userId,
+      String message,
+      String custId) async {
+    final refMessages =
+        FirebaseFirestore.instance.collection('Chat/$userId$custId/Messages');
     final refTechnicians = FirebaseFirestore.instance.collection('Technician');
     var techSnapshot = await refTechnicians.doc(userId).get();
     Map<String, dynamic>? techData = techSnapshot.data();
 
-    // var techomer = techomer.getCurrtechomer();
-
     final newMessage = Message(
-      userId: currentFirebaseUser!.uid,
-      userPicture: techData?['techPicture'] ?? null,
+      userId: userId,
+      userPicture: techData?['techPicture'],
       email: techData!['techEmail'],
       message: message,
       userType: 'technician',
+      messageTo: custId,
       createdAt: DateTime.now(),
     );
     await refMessages.add(newMessage.toJson());
 
-    // final refUsers = FirebaseFirestore.instance.collection('users');
     await refTechnicians
         .doc(userId)
+        .collection('MessagesTime')
+        .doc(userId + custId)
         .update({UserField.lastMessageTime: DateTime.now()});
   }
 
-  static Stream<List<Message>> getCustMessages(String userId) =>
+  static Stream<List<Message>> getCustMessages(String custId, String userId) =>
       FirebaseFirestore.instance
-          .collection('Chat/Customer/$userId/Messages')
-          .orderBy(MessageField.createdAt, descending: true)
+          .collection('Chat')
+          .doc(userId + custId)
+          .collection('Messages')
+          // .where('messageTo', whereIn: [custId, userId])
+          .orderBy('createdAt', descending: true)
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));
 
-  static Stream<List<Message>> getTechMessages(String userId) =>
+  static Stream<List<Message>> getTechMessages(String techId, String userId) =>
       FirebaseFirestore.instance
-          .collection('Chat/Customer/$userId/Messages')
-          .orderBy(MessageField.createdAt, descending: true)
+          .collection('Chat')
+          .doc(techId + userId)
+          .collection('Messages')
+          // .where('messageTo', isEqualTo: techId)
+          .orderBy('createdAt', descending: true)
           .snapshots()
           .transform(Utils.transformer(Message.fromJson));
 }

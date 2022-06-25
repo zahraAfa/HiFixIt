@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Technician {
-  String? techId;
+  String techId;
   String? techEmail;
   String? techFName;
   String? techLName;
@@ -27,7 +27,8 @@ class Technician {
       this.techPicture,
       this.techCategory,
       this.techStatus,
-      this.rating});
+      this.rating,
+      required this.techId});
 
   Technician.fromSnapshot(snapshot)
       : techId = snapshot.data()["techId"],
@@ -44,21 +45,36 @@ class Technician {
         serviceFee = snapshot.data()["serviceFee"],
         techPicture = snapshot.data()["techPicture"];
 
-  Technician.fromJson(Map<String, dynamic> json) {
-    techId = json["techId"];
-    techEmail = json["techEmail"];
-    techFName = json["techFName"];
-    techLName = json["techLName"];
-    techPhone = json["techPhone"];
-    techPicture = json["techPicture"];
-    techCategory = json["techCategory"];
-    rating = json["rating"];
-    currLocation = json["currLocation"];
-    latitude = json["latitude"];
-    longitude = json["longitude"];
-    serviceFee = json["serviceFee"];
-    techStatus = json["techStatus"];
-  }
+  // Technician.fromJson(Map<String, dynamic> json) {
+  //   techId = json["techId"];
+  //   techEmail = json["techEmail"];
+  //   techFName = json["techFName"];
+  //   techLName = json["techLName"];
+  //   techPhone = json["techPhone"];
+  //   techPicture = json["techPicture"];
+  //   techCategory = json["techCategory"];
+  //   rating = json["rating"];
+  //   currLocation = json["currLocation"];
+  //   latitude = json["latitude"];
+  //   longitude = json["longitude"];
+  //   serviceFee = json["serviceFee"];
+  //   techStatus = json["techStatus"];
+  // }
+
+  static Technician fromJson(Map<String, dynamic> json) => Technician(
+      techId: json["techId"],
+      techEmail: json["techEmail"],
+      techFName: json["techFName"],
+      techLName: json["techLName"],
+      techPhone: json["techPhone"],
+      techCategory: json["techCategory"],
+      rating: json["rating"].toDouble(),
+      currLocation: json["currLocation"],
+      latitude: json["latitude"].toDouble(),
+      longitude: json["longitude"].toDouble(),
+      serviceFee: json["serviceFee"].toDouble(),
+      techStatus: json["techStatus"],
+      techPicture: json["techPicture"]);
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> data = new Map<String, dynamic>();

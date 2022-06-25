@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hifixit/app/controllers/firebase_api.dart';
 import 'package:hifixit/app/models/Customer.dart';
 import 'package:hifixit/app/models/Technician.dart';
-import 'package:hifixit/app/modules/customer/modules/chat/views/chat_body_widget.dart';
+import 'package:hifixit/app/modules/technician/modules/chat/views/chat_body_widget.dart';
 
 class ChatsPage extends StatelessWidget {
   @override
@@ -14,25 +14,25 @@ class ChatsPage extends StatelessWidget {
         ),
         backgroundColor: Color(0xFF7B4067),
         body: SafeArea(
-          child: StreamBuilder<List<Technician>>(
-            stream: FirebaseApi.getTechniciansChatList(),
-            builder: (context, snapshotTech) {
-              // print(snapshotTech.data);
-              switch (snapshotTech.connectionState) {
+          child: StreamBuilder<List<Customer>>(
+            stream: FirebaseApi.getCustomersChatList(),
+            builder: (context, snapshotCust) {
+              // print(snapshotCust.data);
+              switch (snapshotCust.connectionState) {
                 case ConnectionState.waiting:
                   return Center(child: CircularProgressIndicator());
                 default:
-                  if (snapshotTech.hasError) {
-                    print(snapshotTech.error);
+                  if (snapshotCust.hasError) {
+                    print(snapshotCust.error);
                     return buildText('Something Went Wrong Try later');
                   } else {
-                    final technician = snapshotTech.data;
+                    final customer = snapshotCust.data;
 
-                    if (technician!.isEmpty) {
+                    if (customer!.isEmpty) {
                       return buildText('No Users Found');
                     } else {
                       return Column(
-                        children: [ChatBodyWidget(technicians: technician)],
+                        children: [ChatBodyWidget(customers: customer)],
                       );
                     }
                   }

@@ -4,10 +4,10 @@ import 'package:hifixit/app/controllers/firebase_api.dart';
 import 'package:hifixit/app/services/global.dart';
 
 class NewMessageWidget extends StatefulWidget {
-  final String techId;
+  final String custId;
 
   const NewMessageWidget({
-    required this.techId,
+    required this.custId,
     Key? key,
   }) : super(key: key);
 
@@ -18,12 +18,12 @@ class NewMessageWidget extends StatefulWidget {
 class _NewMessageWidgetState extends State<NewMessageWidget> {
   final _controller = TextEditingController();
   String message = '';
-  String custId = currentFirebaseUser!.uid;
+  String techId = currentFirebaseUser!.uid;
 
   void sendMessage() async {
     FocusScope.of(context).unfocus();
 
-    await FirebaseApi.uploadCustMessage(custId, message, widget.techId);
+    await FirebaseApi.uploadTechMessage(techId, message, widget.custId);
 
     _controller.clear();
   }

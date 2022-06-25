@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hifixit/app/models/Technician.dart';
+import 'package:hifixit/app/modules/customer/modules/chat/views/2/chat_page.dart';
+import 'package:hifixit/app/modules/customer/modules/chat/views/chat_page.dart';
 import 'package:hifixit/app/modules/customer/modules/chat/views/chats_page.dart';
 import 'package:hifixit/app/modules/customer/modules/home/controllers/home_controller.dart';
 import 'package:hifixit/app/modules/customer/modules/profile/views/profile_tab.dart';
@@ -30,7 +33,6 @@ class _HomeTabPageState extends State<HomeTabPage> {
   String _currLoc = '';
 
   double searchLocationContainerHeight = 320;
-
   List<String> categoryType = ["All", "Washing Machine", "Air Conditioner"];
   String? selectedCategoryType;
   List<String> priceRange = ["Highest Price", "Lowest Price"];
@@ -391,12 +393,13 @@ class _HomeTabPageState extends State<HomeTabPage> {
                                             ElevatedButton(
                                               onPressed: (() {
                                                 print("Chat");
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (c) => ChatsPage(),
-                                                  ),
-                                                );
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPage2(
+                                                          techId: data['techId']
+                                                              .toString()),
+                                                ));
                                               }),
                                               child: const Text("Chat"),
                                               style: ButtonStyle(

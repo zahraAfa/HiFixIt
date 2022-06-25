@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/models/Customer.dart';
 import 'package:hifixit/app/models/Technician.dart';
-import 'package:hifixit/app/modules/customer/modules/chat/views/messages_widget.dart';
-import 'package:hifixit/app/modules/customer/modules/chat/views/new_message_widget.dart';
-import 'package:hifixit/app/modules/customer/modules/chat/views/profile_header_widget.dart';
+import 'package:hifixit/app/modules/technician/modules/chat/views/messages_widget.dart';
+import 'package:hifixit/app/modules/technician/modules/chat/views/new_message_widget.dart';
+import 'package:hifixit/app/modules/technician/modules/chat/views/profile_header_widget.dart';
 
 class ChatPage extends StatefulWidget {
-  // final Customer customer;
-  final Technician technician;
+  final Customer customer;
 
   const ChatPage({
-    required this.technician,
+    required this.customer,
     Key? key,
   }) : super(key: key);
 
@@ -26,7 +25,7 @@ class _ChatPageState extends State<ChatPage> {
         body: SafeArea(
           child: Column(
             children: [
-              ProfileHeaderWidget(name: widget.technician.techFName.toString()),
+              ProfileHeaderWidget(name: widget.customer.custFName.toString()),
               Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
@@ -37,10 +36,10 @@ class _ChatPageState extends State<ChatPage> {
                       topRight: Radius.circular(25),
                     ),
                   ),
-                  child: MessagesWidget(techId: widget.technician.techId),
+                  child: MessagesWidget(custId: widget.customer.custId),
                 ),
               ),
-              NewMessageWidget(techId: widget.technician.techId)
+              NewMessageWidget(custId: widget.customer.custId)
             ],
           ),
         ),
