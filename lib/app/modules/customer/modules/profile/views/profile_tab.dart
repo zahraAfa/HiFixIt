@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hifixit/app/models/Rates.dart';
 import 'package:hifixit/app/modules/customer/modules/booking/views/create_booking_page.dart';
+import 'package:hifixit/app/modules/customer/modules/chat/views/2/chat_page.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:hifixit/app/widgets/progress_dialog.dart';
 import 'package:intl/intl.dart';
@@ -39,7 +40,12 @@ class _ProfileTabPageState extends State<ProfileTabPage> {
         actions: [
           ElevatedButton.icon(
             icon: const Icon(Icons.chat_bubble_rounded),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    ChatPage2(techId: widget.techId.toString()),
+              ));
+            },
             label: const Text("Chat"),
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(

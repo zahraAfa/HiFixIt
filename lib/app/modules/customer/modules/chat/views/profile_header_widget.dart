@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/views/create_booking_page.dart';
 
 class ProfileHeaderWidget extends StatelessWidget {
   final String name;
+  final String techId;
 
   const ProfileHeaderWidget({
     required this.name,
+    required this.techId,
     Key? key,
   }) : super(key: key);
 
@@ -32,9 +35,29 @@ class ProfileHeaderWidget extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    buildIcon(Icons.call),
-                    SizedBox(width: 12),
-                    buildIcon(Icons.videocam),
+                    // buildIcon(Icons.call),
+                    // SizedBox(width: 12),
+                    // buildIcon(Icons.videocam),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.bookmark_add),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (c) => CreateBookingPage(techId: techId),
+                            ));
+                      },
+                      label: const Text("Book"),
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                            const Color(0xFFA74385),
+                          ),
+                          shape: MaterialStateProperty.all<
+                                  RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  side: BorderSide(color: Color(0xFFA74385))))),
+                    ),
                   ],
                 ),
                 SizedBox(width: 4),

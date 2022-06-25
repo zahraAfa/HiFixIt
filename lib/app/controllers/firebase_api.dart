@@ -14,7 +14,7 @@ class FirebaseApi {
   static Stream<List<Customer>> getCustomersChatList() =>
       FirebaseFirestore.instance
           .collection('Customer')
-          // .orderBy(UserField.lastMessageTime, descending: true)
+          .orderBy(UserField.lastMessageTime, descending: true)
           .snapshots()
           .transform(Utils.transformer(Customer.fromJson));
 
@@ -26,7 +26,7 @@ class FirebaseApi {
   static Stream<List<Technician>> getTechniciansChatList() =>
       FirebaseFirestore.instance
           .collection('Technician')
-          // .orderBy(UserField.lastMessageTime, descending: true)
+          .orderBy(UserField.lastMessageTime, descending: true)
           .snapshots()
           .transform(Utils.transformer(Technician.fromJson));
 
@@ -54,9 +54,12 @@ class FirebaseApi {
 
     await refCustomers
         .doc(userId)
-        .collection('MessagesTime')
-        .doc(techId + userId)
         .update({UserField.lastMessageTime: DateTime.now()});
+    // await refCustomers
+    //     .doc(userId)
+    //     .collection('MessagesTime')
+    //     .doc(techId + userId)
+    //     .update({UserField.lastMessageTime: DateTime.now()});
   }
 
   static Future uploadTechMessage(
@@ -83,9 +86,12 @@ class FirebaseApi {
 
     await refTechnicians
         .doc(userId)
-        .collection('MessagesTime')
-        .doc(userId + custId)
         .update({UserField.lastMessageTime: DateTime.now()});
+    // await refTechnicians
+    //     .doc(userId)
+    //     .collection('MessagesTime')
+    //     .doc(userId + custId)
+    //     .update({UserField.lastMessageTime: DateTime.now()});
   }
 
   static Stream<List<Message>> getCustMessages(String custId, String userId) =>

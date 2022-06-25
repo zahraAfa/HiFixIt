@@ -29,14 +29,33 @@ class ProfileHeaderWidget extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    buildIcon(Icons.call),
-                    SizedBox(width: 12),
-                    buildIcon(Icons.videocam),
-                  ],
-                ),
+                // Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   children: [
+                //     // buildIcon(Icons.call),
+                //     // SizedBox(width: 12),
+                //     // buildIcon(Icons.videocam),
+                //     ElevatedButton.icon(
+                //       icon: const Icon(Icons.bookmark_add),
+                //       onPressed: () {
+                //         // Navigator.of(context).push(MaterialPageRoute(
+                //         //   builder: (context) =>
+                //         //       ChatPage2(techId: widget.techId.toString()),
+                //         // ));
+                //       },
+                //       label: const Text("Book"),
+                //       style: ButtonStyle(
+                //           backgroundColor: MaterialStateProperty.all(
+                //             const Color(0xFFA74385),
+                //           ),
+                //           shape: MaterialStateProperty.all<
+                //                   RoundedRectangleBorder>(
+                //               RoundedRectangleBorder(
+                //                   borderRadius: BorderRadius.circular(30.0),
+                //                   side: BorderSide(color: Color(0xFFA74385))))),
+                //     ),
+                //   ],
+                // ),
                 SizedBox(width: 4),
               ],
             )

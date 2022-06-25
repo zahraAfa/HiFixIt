@@ -37,7 +37,8 @@ class _ChatPage2State extends State<ChatPage2> {
                 return Column(
                   children: [
                     ProfileHeaderWidget(
-                        name: snapshot.data!['techFName'].toString()),
+                        name: snapshot.data!['techFName'].toString(),
+                        techId: widget.techId),
                     Expanded(
                       child: Container(
                         padding: EdgeInsets.all(10),

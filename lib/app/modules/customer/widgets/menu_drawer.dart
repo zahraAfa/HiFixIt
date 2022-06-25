@@ -93,14 +93,14 @@ class MenuDrawer extends StatelessWidget {
                             builder: (c) => const HistoryTabPage()));
                   },
                 ),
-                MenuListWithIcon(
-                  icon: Icons.chat_bubble,
-                  title: 'Chats',
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (c) => ChatsPage()));
-                  },
-                ),
+                // MenuListWithIcon(
+                //   icon: Icons.chat_bubble,
+                //   title: 'Chats',
+                //   onTap: () {
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (c) => ChatsPage()));
+                //   },
+                // ),
               ],
             ),
           ),
