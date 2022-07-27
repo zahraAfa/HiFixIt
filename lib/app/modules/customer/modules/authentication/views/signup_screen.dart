@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/widgets/header_login_regist.dart';
+import 'package:hifixit/app/modules/customer/modules/authentication/widgets/signup_form_body.dart';
+
+class SignUpScreenCust extends StatefulWidget {
+  const SignUpScreenCust({Key? key}) : super(key: key);
+  final title = "HiFixIt";
+
+  @override
+  State<SignUpScreenCust> createState() => _SignUpScreenCustState();
+}
+
+class _SignUpScreenCustState extends State<SignUpScreenCust> {
+  @override
+  Widget build(BuildContext context) {
+    double _fullHeigh = MediaQuery.of(context).size.height;
+    double _fullWidht = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          Container(
+            width: _fullWidht,
+            height: _fullHeigh,
+            color: const Color(0xFFF2F2F2),
+          ),
+          HeaderLoginRegist(
+            title: widget.title,
+            thirdMessage: 'Join us!',
+          ),
+          const SignupFormBody(
+            pageType: 'Sign up',
+            message: 'Already have an account ? ',
+          ),
+        ],
+      ),
+    );
+  }
+}

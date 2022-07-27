@@ -1,70 +1,64 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/services/global.dart';
+import 'package:hifixit/route_generator.dart';
+import 'package:hifixit/app/modules/splashScreen/views/splash_screen.dart';
+import 'package:hifixit/app/widgets/color_pallete.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
-}
+void main() async {
+  const String appTitle = 'HiFixIt';
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+  sharedPreferences = await SharedPreferences.getInstance();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(
+    MyApp(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: appTitle,
+        theme: ThemeData(
+          primaryColor: const MaterialColor(0xFFBF84B1, primaryPurple),
+          primarySwatch: const MaterialColor(0xFF7B4067, primaryPurple),
+        ),
+        home: const MySplashScreen(),
+        // home: WelcomingPage(title: appTitle),
+        // initialRoute: '/',
+        onGenerateRoute: RouteGenerator.generateRoute,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+    ),
+  );
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({this.child});
 
-  final String title;
+  final Widget? child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_MyAppState>()!.restartApp();
+  }
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyApp> createState() => _MyAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
+class _MyAppState extends State<MyApp> {
+  Key key = UniqueKey();
+  void restartApp() {
     setState(() {
-      _counter++;
+      key = UniqueKey();
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    return KeyedSubtree(
+      child: widget.child!,
+      key: key,
     );
   }
 }
