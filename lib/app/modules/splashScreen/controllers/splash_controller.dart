@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hifixit/app/controllers/assistant_method.dart';
 import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
 import 'package:hifixit/app/modules/technician/modules/mainScreens/main_screens_tech.dart';
@@ -25,7 +26,7 @@ startTimer(context) {
             context,
             MaterialPageRoute(builder: (c) => MainScreenCust()),
             (Route<dynamic> route) => false);
-      } else {
+      } else if (sharedPreferences!.getString("status") != "Pending") {
         //if tech
         fAuth.currentUser != null
             ? AssistantMethod.readCurrentOnlineTechInfo()
@@ -37,6 +38,7 @@ startTimer(context) {
             (Route<dynamic> route) => false);
       }
     } else {
+      // Fluttertoast.showToast(msg: "Invalid data.");
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(

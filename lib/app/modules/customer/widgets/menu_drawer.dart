@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hifixit/app/modules/customer/modules/account/views/cust_account.dart';
+import 'package:hifixit/app/modules/customer/modules/chat/views/chats_page.dart';
 import 'package:hifixit/app/modules/customer/modules/history/views/history_tab.dart';
 import 'package:hifixit/app/modules/customer/modules/mainScreen/views/main_screen_cust.dart';
 import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
@@ -92,6 +93,14 @@ class MenuDrawer extends StatelessWidget {
                             builder: (c) => const HistoryTabPage()));
                   },
                 ),
+                // MenuListWithIcon(
+                //   icon: Icons.chat_bubble,
+                //   title: 'Chats',
+                //   onTap: () {
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (c) => ChatsPage()));
+                //   },
+                // ),
               ],
             ),
           ),

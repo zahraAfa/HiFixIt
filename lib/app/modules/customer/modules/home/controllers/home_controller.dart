@@ -3,11 +3,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hifixit/app/services/global.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 Position? custCurrentPosition;
 var geoLocator = Geolocator();
 List<Placemark>? placeMarks;
 String custCompleteAddress = '';
+
+// double totalDistance = 0.0; //km
 
 GoogleMapController? newGoogleMapController;
 
@@ -74,4 +77,16 @@ locateCustPosition() async {
       .update(custNewMap);
 
   return custCompleteAddress;
+}
+
+double coordinateDistance(lat, lon) {
+  double? latCur = custCurrentPosition?.latitude;
+  double? lonCur = custCurrentPosition?.longitude;
+  var p = 0.017453292519943295;
+  var c = cos;
+  var a = 0.5 -
+      c((lat - latCur) * p) / 2 +
+      c(latCur! * p) * c(lat * p) * (1 - c((lon - lonCur) * p)) / 2;
+  // print((127420 * asin(sqrt(a))).toStringAsFixed(3));
+  return 12742 * asin(sqrt(a));
 }

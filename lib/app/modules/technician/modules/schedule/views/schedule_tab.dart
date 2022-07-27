@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hifixit/app/models/Booking.dart';
+import 'package:hifixit/app/modules/technician/modules/pending/views/pending_info_page.dart';
+import 'package:hifixit/app/modules/technician/modules/schedule/views/booking_info_page.dart';
 import 'package:hifixit/app/services/global.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
@@ -124,102 +126,120 @@ class BookCardList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
-      child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      DateFormat('dd').format(_bookData.bookDate!).toString(),
-                      style: TextStyle(
-                        color: Color(0xFFD96464),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+      child: GestureDetector(
+        onTap: () {
+          print("tapped on ${_bookData.bookingId}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) => TechBookingInfoPage(
+                bookId: _bookData.bookingId!,
+                status: 'Start',
+                bookStat: 'Ongoing',
+              ),
+            ),
+          );
+        },
+        child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('dd').format(_bookData.bookDate!).toString(),
+                        style: TextStyle(
+                          color: Color(0xFFD96464),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('MMM').format(_bookData.bookDate!).toString(),
-                      style: TextStyle(
-                        color: Color(0xFFD96464),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                      Text(
+                        DateFormat('MMM')
+                            .format(_bookData.bookDate!)
+                            .toString(),
+                        style: TextStyle(
+                          color: Color(0xFFD96464),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('yy').format(_bookData.bookDate!).toString(),
-                      style: TextStyle(
-                        color: Color(0xFFD96464),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                      Text(
+                        DateFormat('yy').format(_bookData.bookDate!).toString(),
+                        style: TextStyle(
+                          color: Color(0xFFD96464),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    height: 80,
-                    padding: const EdgeInsets.all(5),
-                    child: VerticalDivider(
-                      color: Colors.grey.shade300,
-                      thickness: 3,
-                      indent: 0,
-                      endIndent: 0,
-                      width: 20,
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 80,
+                      padding: const EdgeInsets.all(5),
+                      child: VerticalDivider(
+                        color: Colors.grey.shade300,
+                        thickness: 3,
+                        indent: 0,
+                        endIndent: 0,
+                        width: 20,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        stream: FirebaseFirestore.instance
-                            .collection("Customer")
-                            .doc(_bookData.custId.toString())
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                                child: const CircularProgressIndicator());
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!["custFName"] +
-                                    " " +
-                                    snapshot.data!["custLName"],
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          stream: FirebaseFirestore.instance
+                              .collection("Customer")
+                              .doc(_bookData.custId.toString())
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                  child: const CircularProgressIndicator());
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!["custFName"] +
+                                      " " +
+                                      snapshot.data!["custLName"],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                            ],
-                          );
-                        }),
-                    Text(
-                      DateFormat('hh:mm')
-                          .format(_bookData.bookDate!)
-                          .toString(),
-                      style: const TextStyle(
-                        color: Color(0xFFD96464),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                              ],
+                            );
+                          }),
+                      Text(
+                        DateFormat('hh:mm')
+                            .format(_bookData.bookDate!)
+                            .toString(),
+                        style: const TextStyle(
+                          color: Color(0xFFD96464),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )),
+                    ],
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 }

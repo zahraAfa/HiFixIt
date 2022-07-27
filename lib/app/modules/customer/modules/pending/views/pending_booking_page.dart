@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hifixit/app/modules/customer/modules/booking/views/booking_info_page.dart';
 import 'package:hifixit/app/modules/customer/widgets/menu_drawer.dart';
+import 'package:hifixit/app/modules/customer/modules/schedule/views/schedule_tab.dart';
 import 'package:intl/intl.dart';
 import 'package:hifixit/app/models/Booking.dart';
 import 'package:hifixit/app/services/global.dart';
@@ -25,6 +27,12 @@ class _PendingBookingPageState extends State<PendingBookingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        // leading: BackButton(
+        //   onPressed: () {
+        //     Navigator.pop(context,
+        //         MaterialPageRoute(builder: (c) => const ScheduleTabPage()));
+        //   },
+        // ),
         elevation: 0,
         title: const Text("Pending"),
         centerTitle: true,
@@ -106,124 +114,137 @@ class BookCardList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 1, horizontal: 20),
-      child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
-            child: Row(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      DateFormat('dd')
-                          .format(_bookingsData.bookDate!)
-                          .toString(),
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+      child: GestureDetector(
+        onTap: () {
+          print("tapped on ${_bookingsData.bookingId}");
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (c) =>
+                  CustBookingInfoPage(bookId: _bookingsData.bookingId!),
+            ),
+          );
+        },
+        child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20),
+              child: Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        DateFormat('dd')
+                            .format(_bookingsData.bookDate!)
+                            .toString(),
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('MMM')
-                          .format(_bookingsData.bookDate!)
-                          .toString(),
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                      Text(
+                        DateFormat('MMM')
+                            .format(_bookingsData.bookDate!)
+                            .toString(),
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('yy')
-                          .format(_bookingsData.bookDate!)
-                          .toString(),
-                      style: TextStyle(
-                        color: Colors.grey.shade500,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20,
+                      Text(
+                        DateFormat('yy')
+                            .format(_bookingsData.bookDate!)
+                            .toString(),
+                        style: TextStyle(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    height: 80,
-                    padding: const EdgeInsets.all(5),
-                    child: VerticalDivider(
-                      color: Colors.grey.shade300,
-                      thickness: 3,
-                      indent: 0,
-                      endIndent: 0,
-                      width: 20,
+                    ],
+                  ),
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 80,
+                      padding: const EdgeInsets.all(5),
+                      child: VerticalDivider(
+                        color: Colors.grey.shade300,
+                        thickness: 3,
+                        indent: 0,
+                        endIndent: 0,
+                        width: 20,
+                      ),
                     ),
                   ),
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                        stream: FirebaseFirestore.instance
-                            .collection("Technician")
-                            .doc(_bookingsData.techId.toString())
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                                child: const CircularProgressIndicator());
-                          }
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                snapshot.data!["techFName"] +
-                                    " " +
-                                    snapshot.data!["techLName"],
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w500,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                          stream: FirebaseFirestore.instance
+                              .collection("Technician")
+                              .doc(_bookingsData.techId.toString())
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(
+                                  child: const CircularProgressIndicator());
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  snapshot.data!["techFName"] +
+                                      " " +
+                                      snapshot.data!["techLName"],
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                snapshot.data!["techCategory"],
-                                style: TextStyle(
-                                  color: Color(0xFFD96464),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500,
+                                const SizedBox(
+                                  height: 5,
                                 ),
-                              ),
-                            ],
-                          );
-                        }),
-                    Text(
-                      _bookingsData.bookStatus.toString(),
-                      style: TextStyle(
-                        color: Color(0xFFD96464),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                                Text(
+                                  snapshot.data!["techCategory"],
+                                  style: TextStyle(
+                                    color: Color(0xFFD96464),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                      Text(
+                        _bookingsData.bookStatus.toString(),
+                        style: TextStyle(
+                          color: Color(0xFFD96464),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                    Text(
-                      DateFormat('hh:mm')
-                          .format(_bookingsData.bookDate!)
-                          .toString(),
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
+                      Text(
+                        DateFormat('hh:mm')
+                            .format(_bookingsData.bookDate!)
+                            .toString(),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )),
+                    ],
+                  ),
+                ],
+              ),
+            )),
+      ),
     );
   }
 }
